@@ -1,0 +1,4 @@
+3 modulos
+dominio - contem entidades, controladores ,servicos , repositorios - repositorios declaram os metodos
+teste - bdd (contem os arquivos .feature), e tambem automatização de testes
+persistencia em memoria - banco de dados, classes que implementam os repositorios , implementam a logica do metodo 
