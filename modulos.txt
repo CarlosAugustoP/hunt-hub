@@ -1,4 +1,34 @@
 3 modulos
+
 dominio - contem entidades, controladores ,servicos , repositorios - repositorios declaram os metodos
+
 teste - bdd (contem os arquivos .feature), e tambem automatização de testes
-persistencia em memoria - banco de dados, classes que implementam os repositorios , implementam a logica do metodo 
+
+persistencia em memoria - banco de dados, classe que implementam os repositorios , implementam a logica do metodo 
+
+models 
+controlkers
+services
+repositories
+
+// Dominio 
+public interface UserRepository<T> {
+    void save(T entity);
+    void delete(T entity);
+    void update(T entity);
+    T findById(Long id);
+    List<T> findAll();
+}
+
+public interface POrepository<T> {
+    void save(T entity);
+    void delete(T entity);
+    void update(T entity);
+    T findById(Long id);
+    List<T> findAll();
+}
+
+// Persistencia
+public class Repository implements UserRepository<User>, POrepository<User> {
+   
+}
