@@ -35,6 +35,7 @@ Feature: Encerrar a task quando seus requisitos forem cumpridos
         And o PO deve fornecer feedback do motivo da rejeição
         And o hunter é notificado da rejeição e do feedback
 
+
     Scenario: O PO solicita alterações após a solicitação de finalização do hunter
         Given que o PO possui uma Task cadastrada no sistema
         And que a Task possui hunters trabalhando nela
