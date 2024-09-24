@@ -3,12 +3,12 @@ package com.groupseven.hunthub.domain.models;
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
+
 import java.util.UUID;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
+import lombok.Getter;
 
 @Entity
 @Table(name = "projects")
@@ -22,7 +22,9 @@ public class Project {
     private Date endDate;
     private String description;
     private String title;
-    private List<String> skills;
+    @ElementCollection
+    private List<String> skills = new ArrayList<>();
+
 
     public Project() {
         this.skills = new ArrayList<>();

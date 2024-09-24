@@ -8,47 +8,36 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.INTEGER)
 public class User {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public UUID id;
+    private UUID id;
 
     @NotNull
-    public Long cpf;
+    private Long cpf;
 
     @NotNull
     @Size(min = 2, max = 50)
-    public String name;
+    private String name;
 
     @NotNull
     @Email
-    public String email;
+    private String email;
 
     @NotNull
-    public String password;
+    private String password;
 
-    @NotNull
-    public String type;
-
-    public User(String type, String name, String email, String password, Long cpf) {
+    public User(String name, String email, String password, Long cpf) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.type = type;
         this.cpf = cpf;
     }
- 
 
     public User(){
-    }
-
-    public String getType (){
-        return type;
-    }
-
-    public void setType(String type){
-        this.type = type;
     }
 
     public Long getCpf() {

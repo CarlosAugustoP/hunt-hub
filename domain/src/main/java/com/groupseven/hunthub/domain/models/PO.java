@@ -1,6 +1,6 @@
 package com.groupseven.hunthub.domain.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -11,22 +11,24 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pos")
+@DiscriminatorValue("0")
 public class PO extends User { 
 
     @NotNull
-    int levels = 0;
+    private int levels = 0;
 
     @NotNull
-    int rating = 0;
+    private int rating = 0;
 
     @OneToMany(mappedBy = "po")
     List<Task> tasks = new ArrayList<>();
+
     String profilePicture;
     String bio;
 
 
-    public PO(Long cpf, String name, String email, String type, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio) {
-        super(type, name, email, password, cpf); // Ordem corrigida para corresponder ao construtor da classe User
+    public PO(Long cpf, String name, String email, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio) {
+        super(name, email, password, cpf); // Ordem corrigida para corresponder ao construtor da classe User
         this.levels = levels;
         this.rating = rating;
         this.tasks = tasks;
