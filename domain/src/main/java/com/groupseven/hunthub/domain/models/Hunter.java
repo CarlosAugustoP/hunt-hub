@@ -11,18 +11,24 @@ import java.util.ArrayList;
 public class Hunter extends User {
 
     private String linkPortfolio;
+
     @OneToMany(mappedBy = "hunter")
     private List<Task> tasks = new ArrayList<>();
+    
     private String bio;
     private String profilePicture;
     private int rating = 0;
     private int level = 0;
+    
     @ElementCollection
     private List<String> certifications = new ArrayList<>();
+    
     @ElementCollection
     private List<String> links = new ArrayList<>();
+    
     @OneToMany(mappedBy = "hunter")
     private List<Achievement> achievements = new ArrayList<>();
+    
     @OneToMany(mappedBy = "hunter")
     private List<Project> projects = new ArrayList<>();
 

@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
-import lombok.Getter;
 
 @Entity
 @Table(name = "projects")

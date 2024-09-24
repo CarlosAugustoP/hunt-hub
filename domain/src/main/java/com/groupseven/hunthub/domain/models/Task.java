@@ -32,7 +32,7 @@ public class Task {
     private String title;
 
     @NotNull
-    private String status;
+    private String status = "started";
 
     private Date deadline;
 
@@ -47,11 +47,10 @@ public class Task {
     @ManyToMany 
     private List<Hunter> hunters = new ArrayList<>();
 
-    public Task(PO po, String description, String title, String status, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
+    public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
         this.po = po;
         this.description = description;
         this.title = title;
-        this.status = status;
         this.deadline = deadline;
         this.reward = reward;
         this.numberOfMeetings = numberOfMeetings;
