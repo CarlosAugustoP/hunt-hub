@@ -3,10 +3,12 @@ package com.groupseven.hunthub.domain.models;
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
 import java.util.UUID;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "projects")

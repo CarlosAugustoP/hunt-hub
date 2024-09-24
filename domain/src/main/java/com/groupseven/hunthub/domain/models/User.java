@@ -1,6 +1,6 @@
 package com.groupseven.hunthub.domain.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,31 +12,33 @@ public class User {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    public UUID id;
 
     @NotNull
-    private Long cpf;
+    public Long cpf;
 
     @NotNull
     @Size(min = 2, max = 50)
-    private String name;
+    public String name;
 
     @NotNull
     @Email
-    private String email;
+    public String email;
 
     @NotNull
-    private String password;
+    public String password;
 
     @NotNull
-    private String type;
+    public String type;
 
-    public User(String type, String name, String email, String password){
+    public User(String type, String name, String email, String password, Long cpf) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.type = type;
-    }   
+        this.cpf = cpf;
+    }
+ 
 
     public User(){
     }

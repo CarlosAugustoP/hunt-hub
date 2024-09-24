@@ -1,11 +1,10 @@
 package com.groupseven.hunthub.domain.models;
 
-import javax.persistence.*;
-import javax.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import java.util.List;
 import java.util.ArrayList;
 import javax.validation.constraints.NotNull;
@@ -26,8 +25,8 @@ public class PO extends User {
     String bio;
 
 
-    public PO (Long cpf, String name, String email, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio){
-        super(cpf, name, email, password);
+    public PO(Long cpf, String name, String email, String type, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio) {
+        super(type, name, email, password, cpf); // Ordem corrigida para corresponder ao construtor da classe User
         this.levels = levels;
         this.rating = rating;
         this.tasks = tasks;

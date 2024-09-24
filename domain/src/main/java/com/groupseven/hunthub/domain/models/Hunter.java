@@ -1,6 +1,6 @@
 package com.groupseven.hunthub.domain.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.util.List;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public class Hunter extends User {
     private List<Achievement> achievements = new ArrayList<>();
     private List<Project> projects = new ArrayList<>();
 
-    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, int rating, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects) {
-        super(cpf, name, email, password); 
+    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, String type, List<Task> tasks, String bio, String profilePicture, int rating, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects) {
+        super(type, name, email, password, cpf); 
         this.linkPortfolio = linkPortfolio;
         this.tasks = tasks;
         this.bio = bio;

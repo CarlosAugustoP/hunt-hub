@@ -1,7 +1,11 @@
 package com.groupseven.hunthub.domain.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
 
 @Entity
 @Table(name = "achievements")
@@ -11,9 +15,9 @@ public class Achievement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String description;
-    private String icon;
+    private String name; // rei das tasks
+    private String description;// o usuario conclui 2 tarefas dentro de um periodo curto
+    private String icon; // path/to/img
 
     public Achievement(String name, String description, String icon) {
         this.name = name;

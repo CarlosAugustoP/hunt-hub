@@ -1,6 +1,6 @@
 package com.groupseven.hunthub.domain.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -44,7 +44,7 @@ public class Task {
     @NotNull
     private int numberOfHuntersRequired;
 
-    @ManyToMany
+    @ManyToMany 
     private List<Hunter> hunters = new ArrayList<>();
 
     public Task(PO po, String description, String title, String status, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
