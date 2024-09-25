@@ -20,6 +20,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.groupseven</groupId>
+            <artifactId>domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-spring</artifactId>
             <version>7.1.0</version>
