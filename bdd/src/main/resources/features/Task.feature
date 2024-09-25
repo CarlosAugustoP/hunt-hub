@@ -1,14 +1,8 @@
 Feature: Criar Task
 
 Scenario: O PO possui uma ideia para uma nova Task e os pontos necessários para criá-la
-    Given que o PO possui a quantidade de pontos necessária para criar uma nova Task
-    When o PO cria uma nova Task com os detalhes:
-        | description                | "Desenvolver nova funcionalidade" |
-        | title                      | "Nova Funcionalidade"             |
-        | deadline                   | "2024-10-01"                      |
-        | reward                     | 100                               |
-        | numberOfMeetings           | 2                                 |
-        | numberOfHuntersRequired    | 3                                 |
+    Given que o PO possui a quantidade de pontos necessária (500) para criar uma nova Task (300)
+    When o PO cria uma nova Task com os detalhes: description "Desenvolver nova funcionalidade"; title "Nova Funcionalidade"; deadline "2024-10-01"; reward 100; numberOfMeetings 2; numberOfHuntersRequired 3
     Then a Task é criada com sucesso
     And a Task aparece no sistema para os hunters
     And o pagamento do valor da task é feito e retido no sistema até a finalização da task
