@@ -1,11 +1,13 @@
 package com.groupseven.hunthub.steps;
 
-import com.groupseven.hunthub.domain.*;
-import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.*;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import java.util.Map;
+import io.cucumber.java.en.Then;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ public class TaskStepDefinitions {
     @Then("a Task é criada com sucesso")
     public void task_criada() {
         Task task = po.getTasks().get(0);
-        assertTrue(task.equals(novaTask))
+        assertTrue(task.equals(novaTask));
     }
 
 }
