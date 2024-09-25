@@ -3,7 +3,6 @@ package com.groupseven.hunthub.domain.services;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
-import com.groupseven.hunthub.domain.repository.PORepository;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.PO;
 import java.util.Date;
@@ -11,13 +10,11 @@ import java.util.Date;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final PORepository poRepository;
 
     
     @Autowired
-    public TaskService(TaskRepository taskRepository, PORepository poRepository) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.poRepository = poRepository;
     }
 
     public void createTask(PO po ,

@@ -6,6 +6,8 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,7 +41,7 @@ public class TaskStepDefinitions {
             e.printStackTrace(); // Trate a exceção de acordo com a necessidade do seu projeto
         }
 
-        novaTask = new Task(description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
+        novaTask = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
         po.addTask(novaTask);
     }
 
