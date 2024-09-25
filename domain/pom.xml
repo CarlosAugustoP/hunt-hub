@@ -13,8 +13,18 @@
 
     <!-- Module details -->
     <artifactId>domain</artifactId>
-    <packaging>jar</packaging> <!-- This module will produce a JAR -->
+    <packaging>jar</packaging> <!-- Ensure packaging is set to 'jar' -->
 
+    <!-- Java version properties -->
+    <properties>
+        <java.version>22</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.compiler.compilerArgs>--enable-preview</maven.compiler.compilerArgs>
+    </properties>
+
+    <!-- Dependencies -->
     <dependencies>
         <!-- Spring Boot Starter Web: Required for creating REST APIs -->
         <dependency>
@@ -64,16 +74,27 @@
         </dependency>
     </dependencies>
 
+    <!-- Build configuration -->
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>22</source>
-                    <target>22</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- Adjust the Spring Boot Maven Plugin to prevent repackaging -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
