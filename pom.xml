@@ -24,9 +24,9 @@
     </modules>
 
     <properties>
-        <java.version>22</java.version>
-        <maven.compiler.source>22</maven.compiler.source> <!-- Defina o nível de linguagem aqui -->
-        <maven.compiler.target>22</maven.compiler.target> <!-- Defina o nível de bytecode aqui -->
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source> <!-- Defina o nível de linguagem aqui -->
+        <maven.compiler.target>17</maven.compiler.target> <!-- Defina o nível de bytecode aqui -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

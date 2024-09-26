@@ -28,13 +28,15 @@ public class TaskStepDefinitions {
     private PO po = new PO(cpf, name, email, password, levels, rating, tasks, profilePicture, bio);
     Task novaTask;
 
-    @Given("que o PO possui a quantidade de pontos necessaria {string} para criar uma nova Task {string}")
+    @Given("que o PO possui a quantidade de pontos necessaria {int} para criar uma nova Task {int}")
+    //      que o PO possui a quantidade de pontos necessaria 500 para criar uma nova Task 300
     public void pontos_disponiveis(int pts_disponiveis, int pts_reward){
         System.out.println("Executando pontos_disponiveis");
         po.setPoints(pts_disponiveis);
     }
 
-    @When("o PO cria uma nova Task com os detalhes: description \"{string}\"; title \"{string}\"; deadline \"{string}\"; reward {int}; numberOfMeetings {int}; numberOfHuntersRequired {int}")
+
+    @When("o PO cria uma nova Task com os detalhes: description {string}; title {string}; deadline {string}; reward {int}; numberOfMeetings {int}; numberOfHuntersRequired {int}")
     public void o_PO_cria_uma_nova_Task_com_os_detalhes(String description, String title, String deadlineString, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
         System.out.println("Executando o_PO_cria_uma_nova_Task_com_os_detalhes");
         Date deadline = null;
@@ -68,5 +70,7 @@ public class TaskStepDefinitions {
         Task task = po.getTasks().get(0);
         assertTrue(task.equals(novaTask));
     }
+    
+    //oiii
 
 }

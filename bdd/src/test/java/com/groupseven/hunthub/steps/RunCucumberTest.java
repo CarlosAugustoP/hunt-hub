@@ -1,11 +1,14 @@
 package com.groupseven.hunthub.steps;
 
-import io.cucumber.junit.platform.engine.Cucumber;
-import org.junit.platform.suite.api.ConfigurationParameter;
-import io.cucumber.junit.platform.engine.Constants;
+import static io.cucumber.core.options.Constants.PLUGIN_PROPERTY_NAME;
 
-@Cucumber
-@ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "pretty")
-@ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "com.groupseven.hunthub.steps")
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectPackages;
+import org.junit.platform.suite.api.Suite;
+@Suite
+@IncludeEngines("cucumber")
+@SelectPackages("com.groupseven.hunthub.steps")
+@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 public class RunCucumberTest {
 }
