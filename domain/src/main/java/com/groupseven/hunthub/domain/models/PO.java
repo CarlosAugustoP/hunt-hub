@@ -20,7 +20,6 @@ public class PO extends User {
     String profilePicture;
     String bio;
 
-
     public PO(Long cpf, String name, String email, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio) {
         super(name, email, password, cpf); // Ordem corrigida para corresponder ao construtor da classe User
         this.levels = levels;

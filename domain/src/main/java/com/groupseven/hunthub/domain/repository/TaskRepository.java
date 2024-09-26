@@ -12,5 +12,4 @@ public interface TaskRepository {
     public List<Task> findAll ();
     public void delete (UUID id);
 
-    
 }

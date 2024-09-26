@@ -1,4 +1,4 @@
-package com.groupseven.hunthub.persistence.repository;
+package com.groupseven.hunthub.persistence.memoria.repository;
 
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.repository.TaskRepository;

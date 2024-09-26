@@ -1,11 +1,5 @@
 package com.groupseven.hunthub.domain.models;
 
-import jakarta.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import jakarta.persistence.ManyToMany;
-
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
