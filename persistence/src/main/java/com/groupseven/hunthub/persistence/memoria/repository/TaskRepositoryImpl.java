@@ -33,4 +33,25 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void delete(UUID id) {
         taskStorage.remove(id);
     }
+
+    @Override
+    public List<Task> findByFilter(List<String> filters){
+        List<Task> filteredTasks = new ArrayList<>(taskStorage.values());
+
+        String (filter: filters){
+            switch (filter) {                    
+                case "deadeline":
+                case "reward":
+                case "number of meetings":
+                case "number of hunters requiered":
+                default;
+                break;
+            }
+        }
+
+
+
+
+        return 
+    }
 }

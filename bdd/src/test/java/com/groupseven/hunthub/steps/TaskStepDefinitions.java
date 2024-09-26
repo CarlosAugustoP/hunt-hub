@@ -33,14 +33,16 @@ public class TaskStepDefinitions {
     String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
     private final PO po = new PO(cpf, name, email, password, levels, rating, tasks, profilePicture, bio);
     Task novaTask;
+    double ratingRequired;
+
 
     @Given("que o PO possui a quantidade de pontos {int} para criar uma nova Task de {int}")
     public void pontos_disponiveis(int pts_disponiveis, int pts_reward) {
         po.setPoints(pts_disponiveis);
     }
 
-    @When("o PO cria uma nova Task com os detalhes: description {string}; title {string}; deadline {string}; reward {int}; numberOfMeetings {int}; numberOfHuntersRequired {int}")
-    public void o_PO_cria_uma_nova_Task_com_os_detalhes(String description, String title, String deadlineString, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
+    @When("o PO cria uma nova Task com os detalhes: description {string}; title {string}; deadline {string}; reward {int}; numberOfMeetings {int}; numberOfHuntersRequired {int}; ratingRequired {double};")
+    public void o_PO_cria_uma_nova_Task_com_os_detalhes(String description, String title, String deadlineString, int reward, int numberOfMeetings, int numberOfHuntersRequired, double ratingRequired) {
         Date deadline = null;
         try {
             deadline = new SimpleDateFormat("yyyy-MM-dd").parse(deadlineString);
@@ -49,7 +51,7 @@ public class TaskStepDefinitions {
         }
 
         try {
-            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
+            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired);
             novaTask = po.getTasks().get(0);
         } catch (Exception e) {
             this.excecao = e;

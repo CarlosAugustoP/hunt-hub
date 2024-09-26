@@ -23,13 +23,14 @@ public class TaskService {
                            Date deadline,
                            int reward,
                            int numberOfMeetings,
-                           int numberOfHuntersRequired) {
+                           int numberOfHuntersRequired,
+                           double ratingRequired) {
         if (po.getPoints() < numberOfHuntersRequired * reward) {
             throw new IllegalArgumentException("Not enough points");
         }
         po.setPoints(po.getPoints() - numberOfHuntersRequired * reward);
 
-        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
+        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired);
         task.setPo(po);
 
         taskRepository.save(task);
