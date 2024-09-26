@@ -29,10 +29,8 @@ public class Task {
 
     private int numberOfMeetings;
 
-    @NotNull
     private int numberOfHuntersRequired;
 
-    @ManyToMany 
     private List<Hunter> hunters = new ArrayList<>();
 
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
