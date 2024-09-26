@@ -17,11 +17,10 @@
 
     <!-- Java version properties -->
     <properties>
-        <java.version>22</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven.compiler.compilerArgs>--enable-preview</maven.compiler.compilerArgs>
     </properties>
 
     <!-- Dependencies -->
@@ -85,7 +84,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
 
