@@ -1,7 +1,6 @@
 package com.groupseven.hunthub.steps;
 
 import com.groupseven.hunthub.domain.models.*;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -25,7 +24,7 @@ public class TaskStepDefinitions {
     List<Task> tasks = new ArrayList<>(); // Lista vazia de tarefas para o mock
     String profilePicture = "https://example.com/profile/johndoe.jpg";
     String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
-    private PO po = new PO(cpf, name, email, password, levels, rating, tasks, profilePicture, bio);
+    private final PO po = new PO(cpf, name, email, password, levels, rating, tasks, profilePicture, bio);
     Task novaTask;
 
     @Given("que o PO possui a quantidade de pontos necessaria {int} para criar uma nova Task {int}")

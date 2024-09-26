@@ -11,32 +11,20 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.UUID;
 
-@Entity
-@Table(name = "tasks")
 public class Task {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
-    @ManyToOne
     private PO po;
 
-    @NotNull
-    @Size(min = 20, max = 2000)
     private String description;
 
-    @NotNull
-    @Size(min = 2, max = 20)
     private String title;
 
-    @NotNull
     private String status = "started";
 
     private Date deadline;
 
-    @NotNull
     private int reward = 50;
 
     private int numberOfMeetings;

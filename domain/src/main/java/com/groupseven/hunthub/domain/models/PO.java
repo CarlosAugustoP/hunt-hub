@@ -9,18 +9,12 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "pos")
-@DiscriminatorValue("0")
-public class PO extends User { 
+public class PO extends User {
 
-    @NotNull
     private int levels = 0;
 
-    @NotNull
     private int rating = 0;
 
-    @OneToMany(mappedBy = "po")
     List<Task> tasks = new ArrayList<>();
 
     String profilePicture;

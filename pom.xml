@@ -19,8 +19,8 @@
 
     <modules>
         <module>domain</module>
-        <module>bdd</module>
         <module>persistence</module>
+        <module>bdd</module>
     </modules>
 
     <properties>

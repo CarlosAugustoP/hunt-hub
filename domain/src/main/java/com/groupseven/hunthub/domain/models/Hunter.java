@@ -5,14 +5,10 @@ import jakarta.persistence.Entity;
 import java.util.List;
 import java.util.ArrayList;
 
-@Entity
-@Table(name = "hunters")
-@DiscriminatorValue("1")
 public class Hunter extends User {
 
     private String linkPortfolio;
 
-    @OneToMany(mappedBy = "hunter")
     private List<Task> tasks = new ArrayList<>();
     
     private String bio;
@@ -20,16 +16,12 @@ public class Hunter extends User {
     private int rating = 0;
     private int level = 0;
     
-    @ElementCollection
     private List<String> certifications = new ArrayList<>();
     
-    @ElementCollection
     private List<String> links = new ArrayList<>();
     
-    @OneToMany(mappedBy = "hunter")
     private List<Achievement> achievements = new ArrayList<>();
     
-    @OneToMany(mappedBy = "hunter")
     private List<Project> projects = new ArrayList<>();
 
     public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, int rating, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects) {
