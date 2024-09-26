@@ -14,11 +14,13 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void save(Task task) {
+        System.out.println("TaskRepositoryImpl.save");
         taskStorage.put(task.getId(), task);
     }
 
     @Override
     public Task findById(UUID id) {
+        System.out.println("TaskRepositoryImpl.findById");
         return taskStorage.get(id);
     }
 

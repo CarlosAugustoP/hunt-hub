@@ -1,6 +1,8 @@
 package com.groupseven.hunthub.steps;
 
 import com.groupseven.hunthub.domain.models.*;
+import com.groupseven.hunthub.domain.services.TaskService;
+import com.groupseven.hunthub.persistence.repository.TaskRepositoryImpl;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -15,6 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskStepDefinitions {
+
+    // Manual instantiation of dependencies
+    private TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
+    private TaskService taskService = new TaskService(taskRepository);
+
     Long cpf = 12345678900L;
     String name = "John Doe";
     String email = "johndoe@example.com";
@@ -29,24 +36,27 @@ public class TaskStepDefinitions {
 
     @Given("que o PO possui a quantidade de pontos necessaria {int} para criar uma nova Task {int}")
     //      que o PO possui a quantidade de pontos necessaria 500 para criar uma nova Task 300
-    public void pontos_disponiveis(int pts_disponiveis, int pts_reward){
+    public void pontos_disponiveis(int pts_disponiveis, int pts_reward) {
         System.out.println("Executando pontos_disponiveis");
         po.setPoints(pts_disponiveis);
     }
 
-
     @When("o PO cria uma nova Task com os detalhes: description {string}; title {string}; deadline {string}; reward {int}; numberOfMeetings {int}; numberOfHuntersRequired {int}")
     public void o_PO_cria_uma_nova_Task_com_os_detalhes(String description, String title, String deadlineString, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
         System.out.println("Executando o_PO_cria_uma_nova_Task_com_os_detalhes");
+
         Date deadline = null;
         try {
             deadline = new SimpleDateFormat("yyyy-MM-dd").parse(deadlineString);
         } catch (ParseException e) {
-            e.printStackTrace(); // Trate a exceção de acordo com a necessidade do seu projeto
+            e.printStackTrace();
         }
 
-        novaTask = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
-        po.addTask(novaTask);
+        // Agora chama o TaskService em vez de criar a Task diretamente
+        taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
+
+        // Verifica se a task foi criada com sucesso
+        novaTask = po.getTasks().get(0);  // Obtendo a task criada a partir da lista do PO
     }
 
     @Then("a Task e criada com sucesso")
@@ -69,7 +79,5 @@ public class TaskStepDefinitions {
         Task task = po.getTasks().get(0);
         assertTrue(task.equals(novaTask));
     }
-    
-    //oiii
 
 }
