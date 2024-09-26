@@ -1,20 +1,23 @@
 package com.groupseven.hunthub.steps;
 
-import com.groupseven.hunthub.domain.models.*;
-import com.groupseven.hunthub.domain.services.TaskService;
-import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.And;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.services.TaskService;
+import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
+
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class TaskStepDefinitions {
 
