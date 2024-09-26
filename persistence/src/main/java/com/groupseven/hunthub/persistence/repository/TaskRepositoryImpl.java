@@ -5,6 +5,9 @@ import com.groupseven.hunthub.domain.repository.TaskRepository;
 
 import java.util.*;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class TaskRepositoryImpl implements TaskRepository {
 
     private final Map<UUID, Task> taskStorage = new HashMap<>();
