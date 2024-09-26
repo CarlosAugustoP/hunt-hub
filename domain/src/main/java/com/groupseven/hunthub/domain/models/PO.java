@@ -9,23 +9,16 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "pos")
-@DiscriminatorValue("0")
-public class PO extends User { 
+public class PO extends User {
 
-    @NotNull
     private int levels = 0;
 
-    @NotNull
     private int rating = 0;
 
-    @OneToMany(mappedBy = "po")
     List<Task> tasks = new ArrayList<>();
 
     String profilePicture;
     String bio;
-
 
     public PO(Long cpf, String name, String email, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio) {
         super(name, email, password, cpf); // Ordem corrigida para corresponder ao construtor da classe User

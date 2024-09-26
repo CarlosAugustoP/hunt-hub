@@ -1,57 +1,36 @@
 package com.groupseven.hunthub.domain.models;
 
-import jakarta.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import jakarta.persistence.ManyToMany;
-
 import java.util.List;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.UUID;
 
-@Entity
-@Table(name = "tasks")
 public class Task {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
-    @ManyToOne
     private PO po;
 
-    @NotNull
-    @Size(min = 20, max = 2000)
     private String description;
 
-    @NotNull
-    @Size(min = 2, max = 20)
     private String title;
 
-    @NotNull
-    private String status;
+    private String status = "started";
 
     private Date deadline;
 
-    @NotNull
     private int reward = 50;
 
     private int numberOfMeetings;
 
-    @NotNull
     private int numberOfHuntersRequired;
 
-    @ManyToMany 
     private List<Hunter> hunters = new ArrayList<>();
 
-    public Task(PO po, String description, String title, String status, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
+    public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
         this.po = po;
         this.description = description;
         this.title = title;
-        this.status = status;
         this.deadline = deadline;
         this.reward = reward;
         this.numberOfMeetings = numberOfMeetings;

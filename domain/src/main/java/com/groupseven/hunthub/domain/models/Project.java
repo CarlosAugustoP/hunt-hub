@@ -8,21 +8,15 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
-import lombok.Getter;
 
-@Entity
-@Table(name = "projects")
 public class Project {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private Date startDate;
     private Date endDate;
     private String description;
     private String title;
-    @ElementCollection
     private List<String> skills = new ArrayList<>();
 
 
