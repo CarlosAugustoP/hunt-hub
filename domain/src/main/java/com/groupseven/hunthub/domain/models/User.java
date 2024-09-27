@@ -69,4 +69,8 @@ public class User {
     public int getPoints() {
         return points;
     }
+
+    public UUID getId(){
+        return id;
+    }
 }
