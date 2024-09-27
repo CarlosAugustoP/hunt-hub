@@ -13,21 +13,25 @@ import com.groupseven.hunthub.domain.repository.TaskRepository;
 @Service
 public class TaskService {
 
-    private final TaskRepository taskRepository;
+    private TaskRepository taskRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
+    public TaskService() {
+
+    }
+
     public void createTask(PO po,
-            String name,
-            String description,
-            String title,
-            Date deadline,
-            int reward,
-            int numberOfMeetings,
-            int numberOfHuntersRequired,
-            double ratingRequired) {
+                           String name,
+                           String description,
+                           String title,
+                           Date deadline,
+                           int reward,
+                           int numberOfMeetings,
+                           int numberOfHuntersRequired,
+                           double ratingRequired) {
         if (po.getPoints() < numberOfHuntersRequired * reward) {
             throw new IllegalArgumentException("Not enough points");
         }
@@ -49,16 +53,12 @@ public class TaskService {
             Object value = entry.getValue();
 
             switch (filter) {
-                case "reward" ->
-                    filteredTasks.removeIf(task -> task.getReward() <= (int) value);
-                case "meetings" ->
-                    filteredTasks.removeIf(task -> task.getNumberOfMeetings() <= (int) value);
-                case "ratingRequired" ->
-                    filteredTasks.removeIf(task -> task.getRatingRequired() < (int) value);
-                case "PORating" ->
-                    filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
+                case "reward" -> filteredTasks.removeIf(task -> task.getReward() <= (int) value);
+                case "meetings" -> filteredTasks.removeIf(task -> task.getNumberOfMeetings() <= (int) value);
+                case "ratingRequired" -> filteredTasks.removeIf(task -> task.getRatingRequired() < (int) value);
+                case "PORating" -> filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
                 case "numberOfHuntersRequired" ->
-                    filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() > (int) value);
+                        filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() > (int) value);
                 default -> {
                     // Filtro desconhecido ou não suportado
                 }
