@@ -27,7 +27,10 @@ public class Task {
 
     private List<Hunter> hunters = new ArrayList<>();
 
-    public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
+    private double ratingRequired;
+
+    public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
+            int numberOfHuntersRequired, double ratingRequired) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -35,6 +38,7 @@ public class Task {
         this.reward = reward;
         this.numberOfMeetings = numberOfMeetings;
         this.numberOfHuntersRequired = numberOfHuntersRequired;
+        this.ratingRequired = ratingRequired;
     }
 
     public Task() {
@@ -125,7 +129,8 @@ public class Task {
         if (hunters.size() < numberOfHuntersRequired) {
             hunters.add(hunter);
         } else {
-            throw new IllegalStateException("Cannot add more hunters. The required number of hunters is already reached.");
+            throw new IllegalStateException(
+                    "Cannot add more hunters. The required number of hunters is already reached.");
         }
     }
 
@@ -135,5 +140,13 @@ public class Task {
 
     public void setHunters(List<Hunter> hunters) {
         this.hunters = hunters;
+    }
+
+    public double getRatingRequired() {
+        return ratingRequired;
+    }
+
+    public void setRatingRequired(double ratingRequired) {
+        this.ratingRequired = ratingRequired;
     }
 }

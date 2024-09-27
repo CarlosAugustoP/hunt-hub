@@ -1,11 +1,15 @@
 package com.groupseven.hunthub.persistence.memoria.repository;
 
-import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.repository.TaskRepository;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
+
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.repository.TaskRepository;
 
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
@@ -33,4 +37,5 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void delete(UUID id) {
         taskStorage.remove(id);
     }
+
 }
