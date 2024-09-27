@@ -21,7 +21,7 @@ public class PO extends User {
     String bio;
 
     public PO(Long cpf, String name, String email, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio) {
-        super(name, email, password, cpf); // Ordem corrigida para corresponder ao construtor da classe User
+        super(name, email, password, cpf); 
         this.levels = levels;
         this.rating = rating;
         this.tasks = tasks;
@@ -79,6 +79,4 @@ public class PO extends User {
     public void removeTask(Task task){
         this.tasks.remove(task);
     }
-
-
 }
