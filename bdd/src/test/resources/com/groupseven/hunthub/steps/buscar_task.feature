@@ -10,7 +10,7 @@ Feature: Buscar por tasks novas
     
     Scenario: O hunter tenta buscar por tasks novas com filtros inválidos
         Given que o hunter pesquisa por filtros
-        And que o hunter define os filtros de pesquisa inválidos (ex: tags inexistentes, localização fora da área de cobertura, nível de dificuldade inexistente)
+        And que o hunter define os filtros de pesquisa inválidos
         When o hunter busca por tasks novas
         Then o sistema não retorna nenhuma task disponível
         And o sistema exibe uma mensagem de erro informando que nenhum resultado corresponde aos filtros aplicados
