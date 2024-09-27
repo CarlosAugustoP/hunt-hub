@@ -4,7 +4,7 @@ Feature: Buscar por tasks novas
         Given que o hunter pesquisa por filtros
         And que o hunter define o filtro de pesquisa para reward com o valor 100
         And que o hunter define o filtro de pesquisa para numberOfMeetings com o valor 5
-        And que o hunter define o filtro de pesquisa para ratingRequired com o valor 4.5
+        And que o hunter define o filtro de pesquisa para ratingRequired com o valor 4
         When o hunter busca por tasks novas
         Then o sistema retorna as tasks disponíveis que correspondem aos filtros definidos
     

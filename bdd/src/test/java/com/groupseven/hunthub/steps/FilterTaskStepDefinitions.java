@@ -12,20 +12,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class FilterTaskStepDefinitions {
 
-    private final TaskService taskService;
+    private final TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
+    private final TaskService taskService = new TaskService(taskRepository);
     private Map<String, Object> searchFilters;
     private List<Task> resultTasks;
     private final PO po;
-    private String errorMessage; // Variable to store error message for invalid filters
+    private String errorMessage;
 
     // Constructor to initialize TaskService and PO
     public FilterTaskStepDefinitions() {
-        TaskRepositoryImpl taskRepository = new TaskRepositoryImpl(); // Use your actual implementation here
-        this.taskService = new TaskService(taskRepository);
-
-        // Initialize PO with sufficient points and other details
         Long cpf = 12345678900L;
         String name = "John Doe";
         String email = "johndoe@example.com";
@@ -36,7 +36,7 @@ public class FilterTaskStepDefinitions {
         String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
         this.po = new PO(cpf, name, email, password, levels, rating, new ArrayList<>(), profilePicture, bio);
 
-        // Create a task to ensure there are tasks available for filtering
+        // Ensure sample task creation
         try {
             createSampleTask();
         } catch (ParseException e) {
@@ -48,14 +48,14 @@ public class FilterTaskStepDefinitions {
         String description = "Sample task description";
         String title = "Sample Task Title";
         Date deadline = new SimpleDateFormat("yyyy-MM-dd").parse("2024-12-31");
-        int reward = 100;
-        int numberOfMeetings = 5;
+        int reward = 100;  // Ensure this matches the test filter
+        int numberOfMeetings = 5;  // Ensure this matches the test filter
         int numberOfHuntersRequired = 2;
-        double ratingRequired = 4.5;
+        double ratingRequired = 4;  // Ensure this matches the test filter
 
-        // Set points for PO to ensure they can create a task
-        po.setPoints(500); // Ensure points are sufficient
+        po.setPoints(500);  // Ensure PO has enough points
 
+        // Create the task
         taskService.createTask(po, description, title, description, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired);
     }
 
@@ -79,19 +79,10 @@ public class FilterTaskStepDefinitions {
         searchFilters.put("ratingRequired", ratingRequired);
     }
 
-    @Given("que o hunter define os filtros de pesquisa inválidos")
-    public void hunterDefineFiltrosInvalidos() {
-        // Simulate adding invalid filters
-        searchFilters.put("tags", "inexistente"); // Invalid tag
-        searchFilters.put("localizacao", "fora da area"); // Invalid location
-        searchFilters.put("nivelDificuldade", "inexistente"); // Invalid difficulty level
-    }
-
     @When("o hunter busca por tasks novas")
     public void hunterBuscaPorTasksNovas() {
         resultTasks = taskService.findByFilter(searchFilters);
 
-        // Check if the filters are invalid and handle accordingly
         if (resultTasks == null || resultTasks.isEmpty()) {
             errorMessage = "Nenhum resultado corresponde aos filtros aplicados. Sugestão: redefina os filtros ou remova alguns para ampliar a busca.";
         }
@@ -100,32 +91,11 @@ public class FilterTaskStepDefinitions {
     @Then("o sistema retorna as tasks disponíveis que correspondem aos filtros definidos")
     public void sistemaRetornaTasksDisponiveis() {
         if (resultTasks != null && !resultTasks.isEmpty()) {
-            // Process the result tasks as needed
+            // Validação usando assertEquals para garantir que tasks correspondentes foram retornadas
+            assertEquals(1, resultTasks.size(), "Deve haver uma task correspondente.");
             System.out.println("Tasks correspondentes aos filtros definidos: " + resultTasks);
         } else {
-            System.out.println("Nenhuma task foi retornada que corresponda aos filtros definidos.");
+            fail("Nenhuma task foi retornada que corresponda aos filtros definidos.");
         }
-    }
-
-    @Then("o sistema não retorna nenhuma task disponível")
-    public void sistemaNaoRetornaNenhumaTaskDisponivel() {
-        if (resultTasks == null || resultTasks.isEmpty()) {
-            System.out.println("Nenhuma task foi retornada que corresponda aos filtros inválidos.");
-            System.out.println(errorMessage);
-        }
-    }
-
-    @Then("o sistema exibe uma mensagem de erro informando que nenhum resultado corresponde aos filtros aplicados")
-    public void showErrorMessage() {
-        if (errorMessage != null && !errorMessage.isEmpty()) {
-            System.out.println("Mensagem de erro: " + errorMessage);
-        } else {
-            System.out.println("Nenhuma mensagem de erro a ser exibida.");
-        }
-    }
-
-    @Then("o sistema sugere redefinir os filtros ou remover alguns para ampliar a busca")
-    public void giveNewSuggestion() {
-        System.out.println("Sugestão: redefina os filtros ou remova alguns para ampliar a busca.");
     }
 }

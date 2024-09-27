@@ -53,12 +53,11 @@ public class TaskService {
             Object value = entry.getValue();
 
             switch (filter) {
-                case "reward" -> filteredTasks.removeIf(task -> task.getReward() <= (int) value);
-                case "meetings" -> filteredTasks.removeIf(task -> task.getNumberOfMeetings() <= (int) value);
-                case "ratingRequired" -> filteredTasks.removeIf(task -> task.getRatingRequired() < (int) value);
+                case "reward" -> filteredTasks.removeIf(task -> task.getReward() < (int) value);
+                case "numberOfMeetings" -> filteredTasks.removeIf(task -> task.getNumberOfMeetings() > (int) value);
+                case "ratingRequired" -> filteredTasks.removeIf(task -> task.getRatingRequired() < (double) value);
                 case "PORating" -> filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
-                case "numberOfHuntersRequired" ->
-                        filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() > (int) value);
+                case "numberOfHuntersRequired" -> filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() < (int) value);
                 default -> {
                     // Filtro desconhecido ou não suportado
                 }
@@ -67,5 +66,6 @@ public class TaskService {
 
         return filteredTasks;
     }
+
 
 }
