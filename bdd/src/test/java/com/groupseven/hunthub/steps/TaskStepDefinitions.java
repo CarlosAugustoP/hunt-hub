@@ -31,10 +31,12 @@ public class TaskStepDefinitions {
     String password = "password123";
     int levels = 5;
     int rating = 4;
+    int ratingCount = 5;
+    int totalRating = 20;
     List<Task> tasks = new ArrayList<>(); // Lista vazia de tarefas para o mock
     String profilePicture = "https://example.com/profile/johndoe.jpg";
     String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
-    private final PO po = new PO(cpf, name, email, password, levels, rating, tasks, profilePicture, bio);
+    private final PO po = new PO(cpf, name, email, password, levels, rating, ratingCount, totalRating,tasks, profilePicture, bio);
     Task novaTask;
     double ratingRequired;
 
