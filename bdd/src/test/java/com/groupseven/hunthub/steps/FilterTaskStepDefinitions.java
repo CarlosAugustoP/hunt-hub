@@ -98,4 +98,29 @@ public class FilterTaskStepDefinitions {
             fail("Nenhuma task foi retornada que corresponda aos filtros definidos.");
         }
     }
+    //caso de erro
+    @Given("que o hunter define os filtros de pesquisa inválidos")
+    public void hunterDefineFiltrosInvalidos() {
+        // Definindo filtros que são considerados inválidos
+        searchFilters.put("reward", -100);  // Recompensa negativa, inválida
+        searchFilters.put("numberOfMeetings", -5);  // Número de reuniões negativo, inválido
+        searchFilters.put("ratingRequired", -1.0);  // Classificação negativa, inválida
+    }
+    @Then("o sistema não retorna nenhuma task disponível")
+    public void sistemaNaoRetornaTasksDisponiveis() {
+        // Garantir que a lista de tasks esteja vazia
+        assertEquals(0, resultTasks.size(), "Nenhuma task deve ser retornada.");
+    }
+    @Then("o sistema exibe uma mensagem de erro informando que nenhum resultado corresponde aos filtros aplicados")
+    public void sistemaExibeMensagemErroNenhumResultado() {
+        // Validar que a mensagem de erro foi gerada corretamente
+        assertEquals("Nenhum resultado corresponde aos filtros aplicados. Sugestão: redefina os filtros ou remova alguns para ampliar a busca.", errorMessage);
+    }
+    @Then("o sistema sugere redefinir os filtros ou remover alguns para ampliar a busca")
+    public void o_sistema_sugere_redefinir_os_filtros_ou_remover_alguns_para_ampliar_a_busca() {
+        // Verifique se a mensagem de erro está correta
+        String expectedMessage = "Nenhum resultado corresponde aos filtros aplicados. Sugestão: redefina os filtros ou remova alguns para ampliar a busca.";
+        assertEquals(expectedMessage, errorMessage, "A mensagem de sugestão deve ser exibida corretamente.");
+    }
+
 }
