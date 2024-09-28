@@ -10,13 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.groupseven.hunthub.domain.models.Notification;
-import org.springframework.stereotype.Service;
-
-import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.repository.TaskRepository;
-
 @Service
 public class TaskService {
 
@@ -70,18 +63,22 @@ public class TaskService {
                 }
             }
         }
-
         return filteredTasks;
     }
 
-
     public void applyToTask(Task task, Hunter hunter) {
-        task.addHuntersApplied(hunter);
+        try {
+            task.applyHunter(hunter);
+            taskRepository.save(task);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     public void acceptHunter(Task task, Hunter hunter) {
         try{
             task.addHunter(hunter);
+            taskRepository.save(task);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }

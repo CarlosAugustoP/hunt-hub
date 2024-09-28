@@ -11,8 +11,9 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
     }
 
-    public void Notify(User user, String task, String message) {
+    public boolean Notify(User user, String task, String message) {
         Notification notification = new Notification(message, task, user);
         notificationRepository.save(notification);
+        return true;
     }
 }

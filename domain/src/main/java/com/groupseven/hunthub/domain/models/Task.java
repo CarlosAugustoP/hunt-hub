@@ -15,8 +15,8 @@ public class Task {
 
     private String title;
 
-    // active, implementing, finished
-    private String status = "active";
+    // open, closed, finished
+    private String status = "open";
 
     private Date deadline;
 
@@ -158,11 +158,13 @@ public class Task {
         this.huntersApplied = huntersApplied;
     }
 
-    public  void addHuntersApplied(Hunter hunter) {
-        if (hunter.getRating() >= ratingRequired) {
+    public  void applyHunter(Hunter hunter) {
+        if (hunter.getRating() >= ratingRequired && this.status.equals("open")) {
             huntersApplied.add(hunter);
-        } else {
+        } else if (this.status.equals("open")) {
             throw new IllegalStateException("Cannot apply to task. Rating required: " + ratingRequired + ". Your rating " + hunter.getRating());
+        } else {
+            throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
     }
 }
