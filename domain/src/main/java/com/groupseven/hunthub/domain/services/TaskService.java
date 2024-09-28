@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.groupseven.hunthub.domain.models.Notification;
 import org.springframework.stereotype.Service;
 
 import com.groupseven.hunthub.domain.models.PO;

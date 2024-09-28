@@ -1,5 +1,6 @@
 package com.groupseven.hunthub.domain.services;
 
+import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,13 @@ public class HunterService {
         this.hunterRepository = hunterRepository;
     }
 
-    public void ratePO(PO po, int rating){
+    public void rateHunter(Hunter hunter, int rating){
         if(rating < 1 || rating > 5){
             throw new IllegalArgumentException("The rating must be between 1 and 5");
         }
 
-        po.addRating(rating);
+        hunter.addRating(rating);
 
-        hunterRepository.save(po);
+        hunterRepository.save(hunter);
     }
 }

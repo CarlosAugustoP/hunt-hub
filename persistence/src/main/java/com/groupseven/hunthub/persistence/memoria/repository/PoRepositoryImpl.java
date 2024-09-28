@@ -1,6 +1,7 @@
 package com.groupseven.hunthub.persistence.memoria.repository;
 
 import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.PoRepository;
 
 import java.util.HashMap;
@@ -9,18 +10,18 @@ import java.util.UUID;
 
 public class PoRepositoryImpl implements PoRepository {
 
-    private final Map<UUID, Hunter> hunterStorage = new HashMap<>();
+    private final Map<UUID, PO> PoStorage = new HashMap<>();
 
     @Override
-    public void save(Hunter hunter) {
-        if (hunter != null && hunter.getId() != null) {
-            hunterStorage.put(hunter.getId(), hunter);
+    public void save(PO po) {
+        if (po != null && po.getId() != null) {
+            PoStorage.put(po.getId(), po);
         } else {
             throw new IllegalArgumentException("The Hunter´s ID can not be null.");
         }
     }
 
-    public Hunter findById(UUID id) {
-        return hunterStorage.get(id);
+    public PO findById(UUID id) {
+        return PoStorage.get(id);
     }
 }
