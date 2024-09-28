@@ -15,7 +15,8 @@ public class Task {
 
     private String title;
 
-    private String status = "started";
+    // active, implementing, finished
+    private String status = "active";
 
     private Date deadline;
 
@@ -26,6 +27,8 @@ public class Task {
     private int numberOfHuntersRequired;
 
     private List<Hunter> hunters = new ArrayList<>();
+    private double ratingRequired;
+    private List<Hunter> huntersApplied = new ArrayList<>();
 
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
         this.po = po;
@@ -135,5 +138,25 @@ public class Task {
 
     public void setHunters(List<Hunter> hunters) {
         this.hunters = hunters;
+    }
+
+    public double getRatingRequired() {
+        return ratingRequired;
+    }
+
+    public void setRatingRequired(double ratingRequired) {
+        this.ratingRequired = ratingRequired;
+    }
+
+    public List<Hunter> getHuntersApplied() {
+        return huntersApplied;
+    }
+
+    public void setHuntersApplied(List<Hunter> huntersApplied) {
+        this.huntersApplied = huntersApplied;
+    }
+
+    public  void addHuntersApplied(Hunter hunter) {
+        huntersApplied.add(hunter);
     }
 }
