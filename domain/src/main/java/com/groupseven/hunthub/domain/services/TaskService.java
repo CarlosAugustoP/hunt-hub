@@ -1,9 +1,16 @@
 package com.groupseven.hunthub.domain.services;
 
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.repository.TaskRepository;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.PO;
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.groupseven.hunthub.domain.models.Notification;
 import org.springframework.stereotype.Service;
 
 import com.groupseven.hunthub.domain.models.PO;
@@ -53,12 +60,11 @@ public class TaskService {
             Object value = entry.getValue();
 
             switch (filter) {
-                case "reward" -> filteredTasks.removeIf(task -> task.getReward() <= (int) value);
-                case "meetings" -> filteredTasks.removeIf(task -> task.getNumberOfMeetings() <= (int) value);
-                case "ratingRequired" -> filteredTasks.removeIf(task -> task.getRatingRequired() < (int) value);
+                case "reward" -> filteredTasks.removeIf(task -> task.getReward() < (int) value);
+                case "numberOfMeetings" -> filteredTasks.removeIf(task -> task.getNumberOfMeetings() > (int) value);
+                case "ratingRequired" -> filteredTasks.removeIf(task -> task.getRatingRequired() < (double) value);
                 case "PORating" -> filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
-                case "numberOfHuntersRequired" ->
-                        filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() > (int) value);
+                case "numberOfHuntersRequired" -> filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() < (int) value);
                 default -> {
                     // Filtro desconhecido ou não suportado
                 }
@@ -66,6 +72,19 @@ public class TaskService {
         }
 
         return filteredTasks;
+    }
+
+
+    public void applyToTask(Task task, Hunter hunter) {
+        task.addHuntersApplied(hunter);
+    }
+
+    public void acceptHunter(Task task, Hunter hunter) {
+        try{
+            task.addHunter(hunter);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
 }

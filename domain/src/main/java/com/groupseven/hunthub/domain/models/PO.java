@@ -15,18 +15,23 @@ public class PO extends User {
 
     private int rating = 0;
 
+    private int totalRating = 0;
+    private int ratingCount = 0;
+
     List<Task> tasks = new ArrayList<>();
 
     String profilePicture;
     String bio;
 
-    public PO(Long cpf, String name, String email, String password, int levels, int rating, List<Task> tasks, String profilePicture, String bio) {
-        super(name, email, password, cpf); // Ordem corrigida para corresponder ao construtor da classe User
-        this.levels = levels;
-        this.rating = rating;
+    public PO(Long cpf, String name, String email, String password,List<Task> tasks, String profilePicture, String bio) {
+        super(name, email, password, cpf); 
+        this.levels = 0;
+        this.rating = 0;
         this.tasks = tasks;
         this.profilePicture = profilePicture;
         this.bio = bio;
+        this.totalRating = 0;
+        this.ratingCount = 0;
     }
 
     public PO(){
@@ -50,6 +55,38 @@ public class PO extends User {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public int getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(int totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void addRating(int rating) {
+        if(rating < 1 || rating > 5){
+            throw new IllegalArgumentException("Rating must be between 1 and 5");
+        }
+        this.totalRating += rating;
+        this.ratingCount++;
+        this.rating = (int) getAverageRating();
+    }
+
+    public double getAverageRating() {
+        if(rating == 0){
+            return 0;
+        }
+        return (double) totalRating / rating;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public void setTasks(List<Task> tasks) {
@@ -79,6 +116,4 @@ public class PO extends User {
     public void removeTask(Task task){
         this.tasks.remove(task);
     }
-
-
 }
