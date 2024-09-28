@@ -1,6 +1,5 @@
 package com.groupseven.hunthub.domain.repository;
 import com.groupseven.hunthub.domain.models.Hunter;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.UUID;

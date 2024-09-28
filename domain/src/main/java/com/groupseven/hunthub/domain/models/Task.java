@@ -27,10 +27,11 @@ public class Task {
     private int numberOfHuntersRequired;
 
     private List<Hunter> hunters = new ArrayList<>();
-    private double ratingRequired;
     private List<Hunter> huntersApplied = new ArrayList<>();
+    private double ratingRequired;
 
-    public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
+    public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
+            int numberOfHuntersRequired, double ratingRequired) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -38,6 +39,7 @@ public class Task {
         this.reward = reward;
         this.numberOfMeetings = numberOfMeetings;
         this.numberOfHuntersRequired = numberOfHuntersRequired;
+        this.ratingRequired = ratingRequired;
     }
 
     public Task() {

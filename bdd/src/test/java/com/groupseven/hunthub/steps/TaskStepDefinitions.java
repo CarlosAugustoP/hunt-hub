@@ -31,7 +31,7 @@ public class TaskStepDefinitions {
     List<Task> tasks = new ArrayList<>(); // Lista vazia de tarefas para o mock
     String profilePicture = "https://example.com/profile/johndoe.jpg";
     String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
-    private final PO po = new PO(cpf, name, email, password, levels, rating, tasks, profilePicture, bio);
+    private final PO po = new PO(cpf, name, email, password, tasks, profilePicture, bio);
     Task novaTask;
     String description = "Desenvolver nova funcionalidade";
     String title = "Nova Funcionalidade";
@@ -39,6 +39,7 @@ public class TaskStepDefinitions {
     int reward;
     int numberOfMeetings = 2;
     int numberOfHuntersRequired = 1;
+    int ratingRequired = 1;
 
     @Given("que o PO possui a quantidade de pontos {int}")
     public void pontos_disponiveis(int pts_disponiveis) {
@@ -58,7 +59,7 @@ public class TaskStepDefinitions {
         reward = pts_reward;
 
         try {
-            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
+            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired);
             novaTask = po.getTasks().get(0);
             tasks.add(novaTask);
         } catch (Exception e) {
@@ -85,7 +86,7 @@ public class TaskStepDefinitions {
 
     @And("a Task aparece no sistema para os hunters")
     public void task_aparece() {
-        Task lastTask = tasks.getLast();
+        Task lastTask = tasks.get(tasks.size() - 1);
         assertEquals(lastTask, novaTask);
     }
 

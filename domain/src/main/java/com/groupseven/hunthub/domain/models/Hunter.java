@@ -16,6 +16,8 @@ public class Hunter extends User {
     private String profilePicture;
     private int rating = 0;
     private int level = 0;
+    private int totalRating = 0; 
+    private int ratingCount = 0;
     
     private List<String> certifications = new ArrayList<>();
     
@@ -25,13 +27,14 @@ public class Hunter extends User {
     
     private List<Project> projects = new ArrayList<>();
 
-    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, int rating, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects) {
+    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects, int ratingCount, int totalRating) {
         super(name, email, password, cpf);
         this.linkPortfolio = linkPortfolio;
         this.tasks = tasks;
         this.bio = bio;
         this.profilePicture = profilePicture;
-        this.rating = rating;
+        this.ratingCount = ratingCount;
+        this.totalRating = totalRating;
         this.level = level;
         this.certifications = certifications;
         this.links = links;
@@ -80,6 +83,38 @@ public class Hunter extends User {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public void addRating(int rating) {
+        if (rating < 1 || rating > 5) { 
+            throw new IllegalArgumentException("The rating must be between 1 and 5.");
+        }
+        this.totalRating += rating; 
+        this.ratingCount++; 
+        this.rating = (int) getAverageRating(); 
+    }
+
+    public double getAverageRating() {
+        if (ratingCount == 0) {
+            return 0; 
+        }
+        return (double) totalRating / ratingCount;
+    }
+    
+    public int getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(int totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public int getLevel() {
