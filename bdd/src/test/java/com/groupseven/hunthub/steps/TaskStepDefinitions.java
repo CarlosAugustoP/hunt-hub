@@ -33,24 +33,34 @@ public class TaskStepDefinitions {
     String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
     private final PO po = new PO(cpf, name, email, password, levels, rating, tasks, profilePicture, bio);
     Task novaTask;
+    String description = "Desenvolver nova funcionalidade";
+    String title = "Nova Funcionalidade";
+    int po_initial_points;
+    int reward;
+    int numberOfMeetings = 2;
+    int numberOfHuntersRequired = 1;
 
-    @Given("que o PO possui a quantidade de pontos {int} para criar uma nova Task de {int}")
-    public void pontos_disponiveis(int pts_disponiveis, int pts_reward) {
+    @Given("que o PO possui a quantidade de pontos {int}")
+    public void pontos_disponiveis(int pts_disponiveis) {
         po.setPoints(pts_disponiveis);
+        po_initial_points = pts_disponiveis;
     }
 
-    @When("o PO cria uma nova Task com os detalhes: description {string}; title {string}; deadline {string}; reward {int}; numberOfMeetings {int}; numberOfHuntersRequired {int}")
-    public void o_PO_cria_uma_nova_Task_com_os_detalhes(String description, String title, String deadlineString, int reward, int numberOfMeetings, int numberOfHuntersRequired) {
+    @When("o PO cria uma nova Task de {int} pontos")
+    public void o_PO_cria_uma_nova_Task_com_os_detalhes(int pts_reward) {
         Date deadline = null;
         try {
-            deadline = new SimpleDateFormat("yyyy-MM-dd").parse(deadlineString);
+            deadline = new SimpleDateFormat("yyyy-MM-dd").parse("2024-10-01");
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        reward = pts_reward;
+
         try {
             taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired);
             novaTask = po.getTasks().get(0);
+            tasks.add(novaTask);
         } catch (Exception e) {
             this.excecao = e;
         }
@@ -75,14 +85,12 @@ public class TaskStepDefinitions {
 
     @And("a Task aparece no sistema para os hunters")
     public void task_aparece() {
-        Task task = po.getTasks().get(0);
-        assertEquals(task, novaTask);
+        Task lastTask = tasks.getLast();
+        assertEquals(lastTask, novaTask);
     }
 
     @And("o pagamento do valor da task e feito e retido no sistema ate a finalizacao da task")
     public void task_pagamento() {
-        Task task = po.getTasks().get(0);
-        assertEquals(task, novaTask);
+        assertEquals(po_initial_points-novaTask.getReward(), po.getPoints());
     }
-
 }
