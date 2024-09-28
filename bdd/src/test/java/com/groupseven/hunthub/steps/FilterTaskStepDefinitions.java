@@ -32,9 +32,11 @@ public class FilterTaskStepDefinitions {
         String password = "password123";
         int levels = 5;
         int rating = 4;
+        int ratingCount = 5;
+        int totalRating = 20;
         String profilePicture = "https://example.com/profile/johndoe.jpg";
         String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
-        this.po = new PO(cpf, name, email, password, levels, rating, new ArrayList<>(), profilePicture, bio);
+        this.po = new PO(cpf, name, email, password, levels, ratingCount, totalRating ,rating, new ArrayList<>(), profilePicture, bio);
 
         // Ensure sample task creation
         try {

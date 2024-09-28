@@ -30,6 +30,14 @@ public class User {
     public User(){
     }
 
+    public UUID getId(){
+        return id;
+    }
+
+    public void setId(UUID id){
+        this.id = id;
+    }
+
     public Long getCpf() {
         return cpf;
     }
