@@ -1,5 +1,6 @@
 package com.groupseven.hunthub.domain.services;
 
+import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.PO;
@@ -35,6 +36,18 @@ public class TaskService {
         taskRepository.save(task);
 
         po.addTask(task);
+    }
+
+    public void applyToTask(Task task, Hunter hunter) {
+        task.addHuntersApplied(hunter);
+    }
+
+    public void acceptHunter(Task task, Hunter hunter) {
+        try{
+            task.addHunter(hunter);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
 }

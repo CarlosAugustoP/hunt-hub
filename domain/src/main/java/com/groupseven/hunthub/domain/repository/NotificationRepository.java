@@ -1,4 +1,12 @@
 package com.groupseven.hunthub.domain.repository;
 
-public class NotificationRepository {
+import com.groupseven.hunthub.domain.models.Notification;
+import com.groupseven.hunthub.domain.models.User;
+
+import java.util.List;
+
+public interface NotificationRepository {
+    public void save(Notification notification);
+
+    List<Notification> list(User user);
 }

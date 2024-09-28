@@ -8,9 +8,7 @@ import java.util.UUID;
 public interface HunterRepository  {
 
     public Hunter findById(UUID id);
-
     Hunter findByName(String name);
-
     public void save(Hunter hunter);
     public void delete(Hunter hunter);
     public List<Hunter> findAll();
