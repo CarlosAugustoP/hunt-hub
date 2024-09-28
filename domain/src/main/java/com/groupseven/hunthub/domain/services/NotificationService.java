@@ -2,12 +2,17 @@ package com.groupseven.hunthub.domain.services;
 
 import com.groupseven.hunthub.domain.models.Notification;
 import com.groupseven.hunthub.domain.models.User;
-
-import java.time.LocalDate;
+import com.groupseven.hunthub.domain.repository.NotificationRepository;
 
 public class NotificationService {
+    private final NotificationRepository notificationRepository;
+
+    public NotificationService(NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
+    }
+
     public void Notify(User user, String task, String message) {
         Notification notification = new Notification(message, task, user);
-        NotificationRepository.add(notification);
+        notificationRepository.save(notification);
     }
 }

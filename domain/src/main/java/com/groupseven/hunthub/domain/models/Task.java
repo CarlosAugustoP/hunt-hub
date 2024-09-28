@@ -157,6 +157,10 @@ public class Task {
     }
 
     public  void addHuntersApplied(Hunter hunter) {
-        huntersApplied.add(hunter);
+        if (hunter.getRating() >= ratingRequired) {
+            huntersApplied.add(hunter);
+        } else {
+            throw new IllegalStateException("Cannot apply to task. Rating required: " + ratingRequired + ". Your rating " + hunter.getRating());
+        }
     }
 }

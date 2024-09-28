@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface NotificationRepository {
     public void save(Notification notification);
-
     List<Notification> list(User user);
 }
