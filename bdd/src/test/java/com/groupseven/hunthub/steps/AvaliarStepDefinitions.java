@@ -35,13 +35,9 @@ public class AvaliarStepDefinitions {
         String namePO = "John Doe";
         String emailPO = "johndoe@example.com";
         String passwordPO = "password123";
-        int levelsPO = 5;
-        int ratingPO = 4;
-        int ratingCountPO = 5;
-        int totalRatingPO = 20;
         String profilePicturePO = "https://example.com/profile/johndoe.jpg";
         String bioPO = "PO experiente com foco em projetos.";
-        this.po = new PO(cpfPO, namePO, emailPO, passwordPO, levelsPO, ratingPO, totalRatingPO,ratingCountPO, null, profilePicturePO, bioPO);
+        this.po = new PO(cpfPO, namePO, emailPO, passwordPO, null, profilePicturePO, bioPO);
         Long cpfHunter = 98765432100L;
         String nameHunter = "Jessie Hunter";
         String emailHunter = "jessiehunter@example.com";
