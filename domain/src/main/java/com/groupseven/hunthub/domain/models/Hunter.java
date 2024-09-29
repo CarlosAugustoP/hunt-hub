@@ -1,23 +1,21 @@
 package com.groupseven.hunthub.domain.models;
 
-import jakarta.persistence.*;
-import jakarta.persistence.Entity;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Hunter extends User {
-
+    DecimalFormat df = new DecimalFormat("#.00");
     private String linkPortfolio;
 
     private List<Task> tasks = new ArrayList<>();
     
     private String bio;
     private String profilePicture;
-    private double rating = 0;
-    private int level = 0;
-    private int totalRating = 0; 
-    private int ratingCount = 0;
+    private double rating;
+    private int level;
+    private int totalRating;
+    private int ratingCount;
     
     private List<String> certifications = new ArrayList<>();
     
@@ -33,9 +31,9 @@ public class Hunter extends User {
         this.tasks = tasks;
         this.bio = bio;
         this.profilePicture = profilePicture;
-        this.rating=5;
-        this.ratingCount = 0;
-        this.totalRating = 0;
+        this.rating = 5;
+        this.ratingCount = 1;
+        this.totalRating = 5;
         this.level = 0;
         this.certifications = certifications;
         this.links = links;
@@ -78,10 +76,8 @@ public class Hunter extends User {
         this.profilePicture = profilePicture;
     }
 
-    public double getRating() {
-        return rating;
-    }
-
+    public String ratingToString() { return df.format(this.rating); }
+    public double getRating() { return this.rating; }
     public void setRating(double rating) {
         this.rating = rating;
     }
@@ -92,7 +88,7 @@ public class Hunter extends User {
         }
         this.totalRating += rating;
         this.ratingCount++;
-        this.rating = (int) getAverageRating();
+        this.rating = getAverageRating();
     }
 
     public double getAverageRating() {
@@ -208,6 +204,6 @@ public class Hunter extends User {
     public void rate(int rating) {
         this.totalRating += rating;
         this.ratingCount++;
-        this.rating = this.totalRating / this.ratingCount;
+        this.rating = (double) this.totalRating / this.ratingCount;
     }
 }

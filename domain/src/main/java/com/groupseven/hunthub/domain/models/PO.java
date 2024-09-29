@@ -123,7 +123,6 @@ public class PO extends User {
         this.rating = this.totalRating / this.ratingCount;
     }
     public void rateHunter(Hunter hunter, int rating) {
-        // Verifica se o PO não é o próprio hunter
         if (this.getCpf() != hunter.getCpf()) {
             hunter.rate(rating);
         } else {

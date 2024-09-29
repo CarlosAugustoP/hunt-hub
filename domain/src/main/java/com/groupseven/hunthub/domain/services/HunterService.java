@@ -34,8 +34,7 @@ public class HunterService {
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("A avaliação deve estar entre 1 e 5.");
         }
-
-        target.addRating(rating); // Você pode precisar implementar esse método na classe Hunter
+        target.addRating(rating);
         hunterRepository.save(target);
     }
 
