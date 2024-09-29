@@ -4,6 +4,7 @@ import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -11,6 +12,9 @@ import io.cucumber.java.en.When;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilterTaskStepDefinitions {
 
@@ -52,84 +56,36 @@ public class FilterTaskStepDefinitions {
         int numberOfHuntersRequired = 2;
         double ratingRequired = 4.5;
 
-        po.setPoints(500); // Ensure points are sufficient
+        po.setPoints(500);
 
         taskService.createTask(po, description, title, description, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired);
     }
 
-    // ----------- CASO DE ACERTO --------------
-    @Given("que o hunter pesquisa por filtros")
-    public void hunterPesquisandoPorFiltros() {
+    @Given("que o hunter pesquisa por filtros de reward {int}, numberOfMeetings {int} e ratingRequired {double}")
+    public void hunterPesquisandoPorFiltros(int reward, int numberOfMeetings, double ratingRequired) {
         searchFilters = new HashMap<>();
-    }
-
-    @Given("que o hunter define o filtro de pesquisa para reward com o valor {int}")
-    public void hunterDefineFiltroPesquisaReward(int reward) {
         searchFilters.put("reward", reward);
-    }
-
-    @Given("que o hunter define o filtro de pesquisa para numberOfMeetings com o valor {int}")
-    public void hunterDefineFiltroPesquisaNumberOfMeetings(int numberOfMeetings) {
         searchFilters.put("numberOfMeetings", numberOfMeetings);
-    }
-
-    @Given("que o hunter define o filtro de pesquisa para ratingRequired com o valor {double}")
-    public void hunterDefineFiltroPesquisaRatingRequired(double ratingRequired) {
         searchFilters.put("ratingRequired", ratingRequired);
-    }
-
-    // ----------- CASO DE ERRO --------------
-    @Given("que o hunter define o filtro de invalido pesquisa para reward com o valor {int}")
-    public void hunterDefineFiltrosInvalidoReward(int reward) {
-        searchFilters.put("reward", reward); // Invalid value
-    }
-
-    @Given("que o hunter define o filtro de invalido pesquisa para numberOfMeetings com o valor {int}")
-    public void hunterDefineFiltrosInvalidoNumberOfMeetings(int numberOfMeetings) {
-        searchFilters.put("numberOfMeetings", numberOfMeetings); // Invalid number of meetings
-    }
-
-    @Given("que o hunter define o filtro de invalido pesquisa para ratingRequired com o valor {double}")
-    public void hunterDefineFiltrosInvalidoRatingRequired(double ratingRequired) {
-        searchFilters.put("ratingRequired", ratingRequired); // Invalid rating
     }
 
     @When("o hunter busca por tasks novas")
     public void hunterBuscaPorTasksNovas() {
         resultTasks = taskService.findByFilter(searchFilters);
-
-        if (resultTasks == null || resultTasks.isEmpty()) {
-            errorMessage = "Nenhum resultado corresponde aos filtros aplicados. Sugestão: redefina os filtros ou remova alguns para ampliar a busca.";
-        }
     }
 
-    @Then("o sistema retorna as tasks disponíveis que correspondem aos filtros definidos")
-    public void sistemaRetornaTasksDisponiveis() {
-        if (resultTasks != null && !resultTasks.isEmpty()) {
-            System.out.println("Tasks correspondentes aos filtros definidos: " + resultTasks);
+    @Then("as tasks {string} retornadas pelo sistema")
+    public void sistemaRetornaTasksDisponiveis(String answer) {
+        if (answer.equals("não são")) {
+            assertTrue(resultTasks.isEmpty());
+            System.out.println("Nenhuma task encontrada.");
         } else {
-            System.out.println("Nenhuma task foi retornada que corresponda aos filtros definidos.");
+            assertNotNull(resultTasks);
+            System.out.println("Encontramos a task: " + resultTasks);
         }
     }
 
-    @Then("o sistema não retorna nenhuma task disponível")
-    public void sistemaNaoRetornaNenhumaTaskDisponivel() {
-        if (resultTasks == null || resultTasks.isEmpty()) {
-            System.out.println("Nenhuma task foi retornada que corresponda aos filtros inválidos.");
-            System.out.println(errorMessage);
-        }
-    }
-
-    @Then("o sistema exibe uma mensagem de erro informando que nenhum resultado corresponde aos filtros aplicados")
-    public void showErrorMessage() {
-        if (errorMessage != null && !errorMessage.isEmpty()) {
-            System.out.println("Mensagem de erro: " + errorMessage);
-        } else {
-            System.out.println("Nenhuma mensagem de erro a ser exibida.");
-        }
-    }
-
-    @Then("o sistema sugere redefinir os filtros ou remover alguns para ampliar a busca")
+    @And("o sistema sugere redefinir os filtros ou remover alguns para ampliar a busca")
     public void giveNewSuggestion() {
         System.out.println("Sugestão: redefina os filtros ou remova alguns para ampliar a busca.");
     }
