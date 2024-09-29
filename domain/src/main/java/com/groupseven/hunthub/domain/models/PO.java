@@ -26,7 +26,7 @@ public class PO extends User {
     public PO(Long cpf, String name, String email, String password,List<Task> tasks, String profilePicture, String bio) {
         super(name, email, password, cpf); 
         this.levels = 0;
-        this.rating = 0;
+        this.rating = 5;
         this.tasks = tasks;
         this.profilePicture = profilePicture;
         this.bio = bio;
@@ -79,10 +79,10 @@ public class PO extends User {
     }
 
     public double getAverageRating() {
-        if(rating == 0){
+        if(ratingCount == 0){
             return 0;
         }
-        return (double) totalRating / rating;
+        return (double) totalRating / ratingCount;
     }
 
     public void setRatingCount(int ratingCount) {
@@ -115,5 +115,19 @@ public class PO extends User {
 
     public void removeTask(Task task){
         this.tasks.remove(task);
+    }
+    public void rate(int rating) {
+        // Lógica para atualizar a avaliação do PO
+        this.totalRating += rating;
+        this.ratingCount++;
+        this.rating = this.totalRating / this.ratingCount;
+    }
+    public void rateHunter(Hunter hunter, int rating) {
+        // Verifica se o PO não é o próprio hunter
+        if (this.getCpf() != hunter.getCpf()) {
+            hunter.rate(rating);
+        } else {
+            throw new IllegalArgumentException("O PO não pode se autoavaliar.");
+        }
     }
 }

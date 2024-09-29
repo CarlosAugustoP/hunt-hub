@@ -48,13 +48,10 @@ public class ApplyToTaskStepDefinitions {
             tasksHunter,
             bioHunter,
             profilePictureHunter,
-            levelHunter,
             certificationsHunter,
             linksHunter,
             achievementsHunter,
-            projectsHunter,
-            ratingCountHunter,
-            totalRatingHunter
+            projectsHunter
     );
 
     Long cpfPO = 98765432101L;
