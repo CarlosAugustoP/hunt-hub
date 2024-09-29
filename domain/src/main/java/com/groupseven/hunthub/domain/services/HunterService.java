@@ -23,11 +23,7 @@ public class HunterService {
     }
 
     public Hunter findHunterById(UUID id) {
-        return hunterRepository.findById(id).orElse(null);
-    }
-
-    public void deleteHunter(UUID id) {
-        hunterRepository.deleteById(id);
+        return hunterRepository.findById(id);
     }
 
     public void rateHunter(Hunter evaluator, Hunter target, int rating) {
@@ -43,12 +39,10 @@ public class HunterService {
         hunterRepository.save(target);
     }
 
-    public void ratePO(Hunter evaluator, PO po, int rating) {
+    public void ratePO(PO po, int rating) {
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("The rating must be between 1 and 5");
         }
-        po.addRating(rating); // Atualiza a média do PO
-        // Não é necessário salvar o PO aqui, se ele estiver sendo gerenciado
-        // por um repositório separado e salvo automaticamente.
+        po.addRating(rating);
     }
 }

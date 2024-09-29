@@ -27,16 +27,16 @@ public class Hunter extends User {
     
     private List<Project> projects = new ArrayList<>();
 
-    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects,int rating, int ratingCount, int totalRating) {
+    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects) {
         super(name, email, password, cpf);
         this.linkPortfolio = linkPortfolio;
         this.tasks = tasks;
         this.bio = bio;
         this.profilePicture = profilePicture;
-        this.rating=rating;
-        this.ratingCount = ratingCount;
-        this.totalRating = totalRating;
-        this.level = level;
+        this.rating=5;
+        this.ratingCount = 0;
+        this.totalRating = 0;
+        this.level = 0;
         this.certifications = certifications;
         this.links = links;
         this.achievements = achievements;

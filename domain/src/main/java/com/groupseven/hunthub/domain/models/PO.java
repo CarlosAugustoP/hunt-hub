@@ -26,7 +26,7 @@ public class PO extends User {
     public PO(Long cpf, String name, String email, String password,List<Task> tasks, String profilePicture, String bio) {
         super(name, email, password, cpf); 
         this.levels = 0;
-        this.rating = 0;
+        this.rating = 5;
         this.tasks = tasks;
         this.profilePicture = profilePicture;
         this.bio = bio;

@@ -48,7 +48,7 @@ public class AvaliarStepDefinitions {
         int totalRatingHunter = 12;
         String profilePicturehunter = "https://example.com/profile/jessie.jpg";
         String bioHunter = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
-        this.hunter1 = new Hunter(cpfHunter, nameHunter, emailHunter, passwordHunter, null,null,bioHunter,profilePicturehunter,levelsHunter,null,null,null,null,ratingHunter, ratingCountHunter, totalRatingHunter);
+        this.hunter1 = new Hunter(cpfHunter, nameHunter, emailHunter, passwordHunter, null,null,bioHunter,profilePicturehunter,null,null,null,null);
         Long cpfHunter2 = 98765432101L; // Outro hunter para avaliação
         String nameHunter2 = "Alex Hunter";
         String emailHunter2 = "alexhunter@example.com";
@@ -59,7 +59,7 @@ public class AvaliarStepDefinitions {
         int totalRatingHunter2 = 10;
         String profilePictureHunter2 = "https://example.com/profile/alex.jpg";
         String bioHunter2 = "Caçador de soluções com experiência em diversos projetos.";
-        this.hunter2 = new Hunter(cpfHunter2, nameHunter2, emailHunter2, passwordHunter2, null, null, bioHunter2, profilePictureHunter2, levelsHunter2, null, null, null, null, ratingHunter2, ratingCountHunter2, totalRatingHunter2);
+        this.hunter2 = new Hunter(cpfHunter2, nameHunter2, emailHunter2, passwordHunter2, null, null, bioHunter2, profilePictureHunter2, null, null, null, null);
         }//EXISTE FUNÇÃO DEFINIDA DE COMPLETAR A TASK QUE JÁ RESOLVERIA ISSO
         @Given("que a Task foi finalizada")
         public void task_completada_com_sucesso() throws ParseException{
@@ -93,10 +93,10 @@ public class AvaliarStepDefinitions {
             hunterService.rateHunter(hunter1, hunter2, ratingForHunter2);
 
             int ratingForPO = 5; // Avaliação do hunter1 para o PO
-            hunterService.ratePO(hunter1, po, ratingForPO);
+            hunterService.ratePO(po, ratingForPO);
 
             verify(hunterService).rateHunter(hunter1, hunter2, ratingForHunter2);
-            verify(hunterService).ratePO(hunter1, po, ratingForPO);
+            verify(hunterService).ratePO(po, ratingForPO);
 
             assertEquals(ratingForHunter2, hunter2.getRating());
             assertEquals(ratingForPO, po.getRating());

@@ -40,9 +40,4 @@ public class HunterRepositoryImpl implements HunterRepository {
     public Hunter findById(UUID id){
         return hunterStorage.get(id);
     }
-
-    @Override
-    public Hunter deleteById(UUID id){
-        return hunterStorage.delete(id);
-    }
 }
