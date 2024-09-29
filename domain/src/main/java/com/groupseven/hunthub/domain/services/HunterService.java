@@ -1,5 +1,8 @@
 package com.groupseven.hunthub.domain.services;
 
+import com.groupseven.hunthub.domain.repository.HunterRepository;
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.HunterRepository;

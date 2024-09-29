@@ -1,0 +1,129 @@
+Domain GerenciarTrabalhos {
+	Subdomain HuntHub
+}
+
+BoundedContext HuntHub implements HuntHub {
+	Aggregate Hunter  {
+		Entity Hunter {
+			aggregateRoot
+			String cpf
+			String nome
+			String emailContato
+			String senha
+			int creditos
+			-PerfilHunter perfil
+		}
+
+		ValueObject PerfilHunter {
+			-List<Competencia> competencias
+			-List<Certificacao> certificacoes
+			String linkPortfolio
+			-List<Link> links
+			String bio
+			String fotoPerfil
+			int levels
+			int avaliacao
+			-List<Achievement> achievements
+			-List<Task> tasksFinalizadas
+			-List<Projeto> projetos
+		}
+
+		ValueObject Competencia {
+			String nome
+		}
+
+		ValueObject Achievement {
+			String nome
+		}
+
+		ValueObject Link {
+			String link
+		}
+
+		Entity Projeto {
+			-List<Competencia> competencias
+			Date dataInicio
+			Date dataFim
+			String descricao
+			String nome
+		}
+
+		ValueObject Certificacao {
+			String nome
+		}
+	}
+	Aggregate ProductOwner {
+		Entity ProductOwner {
+			aggregateRoot
+			String cpf
+			String nome
+			String emailContato
+			String senha
+			int creditos
+			-PerfilPO perfil
+		}
+		Entity PerfilPO {
+			int levels
+			String bio
+			String fotoPerfil
+			int avaliacao
+			-List<Task> tasksFinalizadas
+
+		}
+	}
+
+	Aggregate Notificacao {
+		Entity Notificacao {
+			aggregateRoot
+			String user
+			String mensagem
+			Date data
+		}
+	}
+
+	Aggregate Task {
+		Entity Task {
+			aggregateRoot
+			-ProductOwner po
+			float valor
+			String tipo
+			int numeroReunioes
+			Date entrega
+			String descricao
+			-List<Tag> tags
+			-List<Hunter> hunters // pode ser null no início
+			-List<Questao> questoes
+			def int avaliarHunter(); // quando terminar a task
+			def int avaliarPO(); // quando terminar a task
+			boolean isFinished
+			int numHunters // quant de hunters p task
+		}
+
+		ValueObject Tag {
+			String nome
+		}
+
+		ValueObject Questao {
+			String pergunta
+			String resposta nullable
+		}
+	}
+
+	Aggregate Chat {
+		Entity Chat {
+			aggregateRoot
+			String sender // ID do remetente (Hunter ou ProductOwner)
+			String receiver // ID do destinatário (Hunter ou ProductOwner)
+			String mensagem // Conteúdo da mensagem
+			Date dataEnvio // Data do envio da mensagem
+			boolean isLida // Status de leitura da mensagem
+			def void enviarMensagem(String senderId, String receiverId, String mensagem);
+			def void marcarComoLida();
+		}
+	}
+
+	Service PagamentoService {
+		void processarPagamento(@Task task);
+	}
+}
+

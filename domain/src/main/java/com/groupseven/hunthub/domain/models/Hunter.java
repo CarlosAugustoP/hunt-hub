@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Hunter extends User {
 
@@ -13,7 +14,7 @@ public class Hunter extends User {
     
     private String bio;
     private String profilePicture;
-    private int rating = 0;
+    private double rating = 0;
     private int level = 0;
     private int totalRating = 0; 
     private int ratingCount = 0;
@@ -77,11 +78,11 @@ public class Hunter extends User {
         this.profilePicture = profilePicture;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

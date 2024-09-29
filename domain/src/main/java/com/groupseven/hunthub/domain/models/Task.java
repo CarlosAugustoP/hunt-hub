@@ -15,7 +15,8 @@ public class Task {
 
     private String title;
 
-    private String status = "started";
+    // open, closed, completed
+    private String status = "open";
 
     private Date deadline;
 
@@ -26,7 +27,7 @@ public class Task {
     private int numberOfHuntersRequired;
 
     private List<Hunter> hunters = new ArrayList<>();
-
+    private List<Hunter> huntersApplied = new ArrayList<>();
     private double ratingRequired;
 
     private boolean completed;
@@ -130,8 +131,7 @@ public class Task {
         if (hunters.size() < numberOfHuntersRequired) {
             hunters.add(hunter);
         } else {
-            throw new IllegalStateException(
-                    "Cannot add more hunters. The required number of hunters is already reached.");
+            throw new IllegalStateException("Cannot add more hunters. The required number of hunters is already reached.");
         }
     }
 
@@ -155,6 +155,24 @@ public class Task {
     }
     public boolean isCompleted() {
         return completed;
+    }
+
+    public List<Hunter> getHuntersApplied() {
+        return huntersApplied;
+    }
+
+    public void setHuntersApplied(List<Hunter> huntersApplied) {
+        this.huntersApplied = huntersApplied;
+    }
+
+    public  void applyHunter(Hunter hunter) {
+        if (hunter.getRating() >= ratingRequired && this.status.equals("open")) {
+            huntersApplied.add(hunter);
+        } else if (this.status.equals("open")) {
+            throw new IllegalStateException("Cannot apply to task. Rating required: " + ratingRequired + ". Your rating " + hunter.getRating());
+        } else {
+            throw new IllegalStateException("Cannot apply to task. The task is already closed.");
+        }
     }
 }
 

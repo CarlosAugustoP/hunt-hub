@@ -23,15 +23,15 @@ public class PO extends User {
     String profilePicture;
     String bio;
 
-    public PO(Long cpf, String name, String email, String password, int levels, int rating, int totalRating,int ratingCount,List<Task> tasks, String profilePicture, String bio) {
+    public PO(Long cpf, String name, String email, String password,List<Task> tasks, String profilePicture, String bio) {
         super(name, email, password, cpf); 
-        this.levels = levels;
-        this.rating = rating;
+        this.levels = 0;
+        this.rating = 0;
         this.tasks = tasks;
         this.profilePicture = profilePicture;
         this.bio = bio;
-        this.totalRating = totalRating;
-        this.ratingCount = ratingCount;
+        this.totalRating = 0;
+        this.ratingCount = 0;
     }
 
     public PO(){
