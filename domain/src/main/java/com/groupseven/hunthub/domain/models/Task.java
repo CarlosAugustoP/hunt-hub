@@ -29,6 +29,7 @@ public class Task {
 
     private double ratingRequired;
 
+    private boolean completed;
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
             int numberOfHuntersRequired, double ratingRequired) {
         this.po = po;
@@ -149,4 +150,11 @@ public class Task {
     public void setRatingRequired(double ratingRequired) {
         this.ratingRequired = ratingRequired;
     }
+    public void setCompleted(boolean completed) {
+        this.status = "completed";
+    }
+    public boolean isCompleted() {
+        return completed;
+    }
 }
+

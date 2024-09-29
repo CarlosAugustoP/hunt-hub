@@ -26,12 +26,13 @@ public class Hunter extends User {
     
     private List<Project> projects = new ArrayList<>();
 
-    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects, int ratingCount, int totalRating) {
+    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, int level, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects,int rating, int ratingCount, int totalRating) {
         super(name, email, password, cpf);
         this.linkPortfolio = linkPortfolio;
         this.tasks = tasks;
         this.bio = bio;
         this.profilePicture = profilePicture;
+        this.rating=rating;
         this.ratingCount = ratingCount;
         this.totalRating = totalRating;
         this.level = level;
@@ -85,21 +86,21 @@ public class Hunter extends User {
     }
 
     public void addRating(int rating) {
-        if (rating < 1 || rating > 5) { 
+        if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("The rating must be between 1 and 5.");
         }
-        this.totalRating += rating; 
-        this.ratingCount++; 
-        this.rating = (int) getAverageRating(); 
+        this.totalRating += rating;
+        this.ratingCount++;
+        this.rating = (int) getAverageRating();
     }
 
     public double getAverageRating() {
         if (ratingCount == 0) {
-            return 0; 
+            return 0;
         }
         return (double) totalRating / ratingCount;
     }
-    
+
     public int getTotalRating() {
         return totalRating;
     }
@@ -194,5 +195,18 @@ public class Hunter extends User {
 
     public void removeProject(Project project) {
         this.projects.remove(project);
+    }
+    public void ratePO(PO po, int rating) {
+        if (this.getCpf() != po.getCpf()) {
+            po.rate(rating);
+            this.addRating(rating);
+        } else {
+            throw new IllegalArgumentException("Um hunter não pode se autoavaliar.");
+        }
+    }
+    public void rate(int rating) {
+        this.totalRating += rating;
+        this.ratingCount++;
+        this.rating = this.totalRating / this.ratingCount;
     }
 }
