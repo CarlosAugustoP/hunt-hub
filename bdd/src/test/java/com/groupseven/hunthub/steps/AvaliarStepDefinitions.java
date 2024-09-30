@@ -23,12 +23,15 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.aspectj.bridge.IMessage;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 //import static org.mockito.Mockito.*;
 public class AvaliarStepDefinitions {
+
     private TaskService taskService;
     private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
     private final PoRepository poRepository = new PoRepositoryImpl();
@@ -55,15 +58,13 @@ public class AvaliarStepDefinitions {
         this.po = new PO(cpfPO, namePO, emailPO, passwordPO, null, profilePicturePO, bioPO);
         task = new Task(po, "qualquer descricao", "qualquer titulo", new Date(), 3000, 10,
         10, 3.5, tags);
+
         Long cpfHunter = 98765432100L;
         String nameHunter = "Jessie Hunter";
         String emailHunter = "jessiehunter@example.com";
         String passwordHunter = "passwordhunter";
 
-//        int levelsHunter= 13;
-//        int ratingHunter = 4;
-//        int ratingCountHunter = 3;
-//        int totalRatingHunter = 12;
+
         String profilePicturehunter = "https://example.com/profile/jessie.jpg";
         String bioHunter = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
         this.hunter1 = new Hunter(cpfHunter, nameHunter, emailHunter, passwordHunter, null,null,bioHunter,profilePicturehunter,null,null,null,null);
@@ -71,16 +72,15 @@ public class AvaliarStepDefinitions {
         String nameHunter2 = "Alex Hunter";
         String emailHunter2 = "alexhunter@example.com";
         String passwordHunter2 = "passwordhunter2";
-//        int levelsHunter2 = 10;
-//        int ratingHunter2 = 3;
-//        int ratingCountHunter2 = 4;
-//        int totalRatingHunter2 = 10;
+
+
         String profilePictureHunter2 = "https://example.com/profile/alex.jpg";
         String bioHunter2 = "Caçador de soluções com experiência em diversos projetos.";
         this.hunter2 = new Hunter(cpfHunter2, nameHunter2, emailHunter2, passwordHunter2, null, null, bioHunter2, profilePictureHunter2, null, null, null, null);
         this.hunters.add(hunter1);
         this.hunters.add(hunter2);
         }
+
         @Given("que a Task foi finalizada")
         public void task_completada_com_sucesso(){
             task.setCompleted(true);
@@ -95,11 +95,14 @@ public class AvaliarStepDefinitions {
                 assertTrue(responseHunter);
             }
         }
+
         @Then("os hunters avaliam o PO e os outros hunters")
         public void hunterAvalia(){
+
             int ratingForHunter1 = 4;
             int ratingForHunter2 = 4;
             int ratingForPO = 5;
+
             hunterService.rateHunter(hunter1, hunter2, ratingForHunter2);
             hunterService.ratePO(po, ratingForPO);
 
@@ -108,6 +111,7 @@ public class AvaliarStepDefinitions {
 
             assertEquals(4.5, hunter2.getRating());
             assertEquals(4.5, hunter1.getRating());
+
             assertEquals(ratingForPO, po.getRating());
         }
         @And("o PO avalia os hunters")
