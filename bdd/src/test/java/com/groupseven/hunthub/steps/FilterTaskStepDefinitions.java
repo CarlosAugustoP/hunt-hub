@@ -8,7 +8,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
+import java.util.Arrays;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,6 +23,7 @@ public class FilterTaskStepDefinitions {
     private List<Task> resultTasks;
     private final PO po;
     private String errorMessage;
+
 
     public FilterTaskStepDefinitions() {
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
@@ -40,6 +41,7 @@ public class FilterTaskStepDefinitions {
         String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
         this.po = new PO(cpf, name, email, password, new ArrayList<>(), profilePicture, bio);
 
+
         try {
             createSampleTask();
         } catch (ParseException e) {
@@ -55,10 +57,10 @@ public class FilterTaskStepDefinitions {
         int numberOfMeetings = 5;
         int numberOfHuntersRequired = 2;
         double ratingRequired = 4.5;
-
+        List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
         po.setPoints(500);
 
-        taskService.createTask(po, description, title, description, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired);
+        taskService.createTask(po, description, title, description, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
     }
 
     @Given("que o hunter pesquisa por filtros de reward {int}, numberOfMeetings {int} e ratingRequired {double}")

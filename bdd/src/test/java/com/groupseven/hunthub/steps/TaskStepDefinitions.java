@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +41,8 @@ public class TaskStepDefinitions {
     int numberOfMeetings = 2;
     int numberOfHuntersRequired = 1;
     int ratingRequired = 1;
+    List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
+
 
     @Given("que o PO possui a quantidade de pontos {int}")
     public void pontos_disponiveis(int pts_disponiveis) {
@@ -59,7 +62,7 @@ public class TaskStepDefinitions {
         reward = pts_reward;
 
         try {
-            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired);
+            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
             novaTask = po.getTasks().get(0);
             tasks.add(novaTask);
         } catch (Exception e) {

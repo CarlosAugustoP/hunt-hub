@@ -10,6 +10,7 @@ import io.cucumber.java.en.When;
 import com.groupseven.hunthub.domain.services.NotificationService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class ApplyToTaskStepDefinitions {
     int numberOfMeetingsTask = 5;
     int numberOfHuntersRequiredTask = 3;
     double ratingRequiredTask = 4.5;
+    List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
     String taskStatus;
 
     Task task = new Task(
@@ -89,7 +91,8 @@ public class ApplyToTaskStepDefinitions {
             rewardTask,
             numberOfMeetingsTask,
             numberOfHuntersRequiredTask,
-            ratingRequiredTask
+            ratingRequiredTask,
+            tags
     );
 
     @Given("que o hunter tem a avaliação {double} e a Task tem a avaliação necessária {double} e o status da vaga é {string}")

@@ -26,13 +26,15 @@ public class Task {
 
     private int numberOfHuntersRequired;
 
+    private List<String> tags = new ArrayList<>();
+
     private List<Hunter> hunters = new ArrayList<>();
     private List<Hunter> huntersApplied = new ArrayList<>();
     private double ratingRequired;
 
     private boolean completed;
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
-            int numberOfHuntersRequired, double ratingRequired) {
+            int numberOfHuntersRequired, double ratingRequired, List<String> tags) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -41,6 +43,7 @@ public class Task {
         this.numberOfMeetings = numberOfMeetings;
         this.numberOfHuntersRequired = numberOfHuntersRequired;
         this.ratingRequired = ratingRequired;
+        this.tags = tags;
     }
 
     public Task() {

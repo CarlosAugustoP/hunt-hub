@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Arrays;
 
 import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
@@ -32,6 +33,7 @@ public class AvaliarStepDefinitions {
     private Hunter hunter1;
     private Hunter hunter2;
     private final Task task;
+    List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
 
     List<Hunter> hunters;
 
@@ -47,7 +49,7 @@ public class AvaliarStepDefinitions {
         String bioPO = "PO experiente com foco em projetos.";
         this.po = new PO(cpfPO, namePO, emailPO, passwordPO, null, profilePicturePO, bioPO);
         task = new Task(po, "qualquer descricao", "qualquer titulo", new Date(), 3000, 10,
-        10, 3.5);
+        10, 3.5, tags);
         Long cpfHunter = 98765432100L;
         String nameHunter = "Jessie Hunter";
         String emailHunter = "jessiehunter@example.com";
