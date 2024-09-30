@@ -3,29 +3,36 @@ Domain GerenciarTrabalhos {
 }
 
 BoundedContext HuntHub implements HuntHub {
+	Aggregate User {
+		Entity User {
+			aggregateRoot
+			int id unique
+			String cpf
+			int points
+			String name
+			String emailAddress
+			String password
+		}
+	}
+
 	Aggregate Hunter  {
 		Entity Hunter {
 			aggregateRoot
-			String cpf
-			String nome
-			String emailContato
-			String senha
-			int creditos
-			-PerfilHunter perfil
-		}
+			-User user
 
-		ValueObject PerfilHunter {
-			-List<Competencia> competencias
-			-List<Certificacao> certificacoes
 			String linkPortfolio
-			-List<Link> links
 			String bio
-			String fotoPerfil
+			String profilePicture
+			-List<Link> links
+			-List<Task> tasks
 			int levels
+			int totalRating
+			int ratingCount
 			int avaliacao
+			-List<Certificacao> certificacoes
 			-List<Achievement> achievements
-			-List<Task> tasksFinalizadas
 			-List<Projeto> projetos
+
 		}
 
 		ValueObject Competencia {
@@ -42,42 +49,50 @@ BoundedContext HuntHub implements HuntHub {
 
 		Entity Projeto {
 			-List<Competencia> competencias
-			Date dataInicio
-			Date dataFim
-			String descricao
-			String nome
+			Date startDate
+			Date endDate
+			String descriptions
+			String name
 		}
 
 		ValueObject Certificacao {
-			String nome
+			String name
+		}
+
+		Service HunterService {
+			void ratePO(@ProductOwner po, int rating);
+			void rateHunter(@Hunter hunter, int rating);
 		}
 	}
 	Aggregate ProductOwner {
 		Entity ProductOwner {
 			aggregateRoot
-			String cpf
-			String nome
-			String emailContato
-			String senha
-			int creditos
-			-PerfilPO perfil
-		}
-		Entity PerfilPO {
+			-User user
 			int levels
+			int rating
+			int totalRating
+			int ratingCount
+			-List<Task> tasks
 			String bio
-			String fotoPerfil
-			int avaliacao
-			-List<Task> tasksFinalizadas
+			String profilePicture
+		}
 
+		Service POService {
+			void rateHunter(@Hunter hunter, int rating);
 		}
 	}
 
-	Aggregate Notificacao {
-		Entity Notificacao {
+	Aggregate Notification {
+		Entity Notification {
 			aggregateRoot
-			String user
-			String mensagem
-			Date data
+			-User user
+			String theme
+			String message
+			Date createdAt
+		}
+
+		Service NotificationService {
+			boolean Notify(@User user, String task, String message);
 		}
 	}
 
@@ -85,45 +100,68 @@ BoundedContext HuntHub implements HuntHub {
 		Entity Task {
 			aggregateRoot
 			-ProductOwner po
-			float valor
-			String tipo
-			int numeroReunioes
-			Date entrega
-			String descricao
+			int reward
+			int numberOfMeetings
+			int numberOfHuntersRequired
+			double ratingRequired
+			Date deadline
+			String descriptions
 			-List<Tag> tags
-			-List<Hunter> hunters // pode ser null no início
-			-List<Questao> questoes
-			def int avaliarHunter(); // quando terminar a task
-			def int avaliarPO(); // quando terminar a task
-			boolean isFinished
-			int numHunters // quant de hunters p task
+			-List<Hunter> hunters
+			-List<Hunter> huntersApplied
+			-List<Question> questions
+			String status
 		}
 
 		ValueObject Tag {
-			String nome
+			String name
 		}
 
-		ValueObject Questao {
-			String pergunta
-			String resposta nullable
+		ValueObject Question {
+			String question
+			String answer nullable
+		}
+
+		Service TaskService {
+		void createTask(@ProductOwner po,
+			            String name,
+						String descriptions,
+                        String title,
+                        Date deadline,
+                        int reward,
+                        int numberOfMeetings,
+                        int numberOfHuntersRequired,
+                        double ratingRequired,
+                        List<String> tags);
+
+    	List<@Task> findByFilter(String filter);
+    	void applyToTask(@Task task, @Hunter hunter);
+    	void acceptHunter(@Task task, @Hunter hunter);
 		}
 	}
 
 	Aggregate Chat {
 		Entity Chat {
 			aggregateRoot
-			String sender // ID do remetente (Hunter ou ProductOwner)
-			String receiver // ID do destinatário (Hunter ou ProductOwner)
-			String mensagem // Conteúdo da mensagem
-			Date dataEnvio // Data do envio da mensagem
-			boolean isLida // Status de leitura da mensagem
-			def void enviarMensagem(String senderId, String receiverId, String mensagem);
+			-List<Message> messages
+		}
+
+		Entity Message {
+			String sender
+			String receiver
+			String mensagem
+			Date dataEnvio
+			boolean isLida
 			def void marcarComoLida();
+		}
+
+		Service MessageService {
+			void enviarMensagem(String senderId, String receiverId, String mensagem);
 		}
 	}
 
-	Service PagamentoService {
-		void processarPagamento(@Task task);
+	Service PaymentService {
+		void Payment(@Task task);
 	}
 }
 
