@@ -8,12 +8,15 @@ import java.util.Arrays;
 
 import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
+import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.services.NotificationService;
 import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.domain.services.HunterService;
 import com.groupseven.hunthub.persistence.memoria.repository.HunterRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
+import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
+import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
 
 import io.cucumber.java.en.And;
@@ -28,7 +31,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AvaliarStepDefinitions {
     private TaskService taskService;
     private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
-    private final HunterService hunterService = new HunterService(new HunterRepositoryImpl());
+    private final PoRepository poRepository = new PoRepositoryImpl();
+    private final HunterService hunterService = new HunterService(new HunterRepositoryImpl(), poRepository );
+    private final POService poService = new POService(poRepository);
     private PO po;
     private Hunter hunter1;
     private Hunter hunter2;
@@ -109,8 +114,8 @@ public class AvaliarStepDefinitions {
         public void poAvaliaHunters() {
             int ratingForHunter1 = 5;
             int ratingForHunter2 = 4;
-            po.rateHunter(hunter1, ratingForHunter1);
-            po.rateHunter(hunter2, ratingForHunter2);
+            poService.rateHunter(hunter1, ratingForHunter1);
+            poService.rateHunter(hunter2, ratingForHunter2);
 
             assertEquals("4,67", hunter1.ratingToString());
             assertEquals("4,33", hunter2.ratingToString());
