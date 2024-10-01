@@ -168,14 +168,12 @@ public class Task {
         this.huntersApplied = huntersApplied;
     }
 
-    public  void applyHunter(Hunter hunter) {
-        if (hunter.getRating() >= ratingRequired && this.status.equals("open")) {
-            huntersApplied.add(hunter);
-        } else if (this.status.equals("open")) {
-            throw new IllegalStateException("Cannot apply to task. Rating required: " + ratingRequired + ". Your rating " + hunter.getRating());
-        } else {
-            throw new IllegalStateException("Cannot apply to task. The task is already closed.");
-        }
+    public void applyHunter(Hunter hunter) {
+        huntersApplied.add(hunter);
+    }
+
+    public void assignHunter(Hunter hunter) {
+        hunters.add(hunter);
     }
 }
 
