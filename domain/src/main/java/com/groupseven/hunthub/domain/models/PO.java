@@ -122,11 +122,5 @@ public class PO extends User {
         this.ratingCount++;
         this.rating = this.totalRating / this.ratingCount;
     }
-    public void rateHunter(Hunter hunter, int rating) {
-        if (this.getCpf() != hunter.getCpf()) {
-            hunter.rate(rating);
-        } else {
-            throw new IllegalArgumentException("O PO não pode se autoavaliar.");
-        }
-    }
+
 }

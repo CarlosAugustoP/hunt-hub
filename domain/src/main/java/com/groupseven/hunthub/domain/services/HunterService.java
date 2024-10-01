@@ -1,11 +1,13 @@
 package com.groupseven.hunthub.domain.services;
 
 import com.groupseven.hunthub.domain.repository.HunterRepository;
+import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
+import com.groupseven.hunthub.domain.repository.PoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +16,14 @@ import java.util.UUID;
 public class HunterService {
 
     private final HunterRepository hunterRepository;
+    private final PoRepository poRepository;
 
-    public HunterService(HunterRepository hunterRepository) {
+    public HunterService(HunterRepository hunterRepository
+    , PoRepository poRepository) {
         this.hunterRepository = hunterRepository;
+        this.poRepository = poRepository;
     }
+
     public List<Hunter> getAllHunters() {
         return hunterRepository.findAll();
     }
@@ -43,5 +49,7 @@ public class HunterService {
             throw new IllegalArgumentException("The rating must be between 1 and 5");
         }
         po.addRating(rating);
+        poRepository.save(po);
+
     }
 }

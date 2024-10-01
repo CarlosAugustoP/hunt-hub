@@ -193,17 +193,12 @@ public class Hunter extends User {
     public void removeProject(Project project) {
         this.projects.remove(project);
     }
-    public void ratePO(PO po, int rating) {
-        if (this.getCpf() != po.getCpf()) {
-            po.rate(rating);
-            this.addRating(rating);
-        } else {
-            throw new IllegalArgumentException("Um hunter não pode se autoavaliar.");
-        }
-    }
+
     public void rate(int rating) {
         this.totalRating += rating;
         this.ratingCount++;
         this.rating = (double) this.totalRating / this.ratingCount;
     }
 }
+
+
