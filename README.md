@@ -8,8 +8,8 @@ Ademais, o PO fornece uma descrição detalhada do serviço, incluindo tags que 
 (como desenvolvedor back-end, administrador de banco de dados, cientista de dados, entre outros), a quantidade de reuniões desejadas com o Hunter, 
 o pagamento, e por fim, o prazo de entrega esperado.  O sistema também inclui um mecanismo de qualificação para os hunters e POs, 
 baseado em níveis (“levels”) e troféus (“achievements”), que recompensam os profissionais conforme completam novas tasks.<br>
-Para uma descrição mais aprofundada, acesse nosso 
-<a href="https://docs.google.com/document/d/1wTOTiOhm-b9dQ1bshlAFMc6ix6zCXaaZUpEvAewrogo/edit?usp=sharing" target="_blank">documento.</a>
+Para uma descrição mais aprofundada, acesse nossa
+<a href="https://docs.google.com/document/d/1wTOTiOhm-b9dQ1bshlAFMc6ix6zCXaaZUpEvAewrogo/edit?usp=sharing" target="_blank">Descrição de Domínio</a>
 
 ## Requisitos
 Para o desenvolvimento do projeto, usamos arquitetura limpa, modularização em maven e testes em Cucumber, como cobrava o requisito. Seguem links úteis para a compreensão de nosso projeto:
