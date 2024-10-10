@@ -123,7 +123,7 @@ public class ApplyToTaskStepDefinitions {
     @Then("a aplicação {string}")
     public void task_applied(String taskApplied) {
         if (taskApplied.equals("não é enviada") && taskStatus.equals("closed")) {
-            assertEquals(exception.getMessage(),"Cannot apply to task. The task is already closed.");
+            assertEquals(exception.getMessage(),"Cannot TESTE apply to task. The task is already closed.");
         } else if (taskApplied.equals("não é enviada") && taskStatus.equals("open")) {
             assertEquals(exception.getMessage(),"Cannot apply to task. Rating required: " + task.getRatingRequired() + ". Your rating " + hunter.getRating());
         } else {
