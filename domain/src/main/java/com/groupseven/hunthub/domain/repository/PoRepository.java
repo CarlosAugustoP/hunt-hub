@@ -1,9 +1,15 @@
 package com.groupseven.hunthub.domain.repository;
-import com.groupseven.hunthub.domain.models.Hunter;
+
+import java.util.List;
 import com.groupseven.hunthub.domain.models.PO;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.UUID;
 
 public interface PoRepository {
-    public void save(PO po);
+
+    void save(PO po);
+
+    PO findById(Long id);
+
+    List<PO> findAll();
+
+    void delete(Long id);
 }

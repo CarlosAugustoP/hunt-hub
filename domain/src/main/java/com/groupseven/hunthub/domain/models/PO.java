@@ -1,13 +1,7 @@
 package com.groupseven.hunthub.domain.models;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-
 import java.util.List;
 import java.util.ArrayList;
-import javax.validation.constraints.NotNull;
 
 public class PO extends User {
 
@@ -23,8 +17,9 @@ public class PO extends User {
     String profilePicture;
     String bio;
 
-    public PO(Long cpf, String name, String email, String password,List<Task> tasks, String profilePicture, String bio) {
-        super(name, email, password, cpf); 
+    public PO(Long cpf, String name, String email, String password, List<Task> tasks, String profilePicture,
+            String bio) {
+        super(name, email, password, cpf);
         this.levels = 0;
         this.rating = 5;
         this.tasks = tasks;
@@ -34,7 +29,7 @@ public class PO extends User {
         this.ratingCount = 0;
     }
 
-    public PO(){
+    public PO() {
     }
 
     public int getLevels() {
@@ -70,7 +65,7 @@ public class PO extends User {
     }
 
     public void addRating(int rating) {
-        if(rating < 1 || rating > 5){
+        if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("Rating must be between 1 and 5");
         }
         this.totalRating += rating;
@@ -79,7 +74,7 @@ public class PO extends User {
     }
 
     public double getAverageRating() {
-        if(ratingCount == 0){
+        if (ratingCount == 0) {
             return 0;
         }
         return (double) totalRating / ratingCount;
@@ -109,15 +104,15 @@ public class PO extends User {
         this.bio = bio;
     }
 
-    public void addTask(Task task){
+    public void addTask(Task task) {
         this.tasks.add(task);
     }
 
-    public void removeTask(Task task){
+    public void removeTask(Task task) {
         this.tasks.remove(task);
     }
+
     public void rate(int rating) {
-        // Lógica para atualizar a avaliação do PO
         this.totalRating += rating;
         this.ratingCount++;
         this.rating = this.totalRating / this.ratingCount;

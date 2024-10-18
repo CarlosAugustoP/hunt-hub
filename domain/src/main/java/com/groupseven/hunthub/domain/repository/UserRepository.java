@@ -1,8 +1,16 @@
 package com.groupseven.hunthub.domain.repository;
-import java.util.UUID;
+
 import com.groupseven.hunthub.domain.models.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.UUID;
 
 public interface UserRepository {
-    
+
+  void save(User user);
+
+  User findById(UUID id);
+
+  List<User> findAll();
+
+  void delete(UUID id);
 }

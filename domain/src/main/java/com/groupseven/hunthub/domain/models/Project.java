@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
-
 public class Project {
 
     private UUID id;
@@ -18,7 +17,6 @@ public class Project {
     private String description;
     private String title;
     private List<String> skills = new ArrayList<>();
-
 
     public Project() {
         this.skills = new ArrayList<>();
