@@ -1,4 +1,5 @@
 package com.groupseven.hunthub.persistence.memoria.repository;
+
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 

@@ -14,6 +14,7 @@
 
     <modules>
         <module>memoria</module>
+        <module>jpa</module>
     </modules>
 
     <artifactId>persistence</artifactId>
@@ -25,4 +26,5 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
 </project>
