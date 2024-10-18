@@ -1,7 +1,6 @@
 package com.groupseven.hunthub.domain.models;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Notification {
     private User user;
