@@ -5,7 +5,4 @@ import java.util.UUID;
 import com.groupseven.hunthub.domain.models.Achievement;
 
 public interface AchievementRepository  {
-
-    
-    
 }
