@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Entity
 @Table(name="USER")
-class UserJpa {
+public class UserJpa {
     @Id
     public UUID id;
 
