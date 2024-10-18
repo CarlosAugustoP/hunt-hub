@@ -1,13 +1,18 @@
-package com.groupseven.hunthub.domain.models;
+package com.groupseven.hunthub.persistence.jpa.models;
 
-import jakarta.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import java.util.UUID;
 
-public class User {
+@Entity
+@Table(name = "USER")
+public class UserJpa {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public UUID id;
 
     public Long cpf;
@@ -20,17 +25,7 @@ public class User {
 
     public String password;
 
-    public User(String name, String email, String password, Long cpf) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.cpf = cpf;
-    }
-
-    public User() {
-    }
-
+    // Getters and Setters
     public UUID getId() {
         return id;
     }
@@ -45,6 +40,14 @@ public class User {
 
     public void setCpf(Long cpf) {
         this.cpf = cpf;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public String getName() {
@@ -69,13 +72,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public int getPoints() {
-        return points;
     }
 }
