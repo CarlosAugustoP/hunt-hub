@@ -10,20 +10,20 @@ public class UserMapper {
 
   public UserJpa toEntity(User user) {
     UserJpa userJpa = new UserJpa();
-    userJpa.id = user.getId();
-    userJpa.cpf = user.getCpf();
-    userJpa.points = user.getPoints();
-    userJpa.name = user.getName();
-    userJpa.email = user.getEmail();
-    userJpa.password = user.getPassword();
+    userJpa.setId(user.getId());
+    userJpa.setCpf(user.getCpf());
+    userJpa.setPoints(user.getPoints());
+    userJpa.setName(user.getName());
+    userJpa.setEmail(user.getEmail());
+    userJpa.setPassword(user.getPassword());
     return userJpa;
   }
 
   public User toDomain(UserJpa userJpa) {
     return new User(
-        userJpa.password,
-        userJpa.name,
-        userJpa.email,
-        userJpa.cpf);
+        userJpa.getPassword(),
+        userJpa.getName(),
+        userJpa.getEmail(),
+        userJpa.getCpf());
   }
 }

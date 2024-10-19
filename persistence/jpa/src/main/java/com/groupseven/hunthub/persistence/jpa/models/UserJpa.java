@@ -13,17 +13,17 @@ public class UserJpa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public UUID id;
+    private UUID id;
 
-    public Long cpf;
+    private Long cpf;
 
-    public int points = 0;
+    private int points = 0;
 
-    public String name;
+    private String name;
 
-    public String email;
+    private String email;
 
-    public String password;
+    private String password;
 
     // Getters and Setters
     public UUID getId() {
