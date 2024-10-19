@@ -11,29 +11,29 @@ public class TaskMapper {
 
     public TaskJpa toEntity(Task task) {
         TaskJpa taskJpa = new TaskJpa();
-        taskJpa.id = task.getId();
-        taskJpa.description = task.getDescription();
-        taskJpa.status = TaskStatus.valueOf(task.getStatus());
-        taskJpa.deadline = task.getDeadline();
-        taskJpa.reward = task.getReward();
-        taskJpa.numberOfMeetings = task.getNumberOfMeetings();
-        taskJpa.numberOfHuntersRequired = task.getNumberOfHuntersRequired();
-        taskJpa.ratingRequired = task.getRatingRequired();
-        taskJpa.completed = task.isCompleted();
+        taskJpa.setId(task.getId());
+        taskJpa.setDescription(task.getDescription());
+        taskJpa.setStatus(TaskStatus.valueOf(task.getStatus()));
+        taskJpa.setDeadline(task.getDeadline());
+        taskJpa.setReward(task.getReward());
+        taskJpa.setNumberOfMeetings(task.getNumberOfMeetings());
+        taskJpa.setNumberOfHuntersRequired(task.getNumberOfHuntersRequired());
+        taskJpa.setRatingRequired(task.getRatingRequired());
+        taskJpa.setCompleted(task.isCompleted());
         return taskJpa;
     }
 
     public Task toDomain(TaskJpa taskJpa) {
         Task task = new Task();
-        task.setId(taskJpa.id);
-        task.setDescription(taskJpa.description);
-        task.setStatus(taskJpa.status.name());
-        task.setDeadline(taskJpa.deadline);
-        task.setReward(taskJpa.reward);
-        task.setNumberOfMeetings(taskJpa.numberOfMeetings);
-        task.setNumberOfHuntersRequired(taskJpa.numberOfHuntersRequired);
-        task.setRatingRequired(taskJpa.ratingRequired);
-        task.setCompleted(taskJpa.completed);
+        task.setId(taskJpa.getId());
+        task.setDescription(taskJpa.getDescription());
+        task.setStatus(taskJpa.getStatus().name());
+        task.setDeadline(taskJpa.getDeadline());
+        task.setReward(taskJpa.getReward());
+        task.setNumberOfMeetings(taskJpa.getNumberOfMeetings());
+        task.setNumberOfHuntersRequired(taskJpa.getNumberOfHuntersRequired());
+        task.setRatingRequired(taskJpa.getRatingRequired());
+        task.setCompleted(taskJpa.isCompleted());
         return task;
     }
 }

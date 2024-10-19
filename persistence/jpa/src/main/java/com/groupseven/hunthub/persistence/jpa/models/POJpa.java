@@ -6,7 +6,6 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "productOwner")
 public class POJpa extends UserJpa {
 
   private int levels;

@@ -5,57 +5,55 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.groupseven</groupId>
-        <artifactId>persistence</artifactId>
+        <artifactId>hunthub</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jpa</artifactId>
+    <packaging>jar</packaging>
+
+    <artifactId>application</artifactId>
 
     <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        <!-- Dependência do módulo 'domain' -->
         <dependency>
             <groupId>com.groupseven</groupId>
             <artifactId>domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.groupseven</groupId>
+            <artifactId>persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.groupseven</groupId>
+            <artifactId>jpa</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- Add other module dependencies as needed -->
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-
-                </configuration>
-            </plugin>
-
-            <!-- Adjust the Spring Boot Maven Plugin to prevent repackaging -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.3</version>
                 <configuration>
-                    <skip>true</skip>
+                    <mainClass>com.groupseven.hunthub.application.HunthubApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>

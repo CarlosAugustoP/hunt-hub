@@ -21,6 +21,7 @@
         <module>domain</module>
         <module>persistence</module>
         <module>bdd</module>
+        <module>application</module>
     </modules>
 
     <properties>
@@ -68,7 +69,7 @@
             <artifactId>spring-boot-maven-plugin</artifactId>
             <version>3.3.3</version>
             <configuration>
-                <mainClass>com.groupseven.hunthub.HunthubApplication</mainClass>
+                <mainClass>com.groupseven.hunthub.application.HunthubApplication</mainClass>
             </configuration>
         </plugin>
     </plugins>
