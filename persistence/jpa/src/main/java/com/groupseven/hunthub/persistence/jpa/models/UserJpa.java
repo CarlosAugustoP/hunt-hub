@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import java.util.UUID;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 public class UserJpa {
 
     @Id

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "HUNTER")
+@Table(name = "hunter")
 public class HunterJpa extends UserJpa {
 
   private String linkPortfolio;

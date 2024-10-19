@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "TASK")
+@Table(name = "task")
 public class TaskJpa {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

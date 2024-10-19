@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "PROJECT")
+@Table(name = "project")
 public class ProjectJpa {
 
   @Id

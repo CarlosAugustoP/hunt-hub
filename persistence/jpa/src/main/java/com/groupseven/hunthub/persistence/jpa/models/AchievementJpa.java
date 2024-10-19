@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ACHIEVEMENT")
+@Table(name = "achievement")
 public class AchievementJpa {
 
   @Id
