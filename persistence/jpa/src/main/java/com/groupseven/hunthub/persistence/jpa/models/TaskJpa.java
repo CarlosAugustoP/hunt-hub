@@ -9,19 +9,28 @@ import java.util.UUID;
 @Entity
 @Table(name = "task")
 public class TaskJpa {
+
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private UUID id;
+  private UUID id = UUID.randomUUID();
+
 
   @ManyToOne
   private POJpa po;
 
   @ManyToMany
-  @JoinTable(name = "TASK_HUNTERS", joinColumns = @JoinColumn(name = "task_id"), inverseJoinColumns = @JoinColumn(name = "hunter_id"))
+  @JoinTable(
+          name = "task_hunters",
+          joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false),
+          inverseJoinColumns = @JoinColumn(name = "hunter_id", referencedColumnName = "id") // Make sure this points to the 'id' in UserJpa
+  )
   private List<HunterJpa> hunters;
 
   @ManyToMany
-  @JoinTable(name = "TASK_HUNTERS_APPLIED", joinColumns = @JoinColumn(name = "task_id"), inverseJoinColumns = @JoinColumn(name = "hunter_id"))
+  @JoinTable(
+          name = "task_hunters_applied",
+          joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false),
+          inverseJoinColumns = @JoinColumn(name = "hunter_id", referencedColumnName = "id") // Make sure this points to the 'id' in UserJpa
+  )
   private List<HunterJpa> huntersApplied;
 
   private String description;
