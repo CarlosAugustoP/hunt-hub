@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class POService {
 
+
     private final PoRepository poRepository;
 
     public POService(PoRepository poRepository) {
@@ -20,7 +21,19 @@ public class POService {
         }
 
         po.addRating(rating);
-        
+
         poRepository.save(po);
     }
+
+    public void rateHunter(Hunter hunter, int rating) {
+        if (hunter == null) {
+            throw new IllegalArgumentException("Hunter não pode ser nulo.");
+        }
+        if (rating < 1 || rating > 5) { // Exemplo de validação do rating
+            throw new IllegalArgumentException("A classificação deve estar entre 1 e 5.");
+        }
+
+        hunter.rate(rating);
+    }
 }
+

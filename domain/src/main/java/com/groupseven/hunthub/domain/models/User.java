@@ -28,14 +28,14 @@ public class User {
         this.cpf = cpf;
     }
 
-    public User(){
+    public User() {
     }
 
-    public UUID getId(){
+    public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id){
+    public void setId(UUID id) {
         this.id = id;
     }
 

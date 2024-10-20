@@ -68,22 +68,17 @@ public class TaskService {
         return filteredTasks;
     }
 
-    public void applyToTask(Task task, Hunter hunter) {
-        try {
+    public static void applyHunterToTask(Task task, Hunter hunter) {
+        if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals("open")) {
             task.applyHunter(hunter);
-            taskRepository.save(task);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        } else if (task.getStatus().equals("open")) {
+            throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired() + ". Your rating " + hunter.getRating());
+        } else {
+            throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
     }
 
-    public void acceptHunter(Task task, Hunter hunter) {
-        try{
-            task.addHunter(hunter);
-            taskRepository.save(task);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
+    public static void acceptHunter(Task task, Hunter hunter) {
+        task.assignHunter(hunter);
     }
-
 }

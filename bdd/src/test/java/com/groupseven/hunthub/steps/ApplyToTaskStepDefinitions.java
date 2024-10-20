@@ -2,7 +2,9 @@ package com.groupseven.hunthub.steps;
 
 import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.services.NotificationService;
+import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
+import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,6 +25,7 @@ public class ApplyToTaskStepDefinitions {
     boolean isHunterNotified = false;
 
     private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
+    private final TaskService taskService = new TaskService(new TaskRepositoryImpl());
 
     Long cpfHunter = 12345678901L;
     String nameHunter = "John Doe";
@@ -108,7 +111,7 @@ public class ApplyToTaskStepDefinitions {
     @When("o hunter aplica para a Task")
     public void hunter_apply_to_task() {
             try {
-                task.applyHunter(hunter);
+                TaskService.applyHunterToTask(task, hunter);
                 isHunterNotified = notificationService.Notify(hunter, task.getTitle(), "Você aplicou nessa Task! O PO foi notificado!");
                 isPoNotified = notificationService.Notify(po, task.getTitle(), "Você recebeu uma aplicação nova nessa Task do usuário" + hunter.getName());
                 System.out.println(isHunterNotified);

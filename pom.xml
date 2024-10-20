@@ -13,7 +13,7 @@
     <groupId>com.groupseven</groupId>
     <artifactId>hunthub</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging> <!-- Add this line -->
+    <packaging>pom</packaging>
     <name>hunthub</name>
     <description>A place where product owners and freelance developers can work on projects and grow together</description>
 
@@ -21,12 +21,13 @@
         <module>domain</module>
         <module>persistence</module>
         <module>bdd</module>
+        <module>application</module>
     </modules>
 
     <properties>
         <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source> <!-- Defina o nível de linguagem aqui -->
-        <maven.compiler.target>17</maven.compiler.target> <!-- Defina o nível de bytecode aqui -->
+        <maven.compiler.source>17</maven.compiler.source> 
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -68,7 +69,7 @@
             <artifactId>spring-boot-maven-plugin</artifactId>
             <version>3.3.3</version>
             <configuration>
-                <mainClass>com.groupseven.hunthub.HunthubApplication</mainClass>
+                <mainClass>com.groupseven.hunthub.application.HunthubApplication</mainClass>
             </configuration>
         </plugin>
     </plugins>

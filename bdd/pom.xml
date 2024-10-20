@@ -42,7 +42,7 @@
 
         <dependency>
             <groupId>com.groupseven</groupId>
-            <artifactId>persistence</artifactId>
+            <artifactId>memoria</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
