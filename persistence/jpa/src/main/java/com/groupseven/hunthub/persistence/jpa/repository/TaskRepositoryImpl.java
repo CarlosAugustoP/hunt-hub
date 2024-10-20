@@ -12,7 +12,7 @@ import com.groupseven.hunthub.persistence.jpa.mapper.TaskMapper;
 import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
 
 @Repository
-class TaskJpaRepositoryImpl implements TaskRepository {
+public class TaskRepositoryImpl implements TaskRepository {
   @Autowired
   TaskJpaRepository repository;
 

@@ -8,7 +8,7 @@ public class HunterJpa extends UserJpa {
 
   private String linkPortfolio;
 
-  @OneToMany(mappedBy = "hunter", cascade = CascadeType.ALL, orphanRemoval = true)
+  @ManyToMany(mappedBy = "hunters")
   private List<TaskJpa> tasks;
 
   private String bio;

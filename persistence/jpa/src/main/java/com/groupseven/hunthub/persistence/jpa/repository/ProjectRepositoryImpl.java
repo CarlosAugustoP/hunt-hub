@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class ProjectJpaRepositoryImpl implements ProjectRepository {
+public class ProjectRepositoryImpl implements ProjectRepository {
 
   @Autowired
   ProjectJpaRepository repository;
