@@ -26,7 +26,7 @@ public class Task {
 
     private int numberOfHuntersRequired;
 
-    private List<String> tags = new ArrayList<>();
+    private List<Tags> tags = new ArrayList<>();
 
     private List<Hunter> hunters = new ArrayList<>();
     private List<Hunter> huntersApplied = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Task {
 
     private boolean completed;
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
-            int numberOfHuntersRequired, double ratingRequired, List<String> tags) {
+            int numberOfHuntersRequired, double ratingRequired, List<Tags> tags) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -174,6 +174,26 @@ public class Task {
 
     public void assignHunter(Hunter hunter) {
         hunters.add(hunter);
+    }
+
+    public void addTag(Tags tag) {
+        tags.add(tag);
+    }
+
+    public void removeTag(Tags tag) {
+        tags.remove(tag);
+    }
+
+    public Tags getTag(int index) {
+        return tags.get(index);
+    }
+
+    public List<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
     }
 }
 

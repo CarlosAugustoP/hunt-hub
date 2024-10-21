@@ -41,7 +41,7 @@ public class AvaliarStepDefinitions {
     private Hunter hunter1;
     private Hunter hunter2;
     private final Task task;
-    List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
+    List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
 
     List<Hunter> hunters;
 

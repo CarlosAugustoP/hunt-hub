@@ -41,7 +41,7 @@ public class TaskStepDefinitions {
     int numberOfMeetings = 2;
     int numberOfHuntersRequired = 1;
     int ratingRequired = 1;
-    List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
+    List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
 
 
     @Given("que o PO possui a quantidade de pontos {int}")

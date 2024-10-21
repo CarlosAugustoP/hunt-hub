@@ -83,7 +83,7 @@ public class ApplyToTaskStepDefinitions {
     int numberOfMeetingsTask = 5;
     int numberOfHuntersRequiredTask = 3;
     double ratingRequiredTask = 4.5;
-    List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
+    List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
     String taskStatus;
 
     Task task = new Task(
