@@ -1,6 +1,7 @@
 package com.groupseven.hunthub.steps;
 
 import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
@@ -57,18 +58,24 @@ public class FilterTaskStepDefinitions {
         int numberOfMeetings = 5;
         int numberOfHuntersRequired = 2;
         double ratingRequired = 4.5;
-        List<String> tags = Arrays.asList("Machine Learning", "DataBase", "SQL");
+        List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
         po.setPoints(500);
 
         taskService.createTask(po, description, title, description, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
     }
 
-    @Given("que o hunter pesquisa por filtros de reward {int}, numberOfMeetings {int} e ratingRequired {double}")
-    public void hunterPesquisandoPorFiltros(int reward, int numberOfMeetings, double ratingRequired) {
+    @Given("que o hunter pesquisa por filtros de reward {int}, numberOfMeetings {int} e ratingRequired {double} e tags {string}")
+    public void hunterPesquisandoPorFiltros(int reward, int numberOfMeetings, double ratingRequired, String tagsString) {
+        List<Tags> tags = Arrays.stream(tagsString.split(","))
+                .map(String::trim)
+                .map(Tags::valueOf)
+                .toList();
+
         searchFilters = new HashMap<>();
         searchFilters.put("reward", reward);
         searchFilters.put("numberOfMeetings", numberOfMeetings);
         searchFilters.put("ratingRequired", ratingRequired);
+        searchFilters.put("tags", tags);
     }
 
     @When("o hunter busca por tasks novas")

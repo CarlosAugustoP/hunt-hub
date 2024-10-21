@@ -1,12 +1,14 @@
 package com.groupseven.hunthub.domain.services;
 
 import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.PO;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ public class TaskService {
                            int numberOfMeetings,
                            int numberOfHuntersRequired,
                            double ratingRequired,
-                           List<String> tags
+                           List<Tags> tags
     ) {
         if (po.getPoints() < numberOfHuntersRequired * reward) {
             throw new IllegalArgumentException("Not enough points");
@@ -60,8 +62,26 @@ public class TaskService {
                 case "ratingRequired" -> filteredTasks.removeIf(task -> task.getRatingRequired() < (double) value);
                 case "PORating" -> filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
                 case "numberOfHuntersRequired" -> filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() < (int) value);
+                case "tags" -> {
+                    List<Tags> tags;
+
+                    if (value instanceof List<?> tagList && !tagList.isEmpty() && tagList.get(0) instanceof String) {
+                        tags = new ArrayList<>();
+                        for (String tagString : (List<String>) value) {
+                            try {
+                                Tags tag = Tags.valueOf(tagString.trim().toUpperCase());
+                                tags.add(tag);
+                            } catch (IllegalArgumentException e) {
+                                System.err.println("Tag inválida: " + tagString.trim());
+                            }
+                        }
+                    } else {
+                        tags = (List<Tags>) value;
+                    }
+
+                    filteredTasks.removeIf(task -> !new HashSet<>(task.getTags()).containsAll(tags));
+                }
                 default -> {
-                    // Filtro desconhecido ou não suportado
                 }
             }
         }
