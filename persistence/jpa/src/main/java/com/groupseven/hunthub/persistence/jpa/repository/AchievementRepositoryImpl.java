@@ -7,6 +7,7 @@ import com.groupseven.hunthub.domain.repository.AchievementRepository;
 import com.groupseven.hunthub.persistence.jpa.mapper.AchievementMapper;
 import com.groupseven.hunthub.persistence.jpa.models.AchievementJpa;
 
+
 import java.util.List;
 import java.util.Optional;
 

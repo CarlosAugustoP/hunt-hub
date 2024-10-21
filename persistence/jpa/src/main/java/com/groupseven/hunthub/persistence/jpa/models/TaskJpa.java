@@ -46,7 +46,7 @@ public class TaskJpa {
   private int numberOfHuntersRequired;
 
   @ElementCollection
-  private List<String> tags;
+  private List<Tags> tags;
 
   private double ratingRequired;
 
@@ -132,11 +132,11 @@ public class TaskJpa {
     this.numberOfHuntersRequired = numberOfHuntersRequired;
   }
 
-  public List<String> getTags() {
+  public List<Tags> getTags() {
     return tags;
   }
 
-  public void setTags(List<String> tags) {
+  public void setTags(List<Tags> tags) {
     this.tags = tags;
   }
 
@@ -155,4 +155,17 @@ public class TaskJpa {
   public void setCompleted(boolean completed) {
     this.completed = completed;
   }
+
+  public void addTag(Tags tag) {
+    tags.add(tag);
+  }
+
+  public void removeTag(com.groupseven.hunthub.domain.models.Tags tag) {
+    tags.remove(tag);
+  }
+
+  public Tags getTag(int index) {
+    return tags.get(index);
+  }
+
 }

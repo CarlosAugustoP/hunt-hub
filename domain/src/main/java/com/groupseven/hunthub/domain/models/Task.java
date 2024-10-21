@@ -191,5 +191,9 @@ public class Task {
     public List<Tags> getTags() {
         return tags;
     }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
+    }
 }
 

@@ -91,6 +91,14 @@ public class FilterTaskStepDefinitions {
         } else {
             assertNotNull(resultTasks);
             System.out.println("Encontramos a task: " + resultTasks);
+            System.out.println("Descrição: " + resultTasks.get(0).getDescription());
+            System.out.println("Deadline: " + resultTasks.get(0).getDeadline());
+            System.out.println("Recompensa: " + resultTasks.get(0).getReward());
+            System.out.println("Número de reuniões: " + resultTasks.get(0).getNumberOfMeetings());
+            System.out.println("Número de caçadores necessários: " + resultTasks.get(0).getNumberOfHuntersRequired());
+            System.out.println("Rating necessário: " + resultTasks.get(0).getRatingRequired());
+            System.out.println("Tags: " + resultTasks.get(0).getTags());
+
         }
     }
 
