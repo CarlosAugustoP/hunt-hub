@@ -49,9 +49,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.3.3</version>
-                <configuration>
-                    <mainClass>com.groupseven.hunthub.application.HunthubApplication</mainClass>
-                </configuration>
+
             </plugin>
         </plugins>
     </build>
