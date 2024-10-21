@@ -3,24 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.groupseven</groupId>
         <artifactId>hunthub</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <modules>
-        <module>backend</module>
-        <module>frontend</module>
-    </modules>
-
-    <artifactId>presentation</artifactId>
     <packaging>pom</packaging>
 
+    <artifactId>presentation</artifactId>
+
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -47,5 +42,18 @@
         </dependency>
         <!-- Add other module dependencies as needed -->
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.3</version>
+                <configuration>
+                    <mainClass>com.groupseven.hunthub.application.HunthubApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
