@@ -2,6 +2,7 @@ package com.groupseven.hunthub.domain.models;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class PO extends User {
 
@@ -19,7 +20,7 @@ public class PO extends User {
 
     public PO(Long cpf, String name, String email, String password, List<Task> tasks, String profilePicture,
             String bio) {
-        super(name, email, password, cpf);
+        super(name, email, password, cpf, new UserId(UUID.randomUUID()));
         this.levels = 0;
         this.rating = 5;
         this.tasks = tasks;

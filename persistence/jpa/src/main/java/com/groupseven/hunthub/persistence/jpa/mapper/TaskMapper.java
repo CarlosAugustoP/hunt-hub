@@ -2,6 +2,7 @@ package com.groupseven.hunthub.persistence.jpa.mapper;
 import java.util.stream.Collectors;
 import java.util.List;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskId;
 import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
 import com.groupseven.hunthub.persistence.jpa.models.TaskStatus;
 
@@ -12,7 +13,7 @@ public class TaskMapper {
 
     public TaskJpa toEntity(Task task) {
         TaskJpa taskJpa = new TaskJpa();
-        taskJpa.setId(task.getId());
+        taskJpa.setId(task.getId().getId());
         taskJpa.setDescription(task.getDescription());
         taskJpa.setStatus(TaskStatus.valueOf(task.getStatus()));
         taskJpa.setDeadline(task.getDeadline());
@@ -30,7 +31,8 @@ public class TaskMapper {
 
     public Task toDomain(TaskJpa taskJpa) {
         Task task = new Task();
-        task.setId(taskJpa.getId());
+        TaskId taskId = new TaskId(taskJpa.getId());
+        task.setId(taskId);
         task.setDescription(taskJpa.getDescription());
         task.setStatus(taskJpa.getStatus().name());
         task.setDeadline(taskJpa.getDeadline());

@@ -1,16 +1,10 @@
 package com.groupseven.hunthub.domain.services;
 
-import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.domain.models.Tags;
+import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
-import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.models.PO;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Service
 public class TaskService {
@@ -41,7 +35,8 @@ public class TaskService {
         }
         po.setPoints(po.getPoints() - numberOfHuntersRequired * reward);
 
-        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
+        TaskId taskId = new TaskId(UUID.randomUUID());
+        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags, taskId);
         task.setPo(po);
 
         taskRepository.save(task);

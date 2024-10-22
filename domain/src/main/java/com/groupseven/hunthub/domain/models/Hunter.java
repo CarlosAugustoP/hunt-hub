@@ -3,6 +3,7 @@ package com.groupseven.hunthub.domain.models;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Hunter extends User {
     DecimalFormat df = new DecimalFormat("#.00");
@@ -26,7 +27,7 @@ public class Hunter extends User {
     private List<Project> projects = new ArrayList<>();
 
     public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects) {
-        super(name, email, password, cpf);
+        super(name, email, password, cpf, new UserId(UUID.randomUUID()));
         this.linkPortfolio = linkPortfolio;
         this.tasks = tasks;
         this.bio = bio;

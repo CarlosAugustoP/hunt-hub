@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class User {
 
-    public UUID id;
+    public UserId id;
 
     public Long cpf;
 
@@ -20,22 +20,22 @@ public class User {
 
     public String password;
 
-    public User(String name, String email, String password, Long cpf) {
-        this.id = UUID.randomUUID();
+    public User(String name, String email, String password, Long cpf, UserId id) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.cpf = cpf;
+        this.id = id;
     }
 
     public User() {
     }
 
-    public UUID getId() {
+    public UserId getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(UserId id) {
         this.id = id;
     }
 

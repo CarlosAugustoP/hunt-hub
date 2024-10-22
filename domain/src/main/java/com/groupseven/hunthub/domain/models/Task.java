@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Task {
 
-    private UUID id;
+    private TaskId id;
 
     private PO po;
 
@@ -34,7 +34,7 @@ public class Task {
 
     private boolean completed;
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
-            int numberOfHuntersRequired, double ratingRequired, List<Tags> tags) {
+            int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -44,17 +44,18 @@ public class Task {
         this.numberOfHuntersRequired = numberOfHuntersRequired;
         this.ratingRequired = ratingRequired;
         this.tags = tags;
+        this.id = id;
     }
 
     public Task() {
         this.hunters = new ArrayList<>();
     }
 
-    public UUID getId() {
+    public TaskId getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(TaskId id) {
         this.id = id;
     }
 

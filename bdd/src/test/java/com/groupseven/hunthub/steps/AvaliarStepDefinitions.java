@@ -57,7 +57,7 @@ public class AvaliarStepDefinitions {
         String bioPO = "PO experiente com foco em projetos.";
         this.po = new PO(cpfPO, namePO, emailPO, passwordPO, null, profilePicturePO, bioPO);
         task = new Task(po, "qualquer descricao", "qualquer titulo", new Date(), 3000, 10,
-        10, 3.5, tags);
+        10, 3.5, tags, new TaskId(UUID.randomUUID()));
 
         Long cpfHunter = 98765432100L;
         String nameHunter = "Jessie Hunter";
