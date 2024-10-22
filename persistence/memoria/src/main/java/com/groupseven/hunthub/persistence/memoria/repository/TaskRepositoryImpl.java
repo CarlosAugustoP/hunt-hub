@@ -19,7 +19,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void save(Task task) {
         System.out.println("TaskRepositoryImpl.save");
-        taskStorage.put(task.getId(), task);
+        taskStorage.put(task.getId().getId(), task);
     }
 
     @Override

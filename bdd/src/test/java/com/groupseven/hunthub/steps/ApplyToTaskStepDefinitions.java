@@ -11,10 +11,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import com.groupseven.hunthub.domain.services.NotificationService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -95,7 +92,8 @@ public class ApplyToTaskStepDefinitions {
             numberOfMeetingsTask,
             numberOfHuntersRequiredTask,
             ratingRequiredTask,
-            tags
+            tags,
+            new TaskId(UUID.randomUUID())
     );
 
     @Given("que o hunter tem a avaliação {double} e a Task tem a avaliação necessária {double} e o status da vaga é {string}")
@@ -115,6 +113,9 @@ public class ApplyToTaskStepDefinitions {
                 isHunterNotified = notificationService.Notify(hunter, task.getTitle(), "Você aplicou nessa Task! O PO foi notificado!");
                 isPoNotified = notificationService.Notify(po, task.getTitle(), "Você recebeu uma aplicação nova nessa Task do usuário" + hunter.getName());
                 System.out.println(isHunterNotified);
+                System.out.println("Id do Hunter: " + hunter.getId().getId());
+                System.out.println("Id da Task: " + task.getId().getId());
+                System.out.println("Id do PO: " + po.getId().getId());
             } catch (Exception e) {
                 exception = e;
             }

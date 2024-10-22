@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class Project {
 
-    private UUID id;
+    private ProjectId id;
 
     private Date startDate;
     private Date endDate;
@@ -22,12 +22,17 @@ public class Project {
         this.skills = new ArrayList<>();
     }
 
-    public Project(Date startDate, Date endDate, String description, String title, List<String> skills) {
+    public Project(Date startDate, Date endDate, String description, String title, List<String> skills, ProjectId id) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
         this.title = title;
         this.skills = skills;
+        this.id = id;
+    }
+
+    public ProjectId getId() {
+        return id;
     }
 
     public Date getStartDate() {

@@ -5,6 +5,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
 @Entity
@@ -15,14 +18,19 @@ public class UserJpa {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @NotNull
     private Long cpf;
 
     private int points = 0;
 
+    @NotNull
     private String name;
 
+    @Email
+    @NotNull
     private String email;
 
+    @NotNull
     private String password;
 
     // Getters and Setters

@@ -15,7 +15,7 @@ public class PoRepositoryImpl implements PoRepository {
     @Override
     public void save(PO po) {
         if (po != null && po.getId() != null) {
-            PoStorage.put(po.getId(), po);
+            PoStorage.put(po.getId().getId(), po);
         } else {
             throw new IllegalArgumentException("The Hunter´s ID can not be null.");
         }
