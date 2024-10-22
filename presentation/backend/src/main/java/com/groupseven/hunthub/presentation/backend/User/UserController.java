@@ -14,14 +14,8 @@ import com.groupseven.hunthub.persistence.jpa.repository.UserRepositoryImpl;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepositoryImpl userRepository;
-
     @Autowired
     private UserService userService;
-
-    public UserController(UserRepositoryImpl userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @GetMapping
     public List<User> getAllUsers() {
