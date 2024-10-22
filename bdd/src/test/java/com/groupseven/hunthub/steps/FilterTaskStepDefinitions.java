@@ -25,12 +25,11 @@ public class FilterTaskStepDefinitions {
     private final PO po;
     private String errorMessage;
 
-
     public FilterTaskStepDefinitions() {
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
         this.taskService = new TaskService(taskRepository);
 
-        Long cpf = 12345678900L;
+        String cpf = "12345678900";
         String name = "John Doe";
         String email = "johndoe@example.com";
         String password = "password123";
@@ -41,7 +40,6 @@ public class FilterTaskStepDefinitions {
         String profilePicture = "https://example.com/profile/johndoe.jpg";
         String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
         this.po = new PO(cpf, name, email, password, new ArrayList<>(), profilePicture, bio);
-
 
         try {
             createSampleTask();
@@ -61,11 +59,13 @@ public class FilterTaskStepDefinitions {
         List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
         po.setPoints(500);
 
-        taskService.createTask(po, description, title, description, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
+        taskService.createTask(po, description, title, description, deadline, reward, numberOfMeetings,
+                numberOfHuntersRequired, ratingRequired, tags);
     }
 
     @Given("que o hunter pesquisa por filtros de reward {int}, numberOfMeetings {int} e ratingRequired {double} e tags {string}")
-    public void hunterPesquisandoPorFiltros(int reward, int numberOfMeetings, double ratingRequired, String tagsString) {
+    public void hunterPesquisandoPorFiltros(int reward, int numberOfMeetings, double ratingRequired,
+            String tagsString) {
         List<Tags> tags = Arrays.stream(tagsString.split(","))
                 .map(String::trim)
                 .map(Tags::valueOf)

@@ -10,23 +10,25 @@ public class Hunter extends User {
     private String linkPortfolio;
 
     private List<Task> tasks = new ArrayList<>();
-    
+
     private String bio;
     private String profilePicture;
     private double rating;
     private int level;
     private int totalRating;
     private int ratingCount;
-    
+
     private List<String> certifications = new ArrayList<>();
-    
+
     private List<String> links = new ArrayList<>();
-    
+
     private List<Achievement> achievements = new ArrayList<>();
-    
+
     private List<Project> projects = new ArrayList<>();
 
-    public Hunter(Long cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks, String bio, String profilePicture, List<String> certifications, List<String> links, List<Achievement> achievements, List<Project> projects) {
+    public Hunter(String cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks,
+            String bio, String profilePicture, List<String> certifications, List<String> links,
+            List<Achievement> achievements, List<Project> projects) {
         super(name, email, password, cpf, new UserId(UUID.randomUUID()));
         this.linkPortfolio = linkPortfolio;
         this.tasks = tasks;
@@ -77,8 +79,14 @@ public class Hunter extends User {
         this.profilePicture = profilePicture;
     }
 
-    public String ratingToString() { return df.format(this.rating); }
-    public double getRating() { return this.rating; }
+    public String ratingToString() {
+        return df.format(this.rating);
+    }
+
+    public double getRating() {
+        return this.rating;
+    }
+
     public void setRating(double rating) {
         this.rating = rating;
     }
@@ -201,5 +209,3 @@ public class Hunter extends User {
         this.rating = (double) this.totalRating / this.ratingCount;
     }
 }
-
-

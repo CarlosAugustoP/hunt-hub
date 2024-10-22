@@ -19,7 +19,7 @@ public class UserJpa {
     private UUID id;
 
     @NotNull
-    private Long cpf;
+    private String cpf;
 
     private int points = 0;
 
@@ -42,11 +42,11 @@ public class UserJpa {
         this.id = id;
     }
 
-    public Long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(Long cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
