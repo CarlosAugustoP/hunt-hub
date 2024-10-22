@@ -177,6 +177,10 @@ public class Task {
         hunters.add(hunter);
     }
 
+    public void refuseHunter(Hunter hunter) {
+        huntersApplied.remove(hunter);
+    }
+
     public void addTag(Tags tag) {
         tags.add(tag);
     }

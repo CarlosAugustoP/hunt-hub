@@ -96,4 +96,10 @@ public class TaskService {
     public static void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);
     }
+
+    public static void refuseHunter(Task task, Hunter hunter) {
+        task.refuseHunter(hunter);
+        taskRepository.save(task);
+    }
+
 }

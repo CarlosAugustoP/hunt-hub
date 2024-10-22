@@ -35,5 +35,22 @@ public class POService {
 
         hunter.rate(rating);
     }
+
+    public void acceptHunter(Hunter hunter, Task task, boolean isAccepted) {
+
+        if (hunter == null || task == null) {
+            throw new IllegalArgumentException("Hunter ou Task não podem ser nulos.");
+        }
+
+        if (!task.getStatus().equals("open")) {
+            throw new IllegalStateException("A Task já está fechada.");
+        }
+
+        if (isAccepted) {
+            taskService.acceptHunter(task, hunter);
+        } else {
+            taskService.rejectHunter(task, hunter);
+        }
+    }
 }
 
