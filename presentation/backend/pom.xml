@@ -25,11 +25,6 @@
         </dependency>
         <dependency>
             <groupId>com.groupseven</groupId>
-            <artifactId>persistence</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.groupseven</groupId>
             <artifactId>jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
