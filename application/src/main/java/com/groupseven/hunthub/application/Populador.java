@@ -18,6 +18,9 @@ public class Populador {
     public void popular() {
         UserJpa user = new UserJpa();
         user.setName("hello");
+        user.setEmail("example@example.com");
+        user.setCpf("123456789");
+        user.setPassword("password123");
         userJpaRepository.save(user);
     }
 }

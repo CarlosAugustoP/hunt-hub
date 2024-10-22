@@ -1,16 +1,10 @@
 package com.groupseven.hunthub.domain.models;
 
-import jakarta.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.UUID;
-
 public class User {
 
     public UserId id;
 
-    public Long cpf;
+    public String cpf;
 
     public int points = 0;
 
@@ -20,7 +14,7 @@ public class User {
 
     public String password;
 
-    public User(String name, String email, String password, Long cpf, UserId id) {
+    public User(String name, String email, String password, String cpf, UserId id) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -39,11 +33,11 @@ public class User {
         this.id = id;
     }
 
-    public Long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(Long cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

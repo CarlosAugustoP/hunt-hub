@@ -9,7 +9,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import com.groupseven.hunthub.domain.services.NotificationService;
 
 import java.util.*;
 
@@ -24,7 +23,7 @@ public class ApplyToTaskStepDefinitions {
     private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
     private final TaskService taskService = new TaskService(new TaskRepositoryImpl());
 
-    Long cpfHunter = 12345678901L;
+    String cpfHunter = "12345678901";
     String nameHunter = "John Doe";
     String emailHunter = "john.doe@example.com";
     String passwordHunter = "hunter123";
@@ -52,10 +51,9 @@ public class ApplyToTaskStepDefinitions {
             certificationsHunter,
             linksHunter,
             achievementsHunter,
-            projectsHunter
-    );
+            projectsHunter);
 
-    Long cpfPO = 98765432101L;
+    String cpfPO = "98765432101L";
     String namePO = "Jane Smith";
     String emailPO = "jane.smith@example.com";
     String passwordPO = "po123";
@@ -70,8 +68,7 @@ public class ApplyToTaskStepDefinitions {
             passwordPO,
             tasksPO,
             profilePicturePO,
-            bioPO
-    );
+            bioPO);
 
     String descriptionTask = "Develop a new feature for the application.";
     String titleTask = "Feature Development";
@@ -93,8 +90,7 @@ public class ApplyToTaskStepDefinitions {
             numberOfHuntersRequiredTask,
             ratingRequiredTask,
             tags,
-            new TaskId(UUID.randomUUID())
-    );
+            new TaskId(UUID.randomUUID()));
 
     @Given("que o hunter tem a avaliação {double} e a Task tem a avaliação necessária {double} e o status da vaga é {string}")
     public void task_qualification(double hunterRating, double taskRating, String taskStatus) {
@@ -108,27 +104,30 @@ public class ApplyToTaskStepDefinitions {
 
     @When("o hunter aplica para a Task")
     public void hunter_apply_to_task() {
-            try {
-                TaskService.applyHunterToTask(task, hunter);
-                isHunterNotified = notificationService.Notify(hunter, task.getTitle(), "Você aplicou nessa Task! O PO foi notificado!");
-                isPoNotified = notificationService.Notify(po, task.getTitle(), "Você recebeu uma aplicação nova nessa Task do usuário" + hunter.getName());
-                System.out.println(isHunterNotified);
-                System.out.println("Id do Hunter: " + hunter.getId().getId());
-                System.out.println("Id da Task: " + task.getId().getId());
-                System.out.println("Id do PO: " + po.getId().getId());
-            } catch (Exception e) {
-                exception = e;
-            }
+        try {
+            TaskService.applyHunterToTask(task, hunter);
+            isHunterNotified = notificationService.Notify(hunter, task.getTitle(),
+                    "Você aplicou nessa Task! O PO foi notificado!");
+            isPoNotified = notificationService.Notify(po, task.getTitle(),
+                    "Você recebeu uma aplicação nova nessa Task do usuário" + hunter.getName());
+            System.out.println(isHunterNotified);
+            System.out.println("Id do Hunter: " + hunter.getId().getId());
+            System.out.println("Id da Task: " + task.getId().getId());
+            System.out.println("Id do PO: " + po.getId().getId());
+        } catch (Exception e) {
+            exception = e;
+        }
     }
 
     @Then("a aplicação {string}")
     public void task_applied(String taskApplied) {
         if (taskApplied.equals("não é enviada") && taskStatus.equals("closed")) {
-            assertEquals(exception.getMessage(),"Cannot apply to task. The task is already closed.");
+            assertEquals(exception.getMessage(), "Cannot apply to task. The task is already closed.");
         } else if (taskApplied.equals("não é enviada") && taskStatus.equals("open")) {
-            assertEquals(exception.getMessage(),"Cannot apply to task. Rating required: " + task.getRatingRequired() + ". Your rating " + hunter.getRating());
+            assertEquals(exception.getMessage(), "Cannot apply to task. Rating required: " + task.getRatingRequired()
+                    + ". Your rating " + hunter.getRating());
         } else {
-            assertEquals(hunter, task.getHuntersApplied().get(task.getHuntersApplied().size()-1));
+            assertEquals(hunter, task.getHuntersApplied().get(task.getHuntersApplied().size() - 1));
         }
     }
 

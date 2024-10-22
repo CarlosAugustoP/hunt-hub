@@ -18,7 +18,7 @@ public class PO extends User {
     String profilePicture;
     String bio;
 
-    public PO(Long cpf, String name, String email, String password, List<Task> tasks, String profilePicture,
+    public PO(String cpf, String name, String email, String password, List<Task> tasks, String profilePicture,
             String bio) {
         super(name, email, password, cpf, new UserId(UUID.randomUUID()));
         this.levels = 0;

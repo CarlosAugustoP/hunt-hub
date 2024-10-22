@@ -23,13 +23,13 @@ public class TaskStepDefinitions {
     private final TaskService taskService = new TaskService(taskRepository);
     private Exception excecao;
 
-    Long cpf = 12345678900L;
+    String cpf = "12345678900";
     String name = "John Doe";
     String email = "johndoe@example.com";
     String password = "password123";
     int levels = 5;
     int rating = 4;
-    List<Task> tasks = new ArrayList<>(); // Lista vazia de tarefas para o mock
+    List<Task> tasks = new ArrayList<>();
     String profilePicture = "https://example.com/profile/johndoe.jpg";
     String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
     private final PO po = new PO(cpf, name, email, password, tasks, profilePicture, bio);
@@ -42,7 +42,6 @@ public class TaskStepDefinitions {
     int numberOfHuntersRequired = 1;
     int ratingRequired = 1;
     List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
-
 
     @Given("que o PO possui a quantidade de pontos {int}")
     public void pontos_disponiveis(int pts_disponiveis) {
@@ -62,7 +61,8 @@ public class TaskStepDefinitions {
         reward = pts_reward;
 
         try {
-            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
+            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings,
+                    numberOfHuntersRequired, ratingRequired, tags);
             novaTask = po.getTasks().get(0);
             tasks.add(novaTask);
         } catch (Exception e) {
@@ -95,6 +95,6 @@ public class TaskStepDefinitions {
 
     @And("o pagamento do valor da task e feito e retido no sistema ate a finalizacao da task")
     public void task_pagamento() {
-        assertEquals(po_initial_points-novaTask.getReward(), po.getPoints());
+        assertEquals(po_initial_points - novaTask.getReward(), po.getPoints());
     }
 }
