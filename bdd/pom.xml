@@ -42,6 +42,12 @@
 
         <dependency>
             <groupId>com.groupseven</groupId>
+            <artifactId>jpa</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.groupseven</groupId>
             <artifactId>memoria</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
