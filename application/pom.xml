@@ -30,12 +30,11 @@
             <artifactId>jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+         <dependency>
+            <groupId>com.groupseven</groupId>
+            <artifactId>backend</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        <!-- Add other module dependencies as needed -->
     </dependencies>
 
     <build>

@@ -11,9 +11,16 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.groupseven.hunthub.application",
         "com.groupseven.hunthub.persistence.jpa.repository",
         "com.groupseven.hunthub.persistence.jpa.models",
-        "com.groupseven.hunthub.persistence.jpa.mapper"
+        "com.groupseven.hunthub.persistence.jpa.mapper",
+        "com.groupseven.hunthub.domain.services",
+        "com.groupseven.hunthub.presentation.backend",
+        "com.groupseven.hunthub.presentation.backend.User",
 })
-@EnableJpaRepositories(basePackages = "com.groupseven.hunthub.persistence.jpa.repository")
+@EnableJpaRepositories(basePackages = {
+        "com.groupseven.hunthub.persistence.jpa.repository",
+        "package com.groupseven.hunthub.domain.repository"
+})
+
 @EntityScan(basePackages = "com.groupseven.hunthub.persistence.jpa.models")
 public class HunthubApplication {
     public static void main(String[] args) {
