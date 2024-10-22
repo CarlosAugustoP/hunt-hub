@@ -28,4 +28,9 @@ public class UserRepositoryImpl implements UserRepository {
     throw new UnsupportedOperationException("Unimplemented method 'delete'");
   }
 
+  @Override
+  public User findByEmail(String email) {
+        throw new UnsupportedOperationException("Unimplemented method 'findByEmail'");
+  }
+
 }

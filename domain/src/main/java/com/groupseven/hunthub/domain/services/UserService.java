@@ -23,9 +23,6 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public User createUser(String name, String email, String password, String cpf) {
-    return new User(name, email, password, cpf, null);
-  }
 
   public User findUserById(String id) {
     return new User();
@@ -38,4 +35,21 @@ public class UserService {
     }
     return true;
   }
+
+  public boolean login (String email, String password, String cpf) {
+    User user = userRepository.findByEmail(email);
+    if (user == null) {
+      return false;
+    }
+    return user.getPassword().equals(password);
+  }
+
+  public User findUserByEmail(String email) {
+    return userRepository.findByEmail(email);
+  }
+
+  public void createUser(User user) {
+    userRepository.save(user);
+  }
+
 }

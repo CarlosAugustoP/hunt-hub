@@ -13,4 +13,6 @@ public interface UserRepository {
   List<User> findAll();
 
   void delete(UUID id);
+
+  User findByEmail(String email);
 }

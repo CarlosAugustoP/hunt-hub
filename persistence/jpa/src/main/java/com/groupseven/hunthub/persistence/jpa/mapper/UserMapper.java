@@ -11,7 +11,11 @@ public class UserMapper {
 
   public UserJpa toEntity(User user) {
     UserJpa userJpa = new UserJpa();
-    userJpa.setId(user.getId().getId());
+
+    if (user.getId() != null) {
+      userJpa.setId(user.getId().getId());
+    }
+
     userJpa.setCpf(user.getCpf());
     userJpa.setPoints(user.getPoints());
     userJpa.setName(user.getName());
@@ -19,6 +23,7 @@ public class UserMapper {
     userJpa.setPassword(user.getPassword());
     return userJpa;
   }
+
 
   public User toDomain(UserJpa userJpa) {
     UserId newUserId = new UserId(userJpa.getId());
