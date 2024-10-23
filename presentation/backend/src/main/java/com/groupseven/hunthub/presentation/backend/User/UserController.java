@@ -3,18 +3,19 @@ package com.groupseven.hunthub.presentation.backend.User;
 import java.util.List;
 import java.util.UUID;
 
+import com.groupseven.hunthub.domain.services.TokenService;
+import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
 import com.groupseven.hunthub.domain.models.User;
 import com.groupseven.hunthub.domain.models.AuthenticationDTO;
 import com.groupseven.hunthub.domain.services.UserService;
 import com.groupseven.hunthub.persistence.jpa.repository.UserRepositoryImpl;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -35,7 +39,8 @@ public class UserController {
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO authDTO) {
         var userNamePassword = new UsernamePasswordAuthenticationToken(authDTO.email(), authDTO.password());
         var auth = this.authenticationManager.authenticate(userNamePassword);
-        return ResponseEntity.ok(auth);
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+        return ResponseEntity.ok(token);
     }
 
     /* Esse método vai dizer que não tem id no retorno do JSON, mas não se preocupar, no banco aparece tudo certo. */
