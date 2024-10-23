@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.groupseven.hunthub.domain.services",
         "com.groupseven.hunthub.presentation.backend",
         "com.groupseven.hunthub.presentation.backend.User",
+        "com.groupseven.hunthub.domain.security"
 })
 @EnableJpaRepositories(basePackages = {
         "com.groupseven.hunthub.persistence.jpa.repository"

@@ -1,55 +1,47 @@
+// UserService.java
 package com.groupseven.hunthub.domain.services;
 
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.groupseven.hunthub.domain.models.User;
 import com.groupseven.hunthub.domain.repository.UserRepository;
 
+import java.util.List;
+
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
-
   public List<User> getAllUsers() {
     return userRepository.findAll();
   }
 
-
-  public User findUserById(String id) {
-    return new User();
+  public void createUser(User user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    userRepository.save(user);
   }
 
-  public boolean deleteUser(UUID id) {
-    userRepository.delete(id);
-    if (userRepository.findById(id) != null) {
-      throw new RuntimeException("User not deleted");
-    }
-    return true;
-  }
-
-  public boolean login (String email, String password, String cpf) {
-    User user = userRepository.findByEmail(email);
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    User user = findUserByEmail(email);
     if (user == null) {
-      return false;
+      throw new UsernameNotFoundException("User not found");
     }
-    return user.getPassword().equals(password);
+    return user;
   }
 
   public User findUserByEmail(String email) {
     return userRepository.findByEmail(email);
   }
-
-  public void createUser(User user) {
-    userRepository.save(user);
-  }
-
 }
