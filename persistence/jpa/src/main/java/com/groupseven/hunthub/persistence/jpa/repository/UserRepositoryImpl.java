@@ -26,6 +26,13 @@ public class UserRepositoryImpl implements UserRepository {
   }
 
   @Override
+  public User findByEmail(String email) {
+        return repository.findByEmail(email)
+                .map(userMapper::toDomain)
+                .orElse(null);         
+  }
+
+  @Override
   public User findById(UUID id) {
     return repository.findById(id)
         .map(userMapper::toDomain)

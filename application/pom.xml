@@ -35,6 +35,8 @@
             <artifactId>backend</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+
     </dependencies>
 
     <build>
