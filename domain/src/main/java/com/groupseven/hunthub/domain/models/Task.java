@@ -1,9 +1,8 @@
 package com.groupseven.hunthub.domain.models;
 
-import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Date;
+import java.util.List;
 
 public class Task {
 
@@ -154,9 +153,11 @@ public class Task {
     public void setRatingRequired(double ratingRequired) {
         this.ratingRequired = ratingRequired;
     }
+    
     public void setCompleted(boolean completed) {
         this.status = "completed";
     }
+
     public boolean isCompleted() {
         return completed;
     }

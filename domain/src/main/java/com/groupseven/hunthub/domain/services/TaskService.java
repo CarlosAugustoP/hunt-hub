@@ -1,10 +1,20 @@
 package com.groupseven.hunthub.domain.services;
 
-import com.groupseven.hunthub.domain.models.*;
-import com.groupseven.hunthub.domain.repository.TaskRepository;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Tags;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskId;
+import com.groupseven.hunthub.domain.repository.TaskRepository;
 
 @Service
 public class TaskService {
@@ -84,11 +94,19 @@ public class TaskService {
     }
 
     public static void applyHunterToTask(Task task, Hunter hunter) {
+
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals("open")) {
+        
             task.applyHunter(hunter);
-        } else if (task.getStatus().equals("open")) {
+        } 
+        
+        else if (task.getStatus().equals("open")) {
+        
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired() + ". Your rating " + hunter.getRating());
-        } else {
+        } 
+        
+        else {
+        
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
     }
@@ -97,9 +115,7 @@ public class TaskService {
         task.assignHunter(hunter);
     }
 
-    public static void refuseHunter(Task task, Hunter hunter) {
+    public static void declineHunter(Task task, Hunter hunter) {
         task.refuseHunter(hunter);
-        taskRepository.save(task);
     }
-
 }
