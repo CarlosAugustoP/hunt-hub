@@ -21,9 +21,8 @@ public class HunterRepositoryImpl implements HunterRepository {
 
   @Override
   public Hunter findById(UUID id) {
-    return repository.findById(id)
-        .map(hunterMapper::toDomain)
-        .orElse(null);
+    HunterJpa hunterJpa = repository.findById(id).orElse(null);
+    return hunterJpa != null ? hunterMapper.toDomain(hunterJpa) : null;
   }
 
   @Override

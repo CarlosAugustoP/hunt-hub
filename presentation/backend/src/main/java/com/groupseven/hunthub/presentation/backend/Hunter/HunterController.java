@@ -2,10 +2,9 @@ package com.groupseven.hunthub.presentation.backend.Hunter;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.User;
-import com.groupseven.hunthub.domain.models.UserId;
 import com.groupseven.hunthub.domain.services.HunterService;
-import com.groupseven.hunthub.domain.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -17,19 +16,29 @@ public class HunterController {
     @Autowired
     private HunterService hunterService;
 
-    @Autowired
-    private UserService userService;
-
-    @PostMapping("/register/{userId}")
-    public User register(@RequestBody Hunter hunter, @PathVariable UUID userId) {
-        hunter.setId(userId);
-        System.out.println("Hunter: " + hunter);
+    @PostMapping()
+    public User register(@RequestBody Hunter hunter) {
         hunterService.createHunter(hunter);
         return hunter;
-        }
+    }
 
-        // hunterService.createHunter(hunter);
+    @GetMapping("/{id}")
+    public ResponseEntity<Hunter> getHunterById(@PathVariable UUID id) {
+        return ResponseEntity.ok(hunterService.findHunterById(id));
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Hunter> updateHunter(@PathVariable UUID id, @RequestBody Hunter hunter) {
+        Hunter updatedHunter = hunterService.updateHunter(id, hunter);
+        return ResponseEntity.ok(updatedHunter);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHunter(@PathVariable UUID id) {
+        Hunter hunter = hunterService.findHunterById(id);
+        hunterService.deleteHunter(hunter);
+        return ResponseEntity.noContent().build();
+    }
 }
 
 

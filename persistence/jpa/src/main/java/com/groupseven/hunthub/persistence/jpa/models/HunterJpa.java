@@ -5,9 +5,7 @@ import java.util.List;
 
 @Entity
 public class HunterJpa extends UserJpa {
-
   private String linkPortfolio;
-
 
   @ManyToMany(mappedBy = "hunters")
   private List<TaskJpa> tasks;

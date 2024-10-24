@@ -44,7 +44,7 @@ public class UserController {
     }
 
     /* Esse método vai dizer que não tem id no retorno do JSON, mas não se preocupar, no banco aparece tudo certo. */
-    @PostMapping("/register")
+    @PostMapping()
     public User register(@RequestBody User user) {
         userService.createUser(user);
         return user;

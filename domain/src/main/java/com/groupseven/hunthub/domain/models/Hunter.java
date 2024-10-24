@@ -215,7 +215,6 @@ public class Hunter extends User {
         this.setName(user.getName());
         this.setPassword(user.getPassword());
         this.setCpf(user.getCpf());
-
     }
 
     public void setId(UUID id) {
