@@ -9,6 +9,9 @@ import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +24,19 @@ public class HunterService {
 
     private final HunterRepository hunterRepository;
     private final PoRepository poRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public HunterService(HunterRepository hunterRepository, PoRepository poRepository) {
         this.hunterRepository = hunterRepository;
         this.poRepository = poRepository;
+        this.passwordEncoder = null;
+    }
+
+    @Autowired
+    public HunterService(HunterRepository hunterRepository, PoRepository poRepository, PasswordEncoder passwordEncoder) {
+        this.hunterRepository = hunterRepository;
+        this.poRepository = poRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Hunter> getAllHunters() {
@@ -57,6 +69,9 @@ public class HunterService {
     }
 
     public void createHunter(Hunter hunter) {
+        hunter.setPassword(passwordEncoder.encode(hunter.getPassword()));
+        System.out.println("Hunter: " + hunter);
+        System.out.println("Senha: " + hunter.getPassword());
         hunterRepository.save(hunter);
     }
 
