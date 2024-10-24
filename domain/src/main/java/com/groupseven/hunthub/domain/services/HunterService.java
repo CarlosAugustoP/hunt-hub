@@ -52,4 +52,8 @@ public class HunterService {
         poRepository.save(po);
 
     }
+
+    public void createHunter(Hunter hunter) {
+        hunterRepository.save(hunter);
+    }
 }

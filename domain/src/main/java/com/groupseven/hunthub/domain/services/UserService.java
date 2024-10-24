@@ -11,6 +11,7 @@ import com.groupseven.hunthub.domain.models.User;
 import com.groupseven.hunthub.domain.repository.UserRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -43,5 +44,9 @@ public class UserService implements UserDetailsService {
 
   public User findUserByEmail(String email) {
     return userRepository.findByEmail(email);
+  }
+
+  public User findUserById(UUID id) {
+    return userRepository.findById(id);
   }
 }

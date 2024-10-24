@@ -208,4 +208,17 @@ public class Hunter extends User {
         this.ratingCount++;
         this.rating = (double) this.totalRating / this.ratingCount;
     }
+
+    public void setUser(User user) {
+        this.setId(user.getId().getId());
+        this.setEmail(user.getEmail());
+        this.setName(user.getName());
+        this.setPassword(user.getPassword());
+        this.setCpf(user.getCpf());
+
+    }
+
+    public void setId(UUID id) {
+        this.id = new UserId(id);
+    }
 }
