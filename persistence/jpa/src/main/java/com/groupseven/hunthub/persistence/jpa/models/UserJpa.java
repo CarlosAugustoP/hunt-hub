@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class UserJpa {
 
     @Id
@@ -48,7 +48,7 @@ public class UserJpa {
 
     // Getters and Setters
     public UUID getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(UUID id) {

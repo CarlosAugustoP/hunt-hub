@@ -29,6 +29,7 @@ public class HunterController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Hunter> updateHunter(@PathVariable UUID id, @RequestBody Hunter hunter) {
+        hunter.setId(id);
         Hunter updatedHunter = hunterService.updateHunter(id, hunter);
         return ResponseEntity.ok(updatedHunter);
     }

@@ -24,6 +24,7 @@ public class HunterMapper {
   public HunterJpa toEntity(Hunter hunter) {
     HunterJpa hunterJpa = new HunterJpa();
 
+    hunterJpa.setId(hunter.getId().getId());
     hunterJpa.setName(hunter.getName());
     hunterJpa.setEmail(hunter.getEmail());
     hunterJpa.setCpf(hunter.getCpf());

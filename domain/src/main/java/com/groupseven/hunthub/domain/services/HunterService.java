@@ -8,8 +8,10 @@ import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.PoRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,6 @@ import java.util.UUID;
 
 @Service
 public class HunterService {
-
     private final HunterRepository hunterRepository;
     private final PoRepository poRepository;
     private final PasswordEncoder passwordEncoder;
@@ -82,6 +83,13 @@ public class HunterService {
             throw new EntityNotFoundException("Hunter com ID " + id + " não encontrado.");
         }
 
+        updatedHunterData.setId(existingHunter.getId().getId());
+        updatedHunterData.setEmail(existingHunter.getEmail());  // campos únicos
+        updatedHunterData.setCpf(existingHunter.getCpf());      // campos únicos
+        updatedHunterData.setPassword(existingHunter.getPassword());
+        updatedHunterData.setId(id);
+
+
         if (updatedHunterData.getBio() != null) {
             existingHunter.setBio(updatedHunterData.getBio());
         }
@@ -100,23 +108,6 @@ public class HunterService {
         if (updatedHunterData.getLinks() != null) {
             existingHunter.setLinks(new ArrayList<>(updatedHunterData.getLinks()));
         }
-
-        System.out.println("Updated hunter: " + existingHunter);
-        System.out.println("Updated hunter: " + existingHunter.getId().getId());
-        System.out.println("Updated hunter: " + existingHunter.getBio());
-        System.out.println("Updated hunter: " + existingHunter.getProfilePicture());
-        System.out.println("Updated hunter: " + existingHunter.getLinkPortfolio());
-        System.out.println("Updated hunter: " + existingHunter.getCertifications());
-        System.out.println("Updated hunter: " + existingHunter.getLinks());
-        System.out.println("Updated hunter: " + existingHunter.getRating());
-        System.out.println("Updated hunter: " + existingHunter.getRatingCount());
-        System.out.println("Updated hunter: " + existingHunter.getTotalRating());
-        System.out.println("Updated hunter: " + existingHunter.getLevel());
-        System.out.println("Nome: " + existingHunter.getName());
-        System.out.println("Email: " + existingHunter.getEmail());
-        System.out.println("CPF: " + existingHunter.getCpf());
-        System.out.println("Pontos: " + existingHunter.getPoints());
-        System.out.println("Tasks: " + existingHunter.getTasks());
 
         hunterRepository.save(existingHunter);
 
