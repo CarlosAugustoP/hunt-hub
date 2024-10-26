@@ -10,7 +10,6 @@ public class Hunter extends User {
     private String linkPortfolio;
 
     private List<Task> tasks = new ArrayList<>();
-
     private String bio;
     private String profilePicture;
     private double rating;
