@@ -26,7 +26,7 @@ public class PoRepositoryImpl implements PoRepository {
     }
 
     @Override
-    public PO findById(Long id) {
+    public PO findById(UUID id) {
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 

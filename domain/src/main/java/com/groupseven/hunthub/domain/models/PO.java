@@ -37,6 +37,10 @@ public class PO extends User {
         return levels;
     }
 
+    public void setId(UUID id) {
+        this.id = new UserId(id);
+    }
+
     public void setLevels(int levels) {
         this.levels = levels;
     }
