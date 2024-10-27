@@ -1,4 +1,4 @@
-package com.groupseven.hunthub.presentation.backend.Hunter;
+package com.groupseven.hunthub.presentation.backend.PO;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.User;
@@ -7,18 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/hunters")
-public class HunterController {
+@RequestMapping("/po")
+public class POController {
 
     @Autowired
     private HunterService hunterService;
 
     @PostMapping()
-    public Hunter register(@RequestBody Hunter hunter) {
+    public User register(@RequestBody Hunter hunter) {
         hunterService.createHunter(hunter);
         return hunter;
     }
@@ -26,11 +25,6 @@ public class HunterController {
     @GetMapping("/{id}")
     public ResponseEntity<Hunter> getHunterById(@PathVariable UUID id) {
         return ResponseEntity.ok(hunterService.findHunterById(id));
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<Hunter>> findAll() {
-        return ResponseEntity.ok(hunterService.getAllHunters());
     }
 
     @PutMapping("/{id}")

@@ -24,13 +24,13 @@ public class HunterMapper {
   public HunterJpa toEntity(Hunter hunter) {
     HunterJpa hunterJpa = new HunterJpa();
 
-    hunterJpa.setId(hunter.getId().getId());
+    if (hunter.getId() != null) {
+      hunterJpa.setId(hunter.getId().getId());
+    }
     hunterJpa.setName(hunter.getName());
     hunterJpa.setEmail(hunter.getEmail());
     hunterJpa.setCpf(hunter.getCpf());
     hunterJpa.setPassword(hunter.getPassword());
-
-    // Set Hunter-specific fields
     hunterJpa.setLinkPortfolio(hunter.getLinkPortfolio());
     hunterJpa.setTasks(hunter.getTasks().stream().map(taskMapper::toEntity).collect(Collectors.toList()));
     hunterJpa.setBio(hunter.getBio());

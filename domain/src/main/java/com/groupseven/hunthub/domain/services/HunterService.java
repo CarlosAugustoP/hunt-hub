@@ -70,9 +70,8 @@ public class HunterService {
     }
 
     public void createHunter(Hunter hunter) {
+        assert passwordEncoder != null;
         hunter.setPassword(passwordEncoder.encode(hunter.getPassword()));
-        System.out.println("Hunter: " + hunter);
-        System.out.println("Senha: " + hunter.getPassword());
         hunterRepository.save(hunter);
     }
 
@@ -84,8 +83,8 @@ public class HunterService {
         }
 
         updatedHunterData.setId(existingHunter.getId().getId());
-        updatedHunterData.setEmail(existingHunter.getEmail());  // campos únicos
-        updatedHunterData.setCpf(existingHunter.getCpf());      // campos únicos
+        updatedHunterData.setEmail(existingHunter.getEmail());
+        updatedHunterData.setCpf(existingHunter.getCpf());
         updatedHunterData.setPassword(existingHunter.getPassword());
         updatedHunterData.setId(id);
 
