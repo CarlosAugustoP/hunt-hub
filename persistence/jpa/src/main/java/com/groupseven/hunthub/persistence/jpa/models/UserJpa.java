@@ -3,16 +3,13 @@ package com.groupseven.hunthub.persistence.jpa.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.security.core.GrantedAuthority;
 
-
-import java.util.Collection;
-import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
-public class UserJpa{
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class UserJpa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +18,7 @@ public class UserJpa{
     @NotNull
     private String cpf;
 
-    private int points = 0;
+    private int points;
 
     @NotNull
     private String name;
@@ -34,9 +31,24 @@ public class UserJpa{
     @NotNull
     private String password;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UserJpa user = (UserJpa) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     // Getters and Setters
     public UUID getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(UUID id) {
@@ -74,7 +86,6 @@ public class UserJpa{
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     public String getPassword() {
         return password;

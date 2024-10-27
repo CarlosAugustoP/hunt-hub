@@ -19,8 +19,18 @@ public class HunterMapper {
   @Autowired
   private ProjectMapper projectMapper;
 
+  // No need for UserMapper since we'll map the fields directly
+
   public HunterJpa toEntity(Hunter hunter) {
     HunterJpa hunterJpa = new HunterJpa();
+
+    if (hunter.getId() != null) {
+      hunterJpa.setId(hunter.getId().getId());
+    }
+    hunterJpa.setName(hunter.getName());
+    hunterJpa.setEmail(hunter.getEmail());
+    hunterJpa.setCpf(hunter.getCpf());
+    hunterJpa.setPassword(hunter.getPassword());
     hunterJpa.setLinkPortfolio(hunter.getLinkPortfolio());
     hunterJpa.setTasks(hunter.getTasks().stream().map(taskMapper::toEntity).collect(Collectors.toList()));
     hunterJpa.setBio(hunter.getBio());
@@ -32,24 +42,37 @@ public class HunterMapper {
     hunterJpa.setCertifications(hunter.getCertifications());
     hunterJpa.setLinks(hunter.getLinks());
     hunterJpa.setAchievements(
-        hunter.getAchievements().stream().map(achievementMapper::toEntity).collect(Collectors.toList()));
+            hunter.getAchievements().stream().map(achievementMapper::toEntity).collect(Collectors.toList()));
     hunterJpa.setProjects(hunter.getProjects().stream().map(projectMapper::toEntity).collect(Collectors.toList()));
     return hunterJpa;
   }
 
   public Hunter toDomain(HunterJpa hunterJpa) {
-    return new Hunter(
-        hunterJpa.getCpf(),
-        hunterJpa.getName(),
-        hunterJpa.getEmail(),
-        hunterJpa.getPassword(),
-        hunterJpa.getLinkPortfolio(),
-        hunterJpa.getTasks().stream().map(taskMapper::toDomain).collect(Collectors.toList()),
-        hunterJpa.getBio(),
-        hunterJpa.getProfilePicture(),
-        hunterJpa.getCertifications(),
-        hunterJpa.getLinks(),
-        hunterJpa.getAchievements().stream().map(achievementMapper::toDomain).collect(Collectors.toList()),
-        hunterJpa.getProjects().stream().map(projectMapper::toDomain).collect(Collectors.toList()));
+    // Create Hunter object, which extends User
+    Hunter hunter = new Hunter();
+
+    hunter.setId(hunterJpa.getId());
+    hunter.setName(hunterJpa.getName());
+    hunter.setEmail(hunterJpa.getEmail());
+    hunter.setCpf(hunterJpa.getCpf());
+    hunter.setPassword(hunterJpa.getPassword());
+    // Set other inherited fields if necessary
+
+    // Set Hunter-specific fields
+    hunter.setLinkPortfolio(hunterJpa.getLinkPortfolio());
+    hunter.setTasks(hunterJpa.getTasks().stream().map(taskMapper::toDomain).collect(Collectors.toList()));
+    hunter.setBio(hunterJpa.getBio());
+    hunter.setProfilePicture(hunterJpa.getProfilePicture());
+    hunter.setRating(hunterJpa.getRating());
+    hunter.setLevel(hunterJpa.getLevel());
+    hunter.setTotalRating(hunterJpa.getTotalRating());
+    hunter.setRatingCount(hunterJpa.getRatingCount());
+    hunter.setCertifications(hunterJpa.getCertifications());
+    hunter.setLinks(hunterJpa.getLinks());
+    hunter.setAchievements(
+            hunterJpa.getAchievements().stream().map(achievementMapper::toDomain).collect(Collectors.toList()));
+    hunter.setProjects(hunterJpa.getProjects().stream().map(projectMapper::toDomain).collect(Collectors.toList()));
+
+    return hunter;
   }
 }

@@ -5,13 +5,12 @@ import java.util.List;
 
 @Entity
 public class HunterJpa extends UserJpa {
-
+  public HunterJpa() {
+    super();
+  }
   private String linkPortfolio;
-
-
   @ManyToMany(mappedBy = "hunters")
   private List<TaskJpa> tasks;
-
   private String bio;
   private String profilePicture;
   private double rating;
@@ -126,5 +125,16 @@ public class HunterJpa extends UserJpa {
 
   public void setProjects(List<ProjectJpa> projects) {
     this.projects = projects;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof HunterJpa)) return false;
+    return super.equals(o);
+  }
+  @Override
+  public int hashCode() {
+    return super.hashCode();
   }
 }

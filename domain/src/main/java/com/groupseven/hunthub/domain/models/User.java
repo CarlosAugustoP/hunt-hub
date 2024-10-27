@@ -35,10 +35,6 @@ public class User implements UserDetails {
         return id;
     }
 
-    public void setId(UserId id) {
-        this.id = id;
-    }
-
     public String getCpf() {
         return cpf;
     }

@@ -10,7 +10,6 @@ public class Hunter extends User {
     private String linkPortfolio;
 
     private List<Task> tasks = new ArrayList<>();
-
     private String bio;
     private String profilePicture;
     private double rating;
@@ -207,5 +206,17 @@ public class Hunter extends User {
         this.totalRating += rating;
         this.ratingCount++;
         this.rating = (double) this.totalRating / this.ratingCount;
+    }
+
+    public void setUser(User user) {
+        this.setId(user.getId().getId());
+        this.setEmail(user.getEmail());
+        this.setName(user.getName());
+        this.setPassword(user.getPassword());
+        this.setCpf(user.getCpf());
+    }
+
+    public void setId(UUID id) {
+        this.id = new UserId(id);
     }
 }

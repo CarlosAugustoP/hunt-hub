@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface HunterJpaRepository extends JpaRepository<HunterJpa, UUID> {
   HunterJpa findByName(String name);
+
 }
