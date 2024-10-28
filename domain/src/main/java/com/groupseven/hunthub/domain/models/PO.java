@@ -117,6 +117,14 @@ public class PO extends User {
         this.tasks.remove(task);
     }
 
+    public void setUser(User user) {
+        this.setId(user.getId().getId());
+        this.setEmail(user.getEmail());
+        this.setName(user.getName());
+        this.setPassword(user.getPassword());
+        this.setCpf(user.getCpf());
+    }
+
     public void rate(int rating) {
         this.totalRating += rating;
         this.ratingCount++;

@@ -30,12 +30,12 @@ public class POController {
         return ResponseEntity.ok(poService.findPOById(id));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Hunter> updateHunter(@PathVariable UUID id, @RequestBody Hunter hunter) {
-//        hunter.setId(id);
-//        Hunter updatedHunter = poService.(id, hunter);
-//        return ResponseEntity.ok(updatedHunter);
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<PO> updatePO(@PathVariable UUID id, @RequestBody PO po) {
+        po.setId(id);
+        PO updatedPO = poService.updatePO(id, po);
+        return ResponseEntity.ok(updatedPO);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHunter(@PathVariable UUID id) {
