@@ -7,5 +7,4 @@ import com.groupseven.hunthub.persistence.jpa.models.UserJpa;
 import java.util.List;
 
 public interface NotificationJpaRepository extends JpaRepository<NotificationJpa, Long> {
-  List<NotificationJpa> findByUser(UserJpa userJpa);
 }

@@ -106,9 +106,9 @@ public class ApplyToTaskStepDefinitions {
     public void hunter_apply_to_task() {
         try {
             TaskService.applyHunterToTask(task, hunter);
-            isHunterNotified = notificationService.Notify(hunter, task.getTitle(),
+            isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você aplicou nessa Task! O PO foi notificado!");
-            isPoNotified = notificationService.Notify(po, task.getTitle(),
+            isPoNotified = notificationService.NotifyPO(po, task.getTitle(),
                     "Você recebeu uma aplicação nova nessa Task do usuário" + hunter.getName());
             System.out.println(isHunterNotified);
             System.out.println("Id do Hunter: " + hunter.getId().getId());
