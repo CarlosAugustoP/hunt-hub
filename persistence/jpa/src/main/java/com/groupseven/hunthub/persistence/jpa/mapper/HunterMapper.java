@@ -48,17 +48,12 @@ public class HunterMapper {
   }
 
   public Hunter toDomain(HunterJpa hunterJpa) {
-    // Create Hunter object, which extends User
     Hunter hunter = new Hunter();
-
     hunter.setId(hunterJpa.getId());
     hunter.setName(hunterJpa.getName());
     hunter.setEmail(hunterJpa.getEmail());
     hunter.setCpf(hunterJpa.getCpf());
     hunter.setPassword(hunterJpa.getPassword());
-    // Set other inherited fields if necessary
-
-    // Set Hunter-specific fields
     hunter.setLinkPortfolio(hunterJpa.getLinkPortfolio());
     hunter.setTasks(hunterJpa.getTasks().stream().map(taskMapper::toDomain).collect(Collectors.toList()));
     hunter.setBio(hunterJpa.getBio());

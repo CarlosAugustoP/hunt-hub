@@ -4,9 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class POJpa extends UserJpa {
+  private UUID id;
 
   private int levels;
   private int rating;
@@ -17,6 +19,14 @@ public class POJpa extends UserJpa {
 
   @OneToMany(mappedBy = "po", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
   private List<TaskJpa> tasks;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   // Getters and Setters
   public int getLevels() {

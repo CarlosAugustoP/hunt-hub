@@ -19,6 +19,13 @@ public class POMapper {
 
   public POJpa toEntity(PO po) {
     POJpa poJpa = new POJpa();
+    if (po.getId() != null) {
+      poJpa.setId(po.getId().getId());
+    }
+    poJpa.setEmail(po.getEmail());
+    poJpa.setName(po.getName());
+    poJpa.setCpf(po.getCpf());
+    poJpa.setPassword(po.getPassword());
     poJpa.setLevels(po.getLevels());
     poJpa.setRating(po.getRating());
     poJpa.setTotalRating(po.getTotalRating());
@@ -26,7 +33,6 @@ public class POMapper {
     poJpa.setProfilePicture(po.getProfilePicture());
     poJpa.setBio(po.getBio());
 
-    // Mapeamento das tarefas de PO para TaskJpa usando TaskMapper
     List<TaskJpa> taskJpaList = po.getTasks().stream()
         .map(taskMapper::toEntity)
         .collect(Collectors.toList());
@@ -37,6 +43,11 @@ public class POMapper {
 
   public PO toDomain(POJpa poJpa) {
     PO po = new PO();
+    po.setId(poJpa.getId());
+    po.setName(poJpa.getName());
+    po.setEmail(poJpa.getEmail());
+    po.setCpf(poJpa.getCpf());
+    po.setPassword(poJpa.getPassword());
     po.setLevels(poJpa.getLevels());
     po.setRating(poJpa.getRating());
     po.setTotalRating(poJpa.getTotalRating());
@@ -44,7 +55,6 @@ public class POMapper {
     po.setProfilePicture(poJpa.getProfilePicture());
     po.setBio(poJpa.getBio());
 
-    // Mapeamento das tarefas de TaskJpa para Task usando TaskMapper
     List<Task> taskList = poJpa.getTasks().stream()
         .map(taskMapper::toDomain)
         .collect(Collectors.toList());

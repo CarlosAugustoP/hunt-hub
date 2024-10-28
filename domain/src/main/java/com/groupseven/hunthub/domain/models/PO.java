@@ -37,6 +37,10 @@ public class PO extends User {
         return levels;
     }
 
+    public void setId(UUID id) {
+        this.id = new UserId(id);
+    }
+
     public void setLevels(int levels) {
         this.levels = levels;
     }
@@ -111,6 +115,14 @@ public class PO extends User {
 
     public void removeTask(Task task) {
         this.tasks.remove(task);
+    }
+
+    public void setUser(User user) {
+        this.setId(user.getId().getId());
+        this.setEmail(user.getEmail());
+        this.setName(user.getName());
+        this.setPassword(user.getPassword());
+        this.setCpf(user.getCpf());
     }
 
     public void rate(int rating) {

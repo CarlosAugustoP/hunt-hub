@@ -8,6 +8,7 @@ import com.groupseven.hunthub.persistence.jpa.mapper.POMapper;
 import com.groupseven.hunthub.persistence.jpa.models.POJpa;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class PORepositoryImpl implements PoRepository {
@@ -25,7 +26,7 @@ public class PORepositoryImpl implements PoRepository {
   }
 
   @Override
-  public PO findById(Long id) {
+  public PO findById(UUID id) {
     return repository.findById(id)
         .map(poMapper::toDomain)
         .orElse(null);
@@ -39,7 +40,7 @@ public class PORepositoryImpl implements PoRepository {
   }
 
   @Override
-  public void delete(Long id) {
+  public void delete(UUID id) {
     repository.deleteById(id);
   }
 }

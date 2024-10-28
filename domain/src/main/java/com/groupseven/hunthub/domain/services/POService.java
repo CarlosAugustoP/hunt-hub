@@ -3,15 +3,27 @@ package com.groupseven.hunthub.domain.services;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.PoRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class POService {
-
-
     private final PoRepository poRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public POService(PoRepository poRepository) {
+        this.poRepository = poRepository;
+        this.passwordEncoder = null;
+    }
+
+    @Autowired
+    public POService(PoRepository poRepository, PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         this.poRepository = poRepository;
     }
 
@@ -34,6 +46,52 @@ public class POService {
         }
 
         hunter.rate(rating);
+    }
+
+    public List<PO> getAllPOs() {
+        return poRepository.findAll();
+    }
+
+    public PO findPOById(UUID id) {
+        return poRepository.findById(id);
+    }
+
+    public void createPO(PO po) {
+        assert passwordEncoder != null;
+        po.setPassword(passwordEncoder.encode(po.getPassword()));
+        poRepository.save(po);
+    }
+
+    @Transactional
+    public PO updatePO(UUID id, PO updatedPoData) {
+        PO existingPo = poRepository.findById(id);
+
+        if(existingPo == null) {
+            throw new IllegalArgumentException("PO com o ID " + id + "não encontrado.");
+        }
+
+        updatedPoData.setId(existingPo.getId().getId());
+        updatedPoData.setEmail(existingPo.getEmail());
+        updatedPoData.setCpf(existingPo.getCpf());
+        updatedPoData.setPassword(existingPo.getPassword());
+        updatedPoData.setId(id);
+
+        if (updatedPoData.getBio() != null) {
+            existingPo.setBio(updatedPoData.getBio());
+        }
+
+        if (updatedPoData.getProfilePicture() != null) {
+            existingPo.setProfilePicture(updatedPoData.getProfilePicture());
+        }
+
+        poRepository.save(existingPo);
+
+        return existingPo;
+
+    }
+
+    public void deletePO(UUID id) {
+        poRepository.delete(id);
     }
 }
 
