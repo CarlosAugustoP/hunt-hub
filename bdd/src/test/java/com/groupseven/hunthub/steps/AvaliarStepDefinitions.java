@@ -89,10 +89,10 @@ public class AvaliarStepDefinitions {
     @When("os users \\(PO e hunters) são notificados que a Task foi finalizada")
     public void notifyPOandHunters() {
 
-        var response = notificationService.Notify(this.task.getPo(), this.task.getTitle(), "Task finalizada");
+        var response = notificationService.NotifyPO(this.task.getPo(), this.task.getTitle(), "Task finalizada");
         assertTrue(response);
         for (Hunter hunter : hunters) {
-            var responseHunter = notificationService.Notify(hunter, this.task.getTitle(), "Task finalizada");
+            var responseHunter = notificationService.NotifyHunter(hunter, this.task.getTitle(), "Task finalizada");
             assertTrue(responseHunter);
         }
     }

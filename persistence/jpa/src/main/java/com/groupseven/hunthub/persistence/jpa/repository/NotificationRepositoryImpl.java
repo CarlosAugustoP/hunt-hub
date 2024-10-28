@@ -1,5 +1,7 @@
 package com.groupseven.hunthub.persistence.jpa.repository;
 
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.groupseven.hunthub.domain.models.Notification;
@@ -32,11 +34,22 @@ public class NotificationRepositoryImpl implements NotificationRepository {
   }
 
   @Override
-  public List<Notification> list(User user) {
-    UserJpa userJpa = userMapper.toEntity(user);
-    List<NotificationJpa> notifications = repository.findByUser(userJpa);
-    return notifications.stream()
-        .map(notificationMapper::toDomain)
-        .collect(Collectors.toList());
+  public List<Notification> listHunter(Hunter hunter) {
+    throw new UnsupportedOperationException("Not implemented yet");
   }
+
+  @Override
+  public List<Notification> listPO(PO po) {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+//  @Override
+//  public List<Notification> list(User user) {
+//    UserJpa userJpa = userMapper.toEntity(user);
+//    List<NotificationJpa> notifications = repository.findByUser(userJpa);
+//    return notifications.stream()
+//            .map(notificationMapper::toDomain)
+//            .collect(Collectors.toList());
+//  }
+
 }

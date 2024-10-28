@@ -13,14 +13,32 @@ public class NotificationJpa {
 
   private String theme;
   private String message;
-
   private LocalDate createdAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private UserJpa user;
+  @JoinColumn(name = "hunter_id", nullable = true)
+  private HunterJpa hunter;
 
-  // Getters e Setters
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "po_id", nullable = true)
+  private POJpa po;
+
+  public NotificationJpa() {
+    // Construtor vazio para JPA
+  }
+
+  public NotificationJpa(String theme, String message, HunterJpa hunter, POJpa po) {
+    if (hunter == null && po == null) {
+      throw new IllegalArgumentException("A notificação precisa de pelo menos um Hunter ou PO.");
+    }
+
+    this.theme = theme;
+    this.message = message;
+    this.hunter = hunter;
+    this.po = po;
+    this.createdAt = LocalDate.now();
+  }
+
   public Long getId() {
     return id;
   }
@@ -53,11 +71,19 @@ public class NotificationJpa {
     this.createdAt = createdAt;
   }
 
-  public UserJpa getUser() {
-    return user;
+  public HunterJpa getHunter() {
+    return hunter;
   }
 
-  public void setUser(UserJpa user) {
-    this.user = user;
+  public void setHunter(HunterJpa hunter) {
+    this.hunter = hunter;
+  }
+
+  public POJpa getPo() {
+    return po;
+  }
+
+  public void setPo(POJpa po) {
+    this.po = po;
   }
 }

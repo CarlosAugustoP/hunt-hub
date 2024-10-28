@@ -1,11 +1,13 @@
 package com.groupseven.hunthub.domain.repository;
 
+import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Notification;
 import com.groupseven.hunthub.domain.models.User;
 
 import java.util.List;
-
+import com.groupseven.hunthub.domain.models.PO;
 public interface NotificationRepository {
     public void save(Notification notification);
-    List<Notification> list(User user);
+    public List<Notification> listHunter(Hunter hunter);
+    public List<Notification> listPO(PO po);
 }
