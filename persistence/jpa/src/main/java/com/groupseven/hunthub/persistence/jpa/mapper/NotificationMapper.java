@@ -17,6 +17,10 @@ public class NotificationMapper {
     notificationJpa.setMessage(notification.getMessage());
     notificationJpa.setCreatedAt(notification.getCreatedAt());
     notificationJpa.setUser(userMapper.toEntity(notification.getUser()));
+    /*
+    * TODO: NotificationJpa.setHunter = null SE Notification PARA PO
+    *  NotificationJpa.setPo = null SE Notification PARA Hunter
+    * */
     return notificationJpa;
   }
 

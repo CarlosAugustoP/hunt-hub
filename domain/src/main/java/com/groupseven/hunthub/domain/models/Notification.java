@@ -8,6 +8,13 @@ public class Notification {
     private String message;
     private LocalDate createdAt;
 
+    /*
+    * TODO: RECEBE HUNTER OU PO NO LUGAR DE USER
+    *  TIRAR PRIVATE User user
+    *  AO INVÉS DE USER.GETID TEM QUE SER HUNTER.GETID.GETID
+    *
+    * */
+
     public Notification(String message, String theme, User user) {
         this.message = message;
         this.theme = theme;
