@@ -15,6 +15,11 @@ public class POService {
     private final PoRepository poRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public POService(PoRepository poRepository) {
+        this.poRepository = poRepository;
+        this.passwordEncoder = null;
+    }
+
     @Autowired
     public POService(PoRepository poRepository, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;

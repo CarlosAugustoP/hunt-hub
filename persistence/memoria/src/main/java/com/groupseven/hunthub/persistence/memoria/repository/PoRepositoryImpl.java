@@ -26,17 +26,11 @@ public class PoRepositoryImpl implements PoRepository {
     }
 
     @Override
-    public PO findById(UUID id) {
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
-
-    @Override
     public List<PO> findAll() {
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
     @Override
-    public void delete(Long id) {
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    public void delete(UUID id) {
     }
 }
