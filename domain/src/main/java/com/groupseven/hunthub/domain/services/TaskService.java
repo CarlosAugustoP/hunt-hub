@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.groupseven.hunthub.domain.models.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.groupseven.hunthub.domain.repository.TaskRepository;
@@ -15,6 +16,8 @@ import com.groupseven.hunthub.domain.repository.TaskRepository;
 @Service
 public class TaskService {
 
+
+    @Autowired
     private TaskRepository taskRepository;
 
     public TaskService(TaskRepository taskRepository) {
@@ -25,7 +28,7 @@ public class TaskService {
 
     }
 
-    public void createTask(PO po,
+    public Task createTask(PO po,
                            String name,
                            String description,
                            String title,
@@ -48,6 +51,8 @@ public class TaskService {
         taskRepository.save(task);
 
         po.addTask(task);
+
+        return task;
     }
 
     public List<Task> findByFilter(Map<String, Object> filters) {
@@ -117,5 +122,9 @@ public class TaskService {
 
     public List<Task> getAll(){
         return taskRepository.findAll();
+    }
+
+    public void createTask(Task task){
+        taskRepository.save(task);
     }
 }

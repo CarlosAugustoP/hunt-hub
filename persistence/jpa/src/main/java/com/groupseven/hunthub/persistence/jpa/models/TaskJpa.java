@@ -13,7 +13,6 @@ public class TaskJpa {
   @Id
   private UUID id = UUID.randomUUID();
 
-
   @ManyToOne
   private POJpa po;
 
