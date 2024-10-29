@@ -18,9 +18,10 @@ import com.groupseven.hunthub.domain.models.TaskId;
 import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class TaskService {
-
 
     @Autowired
     private TaskRepository taskRepository;
@@ -34,15 +35,15 @@ public class TaskService {
     }
 
     public Task createTask(PO po,
-                           String name,
-                           String description,
-                           String title,
-                           Date deadline,
-                           int reward,
-                           int numberOfMeetings,
-                           int numberOfHuntersRequired,
-                           double ratingRequired,
-                           List<Tags> tags
+            String name,
+            String description,
+            String title,
+            Date deadline,
+            int reward,
+            int numberOfMeetings,
+            int numberOfHuntersRequired,
+            double ratingRequired,
+            List<Tags> tags
     ) {
         if (po.getPoints() < numberOfHuntersRequired * reward) {
             throw new IllegalArgumentException("Not enough points");
@@ -68,11 +69,16 @@ public class TaskService {
             Object value = entry.getValue();
 
             switch (filter) {
-                case "reward" -> filteredTasks.removeIf(task -> task.getReward() < (int) value);
-                case "numberOfMeetings" -> filteredTasks.removeIf(task -> task.getNumberOfMeetings() > (int) value);
-                case "ratingRequired" -> filteredTasks.removeIf(task -> task.getRatingRequired() < (double) value);
-                case "PORating" -> filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
-                case "numberOfHuntersRequired" -> filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() < (int) value);
+                case "reward" ->
+                    filteredTasks.removeIf(task -> task.getReward() < (int) value);
+                case "numberOfMeetings" ->
+                    filteredTasks.removeIf(task -> task.getNumberOfMeetings() > (int) value);
+                case "ratingRequired" ->
+                    filteredTasks.removeIf(task -> task.getRatingRequired() < (double) value);
+                case "PORating" ->
+                    filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
+                case "numberOfHuntersRequired" ->
+                    filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() < (int) value);
                 case "tags" -> {
                     List<Tags> tags;
 
@@ -104,14 +110,10 @@ public class TaskService {
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
 
             task.applyHunter(hunter);
-        }
-
-        else if (task.getStatus().equals(TaskStatus.PENDING)) {
+        } else if (task.getStatus().equals(TaskStatus.PENDING)) {
 
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired() + ". Your rating " + hunter.getRating());
-        }
-
-        else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
+        } else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
 
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
@@ -125,15 +127,62 @@ public class TaskService {
         task.refuseHunter(hunter);
     }
 
-    public List<Task> getAll(){
+    public List<Task> getAll() {
         return taskRepository.findAll();
     }
 
-    public void createTask(Task task){
+    public void createTask(Task task) {
         taskRepository.save(task);
     }
 
     public void deleteTask(UUID id) {
         taskRepository.delete(id);
     }
+
+    @Transactional
+    public Task updateTask(UUID id, Task updatedTaskData) {
+        Task existingTask = taskRepository.findById(id);
+
+        if (existingTask == null) {
+            throw new IllegalArgumentException("Task with ID " + id + " not found.");
+        }
+
+        updatedTaskData.setId(existingTask.getId());
+        updatedTaskData.setPo(existingTask.getPo()); 
+        updatedTaskData.setDeadline(existingTask.getDeadline());  
+        updatedTaskData.setStatus(existingTask.getStatus()); 
+
+        if (updatedTaskData.getDescription() != null) {
+            existingTask.setDescription(updatedTaskData.getDescription());
+        }
+
+        if (updatedTaskData.getTitle() != null) {
+            existingTask.setTitle(updatedTaskData.getTitle());
+        }
+
+        if (updatedTaskData.getReward() > 0) {
+            existingTask.setReward(updatedTaskData.getReward());
+        }
+
+        if (updatedTaskData.getNumberOfMeetings() > 0) {
+            existingTask.setNumberOfMeetings(updatedTaskData.getNumberOfMeetings());
+        }
+
+        if (updatedTaskData.getNumberOfHuntersRequired() > 0) {
+            existingTask.setNumberOfHuntersRequired(updatedTaskData.getNumberOfHuntersRequired());
+        }
+
+        if (updatedTaskData.getTags() != null && !updatedTaskData.getTags().isEmpty()) {
+            existingTask.setTags(updatedTaskData.getTags());
+        }
+
+        if (updatedTaskData.getRatingRequired() > 0) {
+            existingTask.setRatingRequired(updatedTaskData.getRatingRequired());
+        }
+
+        taskRepository.save(existingTask);
+
+        return existingTask;
+    }
+
 }
