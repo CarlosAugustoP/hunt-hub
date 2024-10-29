@@ -15,3 +15,15 @@ Feature: Aplicar para uma Task
     Given que o hunter tem a avaliação 4.7 e a Task tem a avaliação necessária 4.7 e o status da vaga é "closed"
     When o hunter aplica para a Task
     Then a aplicação "não é enviada"
+
+  Scenario: PO aceita um Hunter aplicado
+    Given que a aplicação de um hunter foi recebida pelo PO
+    When o PO "aceita" o hunter para a Task
+    Then o hunter é "designado a fazer parte" da Task
+    And o hunter é notificado que foi "aceito" para fazer parte da Task
+
+  Scenario: PO recusa um Hunter aplicado
+    Given que a aplicação de um hunter foi recebida pelo PO
+    When o PO "recusa" o hunter para a Task
+    Then o hunter é "removido da lista de aplicados" da Task
+    And o hunter é notificado que foi "recusado" para fazer parte da Task

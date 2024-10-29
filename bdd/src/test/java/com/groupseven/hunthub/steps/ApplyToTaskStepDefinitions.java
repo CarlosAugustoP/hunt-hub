@@ -1,19 +1,31 @@
 package com.groupseven.hunthub.steps;
 
-import com.groupseven.hunthub.domain.models.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.groupseven.hunthub.domain.models.Achievement;
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Project;
+import com.groupseven.hunthub.domain.models.Tags;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskId;
 import com.groupseven.hunthub.domain.services.NotificationService;
 import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
+
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApplyToTaskStepDefinitions {
     Exception exception;
@@ -139,6 +151,42 @@ public class ApplyToTaskStepDefinitions {
     @And("o PO é notificado que o hunter aplicou para a Task")
     public void o_po_eh_notificado_que_o_hunter_aplicou_para_a_task() {
         assertTrue(isPoNotified);
+    }
+
+    @Given("que a aplicação de um hunter foi recebida pelo PO")
+    public void que_a_aplicacao_de_um_hunter_foi_recebida_pelo_PO() {
+        TaskService.applyHunterToTask(task, hunter);
+        isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
+                "Você aplicou nessa Task! O PO foi notificado!");
+        isPoNotified = notificationService.NotifyPO(po, task.getTitle(),
+                "Você recebeu uma aplicação nova nessa Task do usuário " + hunter.getName());
+    }
+
+    @When("o PO {string} o hunter para a Task")
+    public void po_acao_hunter_para_task(String action) {
+        if (action.equals("aceita")) {
+            TaskService.acceptHunter(task, hunter);
+            isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
+                    "Você foi aceito para a Task!");
+        } else if (action.equals("recusa")) {
+            TaskService.declineHunter(task, hunter);
+            isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
+                    "Você foi recusado para a Task.");
+        }
+    }
+
+    @Then("o hunter é {string} da Task") // aaa
+    public void verifica_status_hunter_na_task(String status) {
+        if (status.equals("designado a fazer parte")) {
+            assertTrue(task.getHunters().contains(hunter));
+        } else if (status.equals("removido da lista de aplicados")) {
+            assertFalse(task.getHuntersApplied().contains(hunter));
+        }
+    }
+
+    @And("o hunter é notificado que foi {string} para fazer parte da Task")
+    public void hunter_notificado_para_task(String notificacaoStatus) {
+        assertTrue(isHunterNotified);
     }
 
 }

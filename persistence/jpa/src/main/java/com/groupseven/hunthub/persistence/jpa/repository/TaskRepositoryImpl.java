@@ -1,47 +1,72 @@
-package com.groupseven.hunthub.persistence.jpa.repository;
+package com.groupseven.hunthub.persistence.memoria.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.stereotype.Repository;
+
+import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
-import com.groupseven.hunthub.persistence.jpa.mapper.TaskMapper;
-import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
+import com.groupseven.hunthub.domain.services.TaskService;
 
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
-  @Autowired
-  TaskJpaRepository repository;
 
-  @Autowired
-  TaskMapper taskMapper;
+  private final Map<UUID, Task> taskStorage = new HashMap<>();
 
   @Override
   public void save(Task task) {
-    TaskJpa taskJpa = taskMapper.toEntity(task);
-    repository.save(taskJpa);
+    System.out.println("TaskRepositoryImpl.save");
+    taskStorage.put(task.getId().getId(), task);
   }
 
   @Override
   public Task findById(UUID id) {
-    return repository.findById(id)
-        .map(taskMapper::toDomain)
-        .orElse(null);
+    System.out.println("TaskRepositoryImpl.findById");
+    return taskStorage.get(id);
   }
 
   @Override
   public List<Task> findAll() {
-    List<TaskJpa> taskJpaList = repository.findAll();
-    return taskJpaList.stream()
-        .map(taskMapper::toDomain)
-        .toList();
+    return new ArrayList<>(taskStorage.values());
   }
 
   @Override
   public void delete(UUID id) {
-    repository.deleteById(id);
+    taskStorage.remove(id);
   }
+
+  @Override
+  public void applyHunterToTask(UUID taskId, Hunter hunter) {
+    System.out.println("TaskRepositoryImpl.applyHunterToTask");
+    Task task = taskStorage.get(taskId);
+
+    TaskService.applyHunterToTask(task, hunter);
+
+    taskStorage.put(taskId, task);
+  }
+
+  @Override
+  public void acceptHunter(UUID taskId, Hunter hunter) {
+    System.out.println("TaskRepositoryImpl.acceptHunter");
+    Task task = taskStorage.get(taskId);
+
+    TaskService.acceptHunter(task, hunter);
+
+    taskStorage.put(taskId, task);
+  }
+
+  @Override
+  public void declineHunter(UUID taskId, Hunter hunter) {
+    Task task = taskStorage.get(taskId);
+
+    TaskService.declineHunter(task, hunter);
+
+    taskStorage.put(taskId, task);
+  }
+
 }

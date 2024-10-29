@@ -1,9 +1,8 @@
 package com.groupseven.hunthub.domain.models;
 
-import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Date;
+import java.util.List;
 
 public class Task {
 
@@ -34,7 +33,7 @@ public class Task {
 
     private boolean completed;
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
-            int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
+                int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -154,9 +153,11 @@ public class Task {
     public void setRatingRequired(double ratingRequired) {
         this.ratingRequired = ratingRequired;
     }
+
     public void setCompleted(boolean completed) {
         this.status = "completed";
     }
+
     public boolean isCompleted() {
         return completed;
     }
@@ -175,6 +176,10 @@ public class Task {
 
     public void assignHunter(Hunter hunter) {
         hunters.add(hunter);
+    }
+
+    public void refuseHunter(Hunter hunter) {
+        huntersApplied.remove(hunter);
     }
 
     public void addTag(Tags tag) {
@@ -197,4 +202,3 @@ public class Task {
         this.tags = tags;
     }
 }
-
