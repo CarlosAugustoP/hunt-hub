@@ -1,6 +1,6 @@
 package com.groupseven.hunthub.persistence.jpa.models;
 
-public enum Tags {
+public enum TagsJPA {
         JAVA,
         PYTHON,
         C,

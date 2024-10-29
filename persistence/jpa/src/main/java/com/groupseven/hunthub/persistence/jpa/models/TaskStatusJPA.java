@@ -1,5 +1,5 @@
 package com.groupseven.hunthub.persistence.jpa.models;
 
-public enum TaskStatus {
+public enum TaskStatusJPA {
   PENDING, DONE, CANCELED
 }

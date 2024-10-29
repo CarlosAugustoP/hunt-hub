@@ -7,13 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.groupseven.hunthub.domain.models.*;
 import org.springframework.stereotype.Service;
 
-import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.models.Tags;
-import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.models.TaskId;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 
 @Service
@@ -95,17 +91,17 @@ public class TaskService {
 
     public static void applyHunterToTask(Task task, Hunter hunter) {
 
-        if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals("open")) {
+        if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
 
             task.applyHunter(hunter);
         }
 
-        else if (task.getStatus().equals("open")) {
+        else if (task.getStatus().equals(TaskStatus.PENDING)) {
 
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired() + ". Your rating " + hunter.getRating());
         }
 
-        else {
+        else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
 
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }

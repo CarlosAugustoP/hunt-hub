@@ -35,7 +35,7 @@ public class TaskJpa {
 
   private String description;
 
-  private TaskStatus status;
+  private TaskStatusJPA status;
 
   private Date deadline;
 
@@ -46,7 +46,7 @@ public class TaskJpa {
   private int numberOfHuntersRequired;
 
   @ElementCollection
-  private List<Tags> tags;
+  private List<TagsJPA> tags;
 
   private double ratingRequired;
 
@@ -92,11 +92,11 @@ public class TaskJpa {
     this.description = description;
   }
 
-  public TaskStatus getStatus() {
+  public TaskStatusJPA getStatus() {
     return status;
   }
 
-  public void setStatus(TaskStatus status) {
+  public void setStatus(TaskStatusJPA status) {
     this.status = status;
   }
 
@@ -132,11 +132,11 @@ public class TaskJpa {
     this.numberOfHuntersRequired = numberOfHuntersRequired;
   }
 
-  public List<Tags> getTags() {
+  public List<TagsJPA> getTagsJPA() {
     return tags;
   }
 
-  public void setTags(List<Tags> tags) {
+  public void setTagsJPA(List<TagsJPA> tags) {
     this.tags = tags;
   }
 
@@ -156,7 +156,7 @@ public class TaskJpa {
     this.completed = completed;
   }
 
-  public void addTag(Tags tag) {
+  public void addTag(TagsJPA tag) {
     tags.add(tag);
   }
 
@@ -164,8 +164,8 @@ public class TaskJpa {
     tags.remove(tag);
   }
 
-  public Tags getTag(int index) {
+  public TagsJPA getTag(int index) {
     return tags.get(index);
   }
 
-}
+  }

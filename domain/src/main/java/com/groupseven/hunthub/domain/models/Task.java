@@ -15,7 +15,7 @@ public class Task {
     private String title;
 
     // open, closed, completed
-    private String status = "open";
+    private TaskStatus status;
 
     private Date deadline;
 
@@ -44,6 +44,7 @@ public class Task {
         this.ratingRequired = ratingRequired;
         this.tags = tags;
         this.id = id;
+        this.status = TaskStatus.PENDING;
     }
 
     public Task() {
@@ -82,11 +83,11 @@ public class Task {
         this.title = title;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
@@ -155,7 +156,7 @@ public class Task {
     }
 
     public void setCompleted(boolean completed) {
-        this.status = "completed";
+        this.status = TaskStatus.DONE;
     }
 
     public boolean isCompleted() {

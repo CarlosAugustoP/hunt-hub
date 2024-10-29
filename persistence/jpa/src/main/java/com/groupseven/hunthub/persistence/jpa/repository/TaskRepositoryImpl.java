@@ -1,72 +1,64 @@
-package com.groupseven.hunthub.persistence.memoria.repository;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.springframework.stereotype.Repository;
+package com.groupseven.hunthub.persistence.jpa.repository;
 
 import com.groupseven.hunthub.domain.models.Hunter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.UUID;
+
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
-import com.groupseven.hunthub.domain.services.TaskService;
+import com.groupseven.hunthub.persistence.jpa.mapper.TaskMapper;
+import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
 
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
+  @Autowired
+  TaskJpaRepository repository;
 
-  private final Map<UUID, Task> taskStorage = new HashMap<>();
+  @Autowired
+  TaskMapper taskMapper;
 
   @Override
   public void save(Task task) {
-    System.out.println("TaskRepositoryImpl.save");
-    taskStorage.put(task.getId().getId(), task);
+    TaskJpa taskJpa = taskMapper.toEntity(task);
+    repository.save(taskJpa);
   }
 
   @Override
   public Task findById(UUID id) {
-    System.out.println("TaskRepositoryImpl.findById");
-    return taskStorage.get(id);
+    return repository.findById(id)
+            .map(taskMapper::toDomain)
+            .orElse(null);
   }
 
   @Override
   public List<Task> findAll() {
-    return new ArrayList<>(taskStorage.values());
+    List<TaskJpa> taskJpaList = repository.findAll();
+    return taskJpaList.stream()
+            .map(taskMapper::toDomain)
+            .toList();
   }
 
   @Override
   public void delete(UUID id) {
-    taskStorage.remove(id);
+    repository.deleteById(id);
   }
 
   @Override
-  public void applyHunterToTask(UUID taskId, Hunter hunter) {
-    System.out.println("TaskRepositoryImpl.applyHunterToTask");
-    Task task = taskStorage.get(taskId);
-
-    TaskService.applyHunterToTask(task, hunter);
-
-    taskStorage.put(taskId, task);
+  public void applyHunterToTask(UUID taskId, Hunter hunter ) {
+    throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
   public void acceptHunter(UUID taskId, Hunter hunter) {
-    System.out.println("TaskRepositoryImpl.acceptHunter");
-    Task task = taskStorage.get(taskId);
-
-    TaskService.acceptHunter(task, hunter);
-
-    taskStorage.put(taskId, task);
+        throw new UnsupportedOperationException("Not implemented yet");
   }
 
   @Override
   public void declineHunter(UUID taskId, Hunter hunter) {
-    Task task = taskStorage.get(taskId);
-
-    TaskService.declineHunter(task, hunter);
-
-    taskStorage.put(taskId, task);
+        throw new UnsupportedOperationException("Not implemented yet");
   }
 
 }
