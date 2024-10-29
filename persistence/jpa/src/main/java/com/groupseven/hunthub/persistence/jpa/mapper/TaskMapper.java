@@ -1,14 +1,15 @@
 package com.groupseven.hunthub.persistence.jpa.mapper;
 
-import java.util.stream.Collectors;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
 
 import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.TaskId;
-import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
 import com.groupseven.hunthub.persistence.jpa.models.TagsJPA;
-import org.springframework.stereotype.Component;
+import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
 
 @Component
 public class TaskMapper {
@@ -23,7 +24,6 @@ public class TaskMapper {
         taskJpa.setNumberOfMeetings(task.getNumberOfMeetings());
         taskJpa.setNumberOfHuntersRequired(task.getNumberOfHuntersRequired());
         taskJpa.setRatingRequired(task.getRatingRequired());
-        taskJpa.setCompleted(task.isCompleted());
 
         List<TagsJPA> tagsJpa = task.getTags().stream()
                 .map(TagsMapper::toEntity)
@@ -45,7 +45,6 @@ public class TaskMapper {
         task.setNumberOfMeetings(taskJpa.getNumberOfMeetings());
         task.setNumberOfHuntersRequired(taskJpa.getNumberOfHuntersRequired());
         task.setRatingRequired(taskJpa.getRatingRequired());
-        task.setCompleted(taskJpa.isCompleted());
 
         List<Tags> tagsDomain = taskJpa.getTagsJPA().stream()
                 .map(TagsMapper::toDomain)

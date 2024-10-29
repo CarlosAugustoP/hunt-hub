@@ -1,10 +1,17 @@
 package com.groupseven.hunthub.persistence.jpa.models;
 
-import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "task")
@@ -48,8 +55,6 @@ public class TaskJpa {
   private List<TagsJPA> tags;
 
   private double ratingRequired;
-
-  private boolean completed;
 
   public UUID getId() {
     return id;
@@ -145,14 +150,6 @@ public class TaskJpa {
 
   public void setRatingRequired(double ratingRequired) {
     this.ratingRequired = ratingRequired;
-  }
-
-  public boolean isCompleted() {
-    return completed;
-  }
-
-  public void setCompleted(boolean completed) {
-    this.completed = completed;
   }
 
   public void addTag(TagsJPA tag) {

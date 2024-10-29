@@ -7,10 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.groupseven.hunthub.domain.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Tags;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskId;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 
 @Service
@@ -126,5 +131,9 @@ public class TaskService {
 
     public void createTask(Task task){
         taskRepository.save(task);
+    }
+
+    public void deleteTask(UUID id) {
+        taskRepository.delete(id);
     }
 }

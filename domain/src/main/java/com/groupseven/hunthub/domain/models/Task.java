@@ -31,7 +31,6 @@ public class Task {
     private List<Hunter> huntersApplied = new ArrayList<>();
     private double ratingRequired;
 
-    private boolean completed;
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
                 int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
         this.po = po;
@@ -153,14 +152,6 @@ public class Task {
 
     public void setRatingRequired(double ratingRequired) {
         this.ratingRequired = ratingRequired;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.status = TaskStatus.DONE;
-    }
-
-    public boolean isCompleted() {
-        return completed;
     }
 
     public List<Hunter> getHuntersApplied() {
