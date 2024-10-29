@@ -114,4 +114,8 @@ public class TaskService {
     public static void declineHunter(Task task, Hunter hunter) {
         task.refuseHunter(hunter);
     }
+
+    public List<Task> getAll(){
+        return taskRepository.findAll();
+    }
 }
