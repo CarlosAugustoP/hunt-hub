@@ -22,16 +22,13 @@ import io.cucumber.java.en.When;
 
 public class ApplyToTaskStepDefinitions {
 
-    // Inicializa o exception
     Exception exception;
     boolean isPoNotified = false;
     boolean isHunterNotified = false;
 
-    // Inicializa NotificationService e TaskService
     private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
     private final TaskService taskService = new TaskService(new TaskRepositoryImpl());
 
-    // Cria o hunter mock
     String cpfHunter = "12345678901";
     String nameHunter = "John Doe";
     String emailHunter = "john.doe@example.com";
@@ -47,7 +44,6 @@ public class ApplyToTaskStepDefinitions {
 
     Hunter hunter;
 
-    // Cria o PO mock
     String cpfPO = "98765432101";
     String namePO = "Jane Smith";
     String emailPO = "jane.smith@example.com";
@@ -57,7 +53,6 @@ public class ApplyToTaskStepDefinitions {
 
     PO po;
 
-    // Cria a task mock
     String descriptionTask = "Develop a new feature for the application.";
     String titleTask = "Feature Development";
     Date deadlineTask = new Date();
@@ -69,7 +64,6 @@ public class ApplyToTaskStepDefinitions {
 
     Task task;
 
-    // Inicializa setup dos testes. Cria construtores e inicializa variáveis como nulas e falsas
     @Before
     public void setUp() {
         isPoNotified = false;
@@ -92,7 +86,6 @@ public class ApplyToTaskStepDefinitions {
                 projectsHunter);
         hunter.setRating(0.0);
 
-        // Re-initialize PO
         po = new PO(
                 cpfPO,
                 namePO,
@@ -102,7 +95,7 @@ public class ApplyToTaskStepDefinitions {
                 profilePicturePO,
                 bioPO);
 
-        // Re-initialize task will be done in each @Given method
+
     }
 
     //
@@ -110,7 +103,6 @@ public class ApplyToTaskStepDefinitions {
     public void task_qualification(double hunterRating, double taskRating, String taskStatusStr) {
         hunter.setRating(hunterRating);
 
-        // Create a new Task object
         task = new Task(
                 po,
                 descriptionTask,
@@ -119,7 +111,7 @@ public class ApplyToTaskStepDefinitions {
                 rewardTask,
                 numberOfMeetingsTask,
                 numberOfHuntersRequiredTask,
-                taskRating, // Use the provided taskRating
+                taskRating,
                 tags,
                 new TaskId(UUID.randomUUID())
         );
@@ -193,7 +185,7 @@ public class ApplyToTaskStepDefinitions {
                 rewardTask,
                 numberOfMeetingsTask,
                 numberOfHuntersRequiredTask,
-                task.getRatingRequired(),
+                0.0,
                 tags,
                 new TaskId(UUID.randomUUID())
         );
