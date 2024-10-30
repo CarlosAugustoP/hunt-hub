@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.groupseven.hunthub.domain.repository.PoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.groupseven.hunthub.domain.models.Hunter;
@@ -25,7 +27,11 @@ import jakarta.transaction.Transactional;
 public class TaskService {
 
     @Autowired
+    @Lazy
     private TaskRepository taskRepository;
+
+    @Autowired
+    private PoRepository poRepository;
 
     @Autowired
     private HunterRepository hunterRepository;
@@ -39,7 +45,7 @@ public class TaskService {
     }
 
     public Task createTask(
-            PO po,
+            UUID poId,
             String description,
             String title,
             Date deadline,
@@ -48,20 +54,25 @@ public class TaskService {
             int numberOfHuntersRequired,
             double ratingRequired,
             List<Tags> tags) {
-        if (po.getPoints() < numberOfHuntersRequired * reward) {
-            throw new IllegalArgumentException("Not enough points");
+
+        PO po = poRepository.findById(poId);
+        if (po == null) {
+            throw new IllegalArgumentException("PO not found with ID: " + poId);
         }
-        po.setPoints(po.getPoints() - numberOfHuntersRequired * reward);
 
+        // Crie a task
         TaskId taskId = new TaskId(UUID.randomUUID());
-        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired,
-                ratingRequired, tags, taskId);
-        task.setPo(po);
+        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired,ratingRequired, tags, taskId);
 
+        // Associe o PO à task
+        task.setPo(po);
+        List<UUID> hunterIds = new ArrayList<>(); // Se houver hunters associados
+        List<UUID> hunterAppliedIds = new ArrayList<>(); // Se houver hunters aplicados
+
+        // Salve a entidade JPA
         taskRepository.save(task);
 
-        po.addTask(task);
-
+        // Retorne a task criada
         return task;
     }
 

@@ -4,14 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "task")
@@ -20,24 +13,17 @@ public class TaskJpa {
   @Id
   private UUID id = UUID.randomUUID();
 
-  @ManyToOne
-  private POJpa po;
+  private UUID poId;
 
-  @ManyToMany
-  @JoinTable(
-          name = "task_hunters",
-          joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false),
-          inverseJoinColumns = @JoinColumn(name = "hunter_id", referencedColumnName = "id") // Make sure this points to the 'id' in UserJpa
-  )
-  private List<HunterJpa> hunters;
+  @ElementCollection
+  @CollectionTable(name = "task_hunters", joinColumns = @JoinColumn(name = "task_id"))
+  @Column(name = "hunter_id")
+  private List<UUID> hunterIds;
 
-  @ManyToMany
-  @JoinTable(
-          name = "task_hunters_applied",
-          joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false),
-          inverseJoinColumns = @JoinColumn(name = "hunter_id", referencedColumnName = "id") // Make sure this points to the 'id' in UserJpa
-  )
-  private List<HunterJpa> huntersApplied;
+  @ElementCollection
+  @CollectionTable(name = "task_hunters_applied", joinColumns = @JoinColumn(name = "task_id"))
+  @Column(name = "hunter_id")
+  private List<UUID> hunterAppliedIds;
 
   private String description;
 
@@ -66,28 +52,28 @@ public class TaskJpa {
     this.id = id;
   }
 
-  public POJpa getPo() {
-    return po;
+  public UUID getPoId() {
+    return poId;
   }
 
-  public void setPo(POJpa po) {
-    this.po = po;
+  public void setPoId(UUID poId) {
+    this.poId = poId;
   }
 
-  public List<HunterJpa> getHunters() {
-    return hunters;
+  public List<UUID> getHunterIds() {
+    return hunterIds;
   }
 
-  public void setHunters(List<HunterJpa> hunters) {
-    this.hunters = hunters;
+  public void setHunterIds(List<UUID> hunterIds) {
+    this.hunterIds = hunterIds;
   }
 
-  public List<HunterJpa> getHuntersApplied() {
-    return huntersApplied;
+  public List<UUID> getHunterAppliedIds() {
+    return hunterAppliedIds;
   }
 
-  public void setHuntersApplied(List<HunterJpa> huntersApplied) {
-    this.huntersApplied = huntersApplied;
+  public void setHunterAppliedIds(List<UUID> hunterAppliedIds) {
+    this.hunterAppliedIds = hunterAppliedIds;
   }
 
   public String getDescription() {

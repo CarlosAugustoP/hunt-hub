@@ -59,7 +59,7 @@ public class FilterTaskStepDefinitions {
         List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
         po.setPoints(500);
 
-        taskService.createTask(po, description, title, deadline, reward, numberOfMeetings,
+        taskService.createTask(po.getId().getId(), description, title, deadline, reward, numberOfMeetings,
                 numberOfHuntersRequired, ratingRequired, tags);
     }
 

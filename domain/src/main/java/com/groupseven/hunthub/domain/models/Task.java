@@ -174,18 +174,6 @@ public class Task {
         huntersApplied.remove(hunter);
     }
 
-    public void addTag(Tags tag) {
-        tags.add(tag);
-    }
-
-    public void removeTag(Tags tag) {
-        tags.remove(tag);
-    }
-
-    public Tags getTag(int index) {
-        return tags.get(index);
-    }
-
     public List<Tags> getTags() {
         return tags;
     }

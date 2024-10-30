@@ -6,18 +6,21 @@ import com.groupseven.hunthub.persistence.jpa.models.POJpa;
 import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 public class POMapper {
 
   @Autowired
+  @Lazy
   private TaskMapper taskMapper;
 
-  public POJpa toEntity(PO po) {
+  public POJpa toEntity(PO po, List<UUID> taskIds) {
     POJpa poJpa = new POJpa();
     if (po.getId() != null) {
       poJpa.setId(po.getId().getId());
@@ -32,16 +35,12 @@ public class POMapper {
     poJpa.setRatingCount(po.getRatingCount());
     poJpa.setProfilePicture(po.getProfilePicture());
     poJpa.setBio(po.getBio());
-
-    List<TaskJpa> taskJpaList = po.getTasks().stream()
-        .map(taskMapper::toEntity)
-        .collect(Collectors.toList());
-    poJpa.setTasks(taskJpaList);
+    poJpa.setTaskIds(taskIds);
 
     return poJpa;
   }
 
-  public PO toDomain(POJpa poJpa) {
+  public PO toDomain(POJpa poJpa, List<Task> tasks) {
     PO po = new PO();
     po.setId(poJpa.getId());
     po.setName(poJpa.getName());
@@ -54,11 +53,7 @@ public class POMapper {
     po.setRatingCount(poJpa.getRatingCount());
     po.setProfilePicture(poJpa.getProfilePicture());
     po.setBio(poJpa.getBio());
-
-    List<Task> taskList = poJpa.getTasks().stream()
-        .map(taskMapper::toDomain)
-        .collect(Collectors.toList());
-    po.setTasks(taskList);
+    po.setTasks(tasks);
 
     return po;
   }

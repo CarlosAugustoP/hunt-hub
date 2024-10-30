@@ -61,7 +61,7 @@ public class TaskStepDefinitions {
         reward = pts_reward;
 
         try {
-            taskService.createTask(po, description, title, deadline, reward, numberOfMeetings,
+            taskService.createTask(po.getId().getId(), description, title, deadline, reward, numberOfMeetings,
                     numberOfHuntersRequired, ratingRequired, tags);
             novaTask = po.getTasks().get(0);
             tasks.add(novaTask);

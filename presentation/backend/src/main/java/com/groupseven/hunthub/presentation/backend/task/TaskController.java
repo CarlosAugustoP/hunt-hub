@@ -38,14 +38,19 @@ public class TaskController {
 
     @PostMapping("/{poId}")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO, @PathVariable UUID poId) {
+        System.out.println("Id do PO no parametro:" + poId);
+
         PO po = poService.findPOById(poId);
+
+        System.out.println("Nome do PO:" + po.getName());
+        System.out.println("Id do PO:" + po.getId().getId());
 
         if (po == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         Task task = taskService.createTask(
-                po,
+                po.getId().getId(),
                 taskDTO.getDescription(),
                 taskDTO.getTitle(),
                 taskDTO.getDeadline(),
