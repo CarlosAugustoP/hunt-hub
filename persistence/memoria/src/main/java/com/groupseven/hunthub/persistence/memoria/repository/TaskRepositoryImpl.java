@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.groupseven.hunthub.domain.models.Hunter;
@@ -15,6 +16,9 @@ import com.groupseven.hunthub.domain.services.TaskService;
 
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
+
+    @Autowired
+    private TaskService taskService;
 
     private final Map<UUID, Task> taskStorage = new HashMap<>();
 
@@ -45,7 +49,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         System.out.println("TaskRepositoryImpl.applyHunterToTask");
         Task task = taskStorage.get(taskId);
 
-        TaskService.applyHunterToTask(task, hunter);
+        taskService.applyHunterToTask(task, hunter);
 
         taskStorage.put(taskId, task);
     }
