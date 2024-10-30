@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 public class TaskDTO {
-    private String name;
     private String description;
     private String title;
     private Date deadline;
@@ -19,14 +18,6 @@ public class TaskDTO {
     private List<Tags> tags;
 
     // Getters and Setters
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDescription() {
         return description;
@@ -94,7 +85,6 @@ public class TaskDTO {
 
     public TaskDTO convertToDTO(Task task) {
         TaskDTO dto = new TaskDTO();
-        dto.setName(task.getTitle());
         dto.setDescription(task.getDescription());
         dto.setTitle(task.getTitle());
         dto.setDeadline(task.getDeadline());

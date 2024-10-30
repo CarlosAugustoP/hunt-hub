@@ -41,6 +41,8 @@ public class TaskJpa {
 
   private String description;
 
+  private String title;
+
   private TaskStatusJPA status;
 
   private Date deadline;
@@ -95,6 +97,10 @@ public class TaskJpa {
   public void setDescription(String description) {
     this.description = description;
   }
+
+  public String getTitle() { return title; }
+
+  public void setTitle(String title) { this.title = title; }
 
   public TaskStatusJPA getStatus() {
     return status;
@@ -163,5 +169,7 @@ public class TaskJpa {
   public TagsJPA getTag(int index) {
     return tags.get(index);
   }
+
+
 
   }

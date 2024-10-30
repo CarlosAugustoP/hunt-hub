@@ -46,7 +46,6 @@ public class TaskController {
 
         Task task = taskService.createTask(
                 po,
-                taskDTO.getName(),
                 taskDTO.getDescription(),
                 taskDTO.getTitle(),
                 taskDTO.getDeadline(),
