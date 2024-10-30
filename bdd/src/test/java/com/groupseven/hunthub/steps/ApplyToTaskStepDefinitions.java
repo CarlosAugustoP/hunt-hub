@@ -133,7 +133,7 @@ public class ApplyToTaskStepDefinitions {
         System.out.println("Task status agora: " + task.getStatus());
         try {
             System.out.println("Task status before applying: " + task.getStatus());
-            TaskService.applyHunterToTask(task, hunter); // O problema pode ser aqui
+            taskService.applyHunterToTask(task, hunter); // O problema pode ser aqui
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você aplicou nessa Task! O PO foi notificado!");
             isPoNotified = notificationService.NotifyPO(po, task.getTitle(),
@@ -191,7 +191,7 @@ public class ApplyToTaskStepDefinitions {
         );
         task.setStatus(TaskStatus.PENDING);
         try {
-            TaskService.applyHunterToTask(task, hunter);
+            taskService.applyHunterToTask(task, hunter);
         } catch (Exception e) {
             exception = e;
         }

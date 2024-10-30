@@ -16,6 +16,7 @@ import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.TaskId;
 import com.groupseven.hunthub.domain.models.TaskStatus;
+import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +26,9 @@ public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private HunterRepository hunterRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
@@ -43,15 +47,15 @@ public class TaskService {
             int numberOfMeetings,
             int numberOfHuntersRequired,
             double ratingRequired,
-            List<Tags> tags
-    ) {
+            List<Tags> tags) {
         if (po.getPoints() < numberOfHuntersRequired * reward) {
             throw new IllegalArgumentException("Not enough points");
         }
         po.setPoints(po.getPoints() - numberOfHuntersRequired * reward);
 
         TaskId taskId = new TaskId(UUID.randomUUID());
-        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags, taskId);
+        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired,
+                ratingRequired, tags, taskId);
         task.setPo(po);
 
         taskRepository.save(task);
@@ -105,14 +109,31 @@ public class TaskService {
         return filteredTasks;
     }
 
-    public static void applyHunterToTask(Task task, Hunter hunter) {
+    public int getElements(UUID taskId, UUID hunterId) {
+        Task foundTask = taskRepository.findById(taskId);
+        Hunter foundHunter = hunterRepository.findById(hunterId);
+
+        if (foundTask == null) {
+            System.out.println("The task with ID " + taskId + " doesn't exist.");
+            return 0;
+        } else if (foundHunter == null) {
+            System.out.println("The hunter with ID " + hunterId + " doesn't exist.");
+            return 0;
+        } else {
+            applyHunterToTask(foundTask, foundHunter);
+            return 1;
+        }
+    }
+
+    public void applyHunterToTask(Task task, Hunter hunter) {
 
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
 
             task.applyHunter(hunter);
+            taskRepository.save(task);
         } else if (task.getStatus().equals(TaskStatus.PENDING)) {
-
-            throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired() + ". Your rating " + hunter.getRating());
+            throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired()
+                    + ". Your rating " + hunter.getRating());
         } else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
 
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
@@ -148,9 +169,9 @@ public class TaskService {
         }
 
         updatedTaskData.setId(existingTask.getId());
-        updatedTaskData.setPo(existingTask.getPo()); 
-        updatedTaskData.setDeadline(existingTask.getDeadline());  
-        updatedTaskData.setStatus(existingTask.getStatus()); 
+        updatedTaskData.setPo(existingTask.getPo());
+        updatedTaskData.setDeadline(existingTask.getDeadline());
+        updatedTaskData.setStatus(existingTask.getStatus());
 
         if (updatedTaskData.getDescription() != null) {
             existingTask.setDescription(updatedTaskData.getDescription());

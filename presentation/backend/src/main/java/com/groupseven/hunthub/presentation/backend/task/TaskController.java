@@ -77,4 +77,17 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PostMapping("{taskId}/applying/{hunterId}")
+    public ResponseEntity<String> applyHunterToTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
+        try {
+            if (taskService.getElements(taskId, hunterId) == 0) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task or Hunter not found.");
+            } else {
+                return ResponseEntity.ok("Hunter applied to the task successfully.");
+            }
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
