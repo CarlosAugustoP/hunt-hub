@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FilterTaskStepDefinitions {
 
     private final TaskService taskService;
-    private final PoRepository poRepository = new PoRepositoryImpl();
-    private final POService poService = new POService(poRepository);
+    private final POService poService;
 
     private Map<String, Object> searchFilters;
     private List<Task> resultTasks;
@@ -32,6 +31,9 @@ public class FilterTaskStepDefinitions {
     private String errorMessage;
 
     public FilterTaskStepDefinitions() {
+        PoRepositoryImpl poRepository = new PoRepositoryImpl();
+        this.poService = new POService(poRepository);
+
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
         this.taskService = new TaskService(taskRepository, poRepository);
 
@@ -46,6 +48,7 @@ public class FilterTaskStepDefinitions {
         String profilePicture = "https://example.com/profile/johndoe.jpg";
         String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
         this.po = new PO(cpf, name, email, password, new ArrayList<>(), profilePicture, bio);
+        poRepository.save(po);
 
         try {
             createSampleTask();
@@ -67,9 +70,10 @@ public class FilterTaskStepDefinitions {
 
         taskService.createTask(po.getId().getId(), description, title, deadline, reward, numberOfMeetings,
                 numberOfHuntersRequired, ratingRequired, tags);
+
     }
 
-    @Given("que o hunter pesquisa por filtros de reward {int}, numberOfMeetings {int} e ratingRequired {double} e tags {string}")
+    @Given("que o hunter pesquisa por filtros de reward {int}, numberOfMeetings {int}, ratingRequired {double} e tags {string}")
     public void hunterPesquisandoPorFiltros(int reward, int numberOfMeetings, double ratingRequired,
             String tagsString) {
         List<Tags> tags = Arrays.stream(tagsString.split(","))
