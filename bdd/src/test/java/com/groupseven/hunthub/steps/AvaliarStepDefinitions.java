@@ -1,33 +1,35 @@
 package com.groupseven.hunthub.steps;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Arrays;
+import java.util.UUID;
 
-import com.groupseven.hunthub.domain.models.*;
-import com.groupseven.hunthub.domain.repository.HunterRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Tags;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskId;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.repository.PoRepository;
-import com.groupseven.hunthub.domain.services.NotificationService;
-import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.domain.services.HunterService;
+import com.groupseven.hunthub.domain.services.NotificationService;
+import com.groupseven.hunthub.domain.services.POService;
+import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.HunterRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
-import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
-import com.groupseven.hunthub.domain.services.POService;
+import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.aspectj.bridge.IMessage;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //import static org.mockito.Mockito.*;
 public class AvaliarStepDefinitions {
@@ -48,7 +50,7 @@ public class AvaliarStepDefinitions {
     public AvaliarStepDefinitions() {
         this.hunters = new ArrayList<>();
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-        this.taskService = new TaskService(taskRepository);
+        this.taskService = new TaskService(taskRepository, poRepository);
         String cpfPO = "12345678900";
         String namePO = "John Doe";
         String emailPO = "johndoe@example.com";
@@ -83,7 +85,7 @@ public class AvaliarStepDefinitions {
 
     @Given("que a Task foi finalizada")
     public void task_completada_com_sucesso() {
-        task.setCompleted(true);
+        task.setStatus(TaskStatus.DONE);
     }
 
     @When("os users \\(PO e hunters) são notificados que a Task foi finalizada")
@@ -138,7 +140,7 @@ public class AvaliarStepDefinitions {
         int rewardPerHunter = totalReward / numberOfHunters;
         for (Hunter hunter : hunters) {
             hunter.setPoints(hunter.getPoints() + rewardPerHunter);
-            System.out.println("Pagando " + rewardPerHunter + " pontos ao Hunter: " + hunter.getName());
+            // System.out.println("Pagando " + rewardPerHunter + " pontos ao Hunter: " + hunter.getName());
         }
         for (Hunter hunter : hunters) {
             assertEquals(hunter.getPoints(), rewardPerHunter);

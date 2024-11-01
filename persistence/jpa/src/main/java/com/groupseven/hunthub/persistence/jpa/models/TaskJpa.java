@@ -1,10 +1,10 @@
 package com.groupseven.hunthub.persistence.jpa.models;
 
-import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "task")
@@ -13,29 +13,23 @@ public class TaskJpa {
   @Id
   private UUID id = UUID.randomUUID();
 
+  private UUID poId;
 
-  @ManyToOne
-  private POJpa po;
+  @ElementCollection
+  @CollectionTable(name = "task_hunters", joinColumns = @JoinColumn(name = "task_id"))
+  @Column(name = "hunter_id")
+  private List<UUID> hunterIds;
 
-  @ManyToMany
-  @JoinTable(
-          name = "task_hunters",
-          joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false),
-          inverseJoinColumns = @JoinColumn(name = "hunter_id", referencedColumnName = "id") // Make sure this points to the 'id' in UserJpa
-  )
-  private List<HunterJpa> hunters;
-
-  @ManyToMany
-  @JoinTable(
-          name = "task_hunters_applied",
-          joinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false),
-          inverseJoinColumns = @JoinColumn(name = "hunter_id", referencedColumnName = "id") // Make sure this points to the 'id' in UserJpa
-  )
-  private List<HunterJpa> huntersApplied;
+  @ElementCollection
+  @CollectionTable(name = "task_hunters_applied", joinColumns = @JoinColumn(name = "task_id"))
+  @Column(name = "hunter_id")
+  private List<UUID> hunterAppliedIds;
 
   private String description;
 
-  private TaskStatus status;
+  private String title;
+
+  private TaskStatusJPA status;
 
   private Date deadline;
 
@@ -46,11 +40,9 @@ public class TaskJpa {
   private int numberOfHuntersRequired;
 
   @ElementCollection
-  private List<Tags> tags;
+  private List<TagsJPA> tags;
 
   private double ratingRequired;
-
-  private boolean completed;
 
   public UUID getId() {
     return id;
@@ -60,28 +52,28 @@ public class TaskJpa {
     this.id = id;
   }
 
-  public POJpa getPo() {
-    return po;
+  public UUID getPoId() {
+    return poId;
   }
 
-  public void setPo(POJpa po) {
-    this.po = po;
+  public void setPoId(UUID poId) {
+    this.poId = poId;
   }
 
-  public List<HunterJpa> getHunters() {
-    return hunters;
+  public List<UUID> getHunterIds() {
+    return hunterIds;
   }
 
-  public void setHunters(List<HunterJpa> hunters) {
-    this.hunters = hunters;
+  public void setHunterIds(List<UUID> hunterIds) {
+    this.hunterIds = hunterIds;
   }
 
-  public List<HunterJpa> getHuntersApplied() {
-    return huntersApplied;
+  public List<UUID> getHunterAppliedIds() {
+    return hunterAppliedIds;
   }
 
-  public void setHuntersApplied(List<HunterJpa> huntersApplied) {
-    this.huntersApplied = huntersApplied;
+  public void setHunterAppliedIds(List<UUID> hunterAppliedIds) {
+    this.hunterAppliedIds = hunterAppliedIds;
   }
 
   public String getDescription() {
@@ -92,11 +84,15 @@ public class TaskJpa {
     this.description = description;
   }
 
-  public TaskStatus getStatus() {
+  public String getTitle() { return title; }
+
+  public void setTitle(String title) { this.title = title; }
+
+  public TaskStatusJPA getStatus() {
     return status;
   }
 
-  public void setStatus(TaskStatus status) {
+  public void setStatus(TaskStatusJPA status) {
     this.status = status;
   }
 
@@ -132,11 +128,11 @@ public class TaskJpa {
     this.numberOfHuntersRequired = numberOfHuntersRequired;
   }
 
-  public List<Tags> getTags() {
+  public List<TagsJPA> getTagsJPA() {
     return tags;
   }
 
-  public void setTags(List<Tags> tags) {
+  public void setTagsJPA(List<TagsJPA> tags) {
     this.tags = tags;
   }
 
@@ -148,15 +144,7 @@ public class TaskJpa {
     this.ratingRequired = ratingRequired;
   }
 
-  public boolean isCompleted() {
-    return completed;
-  }
-
-  public void setCompleted(boolean completed) {
-    this.completed = completed;
-  }
-
-  public void addTag(Tags tag) {
+  public void addTag(TagsJPA tag) {
     tags.add(tag);
   }
 
@@ -164,8 +152,10 @@ public class TaskJpa {
     tags.remove(tag);
   }
 
-  public Tags getTag(int index) {
+  public TagsJPA getTag(int index) {
     return tags.get(index);
   }
 
-}
+
+
+  }

@@ -1,9 +1,8 @@
 package com.groupseven.hunthub.domain.models;
 
-import java.util.List;
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Date;
+import java.util.List;
 
 public class Task {
 
@@ -16,7 +15,7 @@ public class Task {
     private String title;
 
     // open, closed, completed
-    private String status = "open";
+    private TaskStatus status;
 
     private Date deadline;
 
@@ -32,9 +31,8 @@ public class Task {
     private List<Hunter> huntersApplied = new ArrayList<>();
     private double ratingRequired;
 
-    private boolean completed;
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
-            int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
+                int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -45,6 +43,7 @@ public class Task {
         this.ratingRequired = ratingRequired;
         this.tags = tags;
         this.id = id;
+        this.status = TaskStatus.PENDING;
     }
 
     public Task() {
@@ -83,11 +82,11 @@ public class Task {
         this.title = title;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
@@ -154,12 +153,6 @@ public class Task {
     public void setRatingRequired(double ratingRequired) {
         this.ratingRequired = ratingRequired;
     }
-    public void setCompleted(boolean completed) {
-        this.status = "completed";
-    }
-    public boolean isCompleted() {
-        return completed;
-    }
 
     public List<Hunter> getHuntersApplied() {
         return huntersApplied;
@@ -177,16 +170,8 @@ public class Task {
         hunters.add(hunter);
     }
 
-    public void addTag(Tags tag) {
-        tags.add(tag);
-    }
-
-    public void removeTag(Tags tag) {
-        tags.remove(tag);
-    }
-
-    public Tags getTag(int index) {
-        return tags.get(index);
+    public void refuseHunter(Hunter hunter) {
+        huntersApplied.remove(hunter);
     }
 
     public List<Tags> getTags() {
@@ -197,4 +182,3 @@ public class Task {
         this.tags = tags;
     }
 }
-

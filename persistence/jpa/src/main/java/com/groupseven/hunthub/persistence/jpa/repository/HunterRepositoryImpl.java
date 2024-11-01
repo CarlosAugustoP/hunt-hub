@@ -1,12 +1,15 @@
 package com.groupseven.hunthub.persistence.jpa.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
+import com.groupseven.hunthub.domain.repository.TaskRepository;
 import com.groupseven.hunthub.persistence.jpa.mapper.HunterMapper;
 import com.groupseven.hunthub.persistence.jpa.models.HunterJpa;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,39 +17,53 @@ import java.util.UUID;
 public class HunterRepositoryImpl implements HunterRepository {
 
   @Autowired
-  HunterJpaRepository repository;
+  private HunterJpaRepository repository;
 
   @Autowired
-  HunterMapper hunterMapper;
+  private HunterMapper hunterMapper;
 
   @Override
   public Hunter findById(UUID id) {
     HunterJpa hunterJpa = repository.findById(id).orElse(null);
-    return hunterJpa != null ? hunterMapper.toDomain(hunterJpa) : null;
+    return hunterJpa != null ? hunterMapper.toDomain(hunterJpa, new ArrayList<>()) : null;
   }
 
   @Override
   public Hunter findByName(String name) {
     HunterJpa hunterJpa = repository.findByName(name);
-    return hunterJpa != null ? hunterMapper.toDomain(hunterJpa) : null;
+    return hunterJpa != null ? hunterMapper.toDomain(hunterJpa, new ArrayList<>()) : null;
   }
 
   @Override
   public void save(Hunter hunter) {
-    HunterJpa hunterJpa = hunterMapper.toEntity(hunter);
+    HunterJpa hunterJpa = hunterMapper.toEntity(hunter, extractTaskIds(hunter));
     repository.save(hunterJpa);
   }
 
   @Override
   public void delete(Hunter hunter) {
-    HunterJpa hunterJpa = hunterMapper.toEntity(hunter);
+    HunterJpa hunterJpa = hunterMapper.toEntity(hunter, extractTaskIds(hunter));
     repository.delete(hunterJpa);
   }
 
   @Override
   public List<Hunter> findAll() {
-    return repository.findAll().stream()
-        .map(hunterMapper::toDomain)
-        .toList();
+    List<HunterJpa> hunterJpas = repository.findAll();
+    List<Hunter> hunters = new ArrayList<>();
+    for (HunterJpa hunterJpa : hunterJpas) {
+      hunters.add(hunterMapper.toDomain(hunterJpa, new ArrayList<>()));
+    }
+    return hunters;
+  }
+
+  // Método auxiliar para extrair IDs das Tasks
+  private List<UUID> extractTaskIds(Hunter hunter) {
+    List<UUID> taskIds = new ArrayList<>();
+    if (hunter.getTasks() != null) {
+      for (Task task : hunter.getTasks()) {
+        taskIds.add(task.getId().getId());
+      }
+    }
+    return taskIds;
   }
 }

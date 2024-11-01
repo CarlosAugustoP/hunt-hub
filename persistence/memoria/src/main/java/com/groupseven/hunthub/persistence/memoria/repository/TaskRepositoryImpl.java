@@ -6,25 +6,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
+import com.groupseven.hunthub.domain.services.TaskService;
 
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
+
+    @Autowired
+    private TaskService taskService;
 
     private final Map<UUID, Task> taskStorage = new HashMap<>();
 
     @Override
     public void save(Task task) {
-        System.out.println("TaskRepositoryImpl.save");
+        // System.out.println("TaskRepositoryImpl.save");
         taskStorage.put(task.getId().getId(), task);
     }
 
     @Override
     public Task findById(UUID id) {
-        System.out.println("TaskRepositoryImpl.findById");
+        // System.out.println("TaskRepositoryImpl.findById");
         return taskStorage.get(id);
     }
 
@@ -36,6 +42,35 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void delete(UUID id) {
         taskStorage.remove(id);
+    }
+
+    @Override
+    public void applyHunterToTask(UUID taskId, Hunter hunter) {
+        // System.out.println("TaskRepositoryImpl.applyHunterToTask");
+        Task task = taskStorage.get(taskId);
+
+        taskService.applyHunterToTask(task, hunter);
+
+        taskStorage.put(taskId, task);
+    }
+
+    @Override
+    public void acceptHunter(UUID taskId, Hunter hunter) {
+        // System.out.println("TaskRepositoryImpl.acceptHunter");
+        Task task = taskStorage.get(taskId);
+
+        TaskService.acceptHunter(task, hunter);
+
+        taskStorage.put(taskId, task);
+    }
+
+    @Override
+    public void declineHunter(UUID taskId, Hunter hunter) {
+        Task task = taskStorage.get(taskId);
+
+        TaskService.declineHunter(task, hunter);
+
+        taskStorage.put(taskId, task);
     }
 
 }

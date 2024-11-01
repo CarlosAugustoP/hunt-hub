@@ -2,6 +2,7 @@ package com.groupseven.hunthub.persistence.jpa.models;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class HunterJpa extends UserJpa {
@@ -9,8 +10,12 @@ public class HunterJpa extends UserJpa {
     super();
   }
   private String linkPortfolio;
-  @ManyToMany(mappedBy = "hunters")
-  private List<TaskJpa> tasks;
+
+  @ElementCollection
+  @CollectionTable(name = "hunter_tasks", joinColumns = @JoinColumn(name = "hunter_id"))
+  @Column(name = "task_id")
+  private List<UUID> taskIds;
+
   private String bio;
   private String profilePicture;
   private double rating;
@@ -39,12 +44,12 @@ public class HunterJpa extends UserJpa {
     this.linkPortfolio = linkPortfolio;
   }
 
-  public List<TaskJpa> getTasks() {
-    return tasks;
+  public List<UUID> getTaskIds() {
+    return taskIds;
   }
 
-  public void setTasks(List<TaskJpa> tasks) {
-    this.tasks = tasks;
+  public void setTaskIds(List<UUID> taskIds) {
+    this.taskIds = taskIds;
   }
 
   public String getBio() {

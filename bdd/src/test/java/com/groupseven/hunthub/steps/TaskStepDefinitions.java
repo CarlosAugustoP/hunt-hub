@@ -1,7 +1,10 @@
 package com.groupseven.hunthub.steps;
 
 import com.groupseven.hunthub.domain.models.*;
+import com.groupseven.hunthub.domain.repository.PoRepository;
+import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
+import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -19,8 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskStepDefinitions {
 
+    private final PoRepository poRepository = new PoRepositoryImpl();
+    private final POService poService = new POService(poRepository);
+
     private final TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-    private final TaskService taskService = new TaskService(taskRepository);
+    private final TaskService taskService = new TaskService(taskRepository, poRepository);
+
     private Exception excecao;
 
     String cpf = "12345678900";
@@ -47,6 +54,7 @@ public class TaskStepDefinitions {
     public void pontos_disponiveis(int pts_disponiveis) {
         po.setPoints(pts_disponiveis);
         po_initial_points = pts_disponiveis;
+        poRepository.save(po);
     }
 
     @When("o PO cria uma nova Task de {int} pontos")
@@ -54,18 +62,21 @@ public class TaskStepDefinitions {
         Date deadline = null;
         try {
             deadline = new SimpleDateFormat("yyyy-MM-dd").parse("2024-10-01");
-        } catch (ParseException e) {
+        }
+
+        catch (ParseException e) {
             e.printStackTrace();
         }
 
         reward = pts_reward;
 
         try {
-            taskService.createTask(po, name, description, title, deadline, reward, numberOfMeetings,
-                    numberOfHuntersRequired, ratingRequired, tags);
-            novaTask = po.getTasks().get(0);
+            novaTask = taskService.createTask(po.getId().getId(), description, title, deadline, reward,
+                    numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
             tasks.add(novaTask);
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
             this.excecao = e;
         }
     }

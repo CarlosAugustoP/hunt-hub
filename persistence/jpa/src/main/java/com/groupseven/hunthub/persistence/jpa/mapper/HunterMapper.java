@@ -1,10 +1,13 @@
 package com.groupseven.hunthub.persistence.jpa.mapper;
 
 import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.persistence.jpa.models.HunterJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -21,7 +24,7 @@ public class HunterMapper {
 
   // No need for UserMapper since we'll map the fields directly
 
-  public HunterJpa toEntity(Hunter hunter) {
+  public HunterJpa toEntity(Hunter hunter, List<UUID> taskIds) {
     HunterJpa hunterJpa = new HunterJpa();
 
     if (hunter.getId() != null) {
@@ -32,7 +35,7 @@ public class HunterMapper {
     hunterJpa.setCpf(hunter.getCpf());
     hunterJpa.setPassword(hunter.getPassword());
     hunterJpa.setLinkPortfolio(hunter.getLinkPortfolio());
-    hunterJpa.setTasks(hunter.getTasks().stream().map(taskMapper::toEntity).collect(Collectors.toList()));
+    hunterJpa.setTaskIds(taskIds);
     hunterJpa.setBio(hunter.getBio());
     hunterJpa.setProfilePicture(hunter.getProfilePicture());
     hunterJpa.setRating(hunter.getRating());
@@ -47,7 +50,7 @@ public class HunterMapper {
     return hunterJpa;
   }
 
-  public Hunter toDomain(HunterJpa hunterJpa) {
+  public Hunter toDomain(HunterJpa hunterJpa, List<Task> tasks) {
     Hunter hunter = new Hunter();
     hunter.setId(hunterJpa.getId());
     hunter.setName(hunterJpa.getName());
@@ -55,7 +58,7 @@ public class HunterMapper {
     hunter.setCpf(hunterJpa.getCpf());
     hunter.setPassword(hunterJpa.getPassword());
     hunter.setLinkPortfolio(hunterJpa.getLinkPortfolio());
-    hunter.setTasks(hunterJpa.getTasks().stream().map(taskMapper::toDomain).collect(Collectors.toList()));
+    hunter.setTasks(tasks);
     hunter.setBio(hunterJpa.getBio());
     hunter.setProfilePicture(hunterJpa.getProfilePicture());
     hunter.setRating(hunterJpa.getRating());

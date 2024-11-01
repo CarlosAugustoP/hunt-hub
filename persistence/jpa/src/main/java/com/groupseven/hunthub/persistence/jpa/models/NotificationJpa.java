@@ -2,48 +2,48 @@ package com.groupseven.hunthub.persistence.jpa.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "notification")
 public class NotificationJpa {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private UUID id;
 
   private String theme;
   private String message;
   private LocalDate createdAt;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "hunter_id", nullable = true)
-  private HunterJpa hunter;
+  @Column(name = "hunter_id", nullable = true)
+  private UUID hunterId;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "po_id", nullable = true)
-  private POJpa po;
+  @Column(name = "po_id", nullable = true)
+  private UUID poId;
 
   public NotificationJpa() {
     // Construtor vazio para JPA
   }
 
-  public NotificationJpa(String theme, String message, HunterJpa hunter, POJpa po) {
-    if (hunter == null && po == null) {
+  public NotificationJpa(String theme, String message, UUID hunterId, UUID poId) {
+    if (hunterId == null && poId == null) {
       throw new IllegalArgumentException("A notificação precisa de pelo menos um Hunter ou PO.");
     }
 
     this.theme = theme;
     this.message = message;
-    this.hunter = hunter;
-    this.po = po;
+    this.hunterId = hunterId;
+    this.poId = poId;
     this.createdAt = LocalDate.now();
   }
 
-  public Long getId() {
+  // Getters e Setters
+  public UUID getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(UUID id) {
     this.id = id;
   }
 
@@ -71,19 +71,19 @@ public class NotificationJpa {
     this.createdAt = createdAt;
   }
 
-  public HunterJpa getHunter() {
-    return hunter;
+  public UUID getHunterId() {
+    return hunterId;
   }
 
-  public void setHunter(HunterJpa hunter) {
-    this.hunter = hunter;
+  public void setHunterId(UUID hunterId) {
+    this.hunterId = hunterId;
   }
 
-  public POJpa getPo() {
-    return po;
+  public UUID getPoId() {
+    return poId;
   }
 
-  public void setPo(POJpa po) {
-    this.po = po;
+  public void setPoId(UUID poId) {
+    this.poId = poId;
   }
 }
