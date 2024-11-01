@@ -36,7 +36,8 @@ public class TaskService {
     @Autowired
     private HunterRepository hunterRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, PoRepository poRepository) {
+        this.poRepository = poRepository;
         this.taskRepository = taskRepository;
     }
 
@@ -59,6 +60,14 @@ public class TaskService {
         if (po == null) {
             throw new IllegalArgumentException("PO not found with ID: " + poId);
         }
+
+        if (po.getPoints() < reward) {
+            throw new IllegalArgumentException("Not enough points");
+        }
+
+        // Deduz os pontos necessários para criar a tarefa
+        po.setPoints(po.getPoints() - reward);
+        poRepository.save(po);
 
         // Crie a task
         TaskId taskId = new TaskId(UUID.randomUUID());

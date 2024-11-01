@@ -3,7 +3,10 @@ package com.groupseven.hunthub.steps;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.repository.PoRepository;
+import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
+import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -20,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FilterTaskStepDefinitions {
 
     private final TaskService taskService;
+    private final PoRepository poRepository = new PoRepositoryImpl();
+    private final POService poService = new POService(poRepository);
+
     private Map<String, Object> searchFilters;
     private List<Task> resultTasks;
     private final PO po;
@@ -27,7 +33,7 @@ public class FilterTaskStepDefinitions {
 
     public FilterTaskStepDefinitions() {
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-        this.taskService = new TaskService(taskRepository);
+        this.taskService = new TaskService(taskRepository, poRepository);
 
         String cpf = "12345678900";
         String name = "John Doe";

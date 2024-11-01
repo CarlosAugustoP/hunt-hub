@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import io.cucumber.java.Before;
 
 import com.groupseven.hunthub.domain.models.*;
@@ -27,7 +29,7 @@ public class ApplyToTaskStepDefinitions {
     boolean isHunterNotified = false;
 
     private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
-    private final TaskService taskService = new TaskService(new TaskRepositoryImpl());
+    private final TaskService taskService = new TaskService(new TaskRepositoryImpl(), new PoRepositoryImpl());
 
     String cpfHunter = "12345678901";
     String nameHunter = "John Doe";
