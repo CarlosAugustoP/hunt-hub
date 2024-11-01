@@ -121,41 +121,41 @@ public class ApplyToTaskStepDefinitions {
         TaskStatus status = TaskStatus.valueOf(taskStatusStr.toUpperCase());
         this.taskStatus = status;
         task.setStatus(status);
-        System.out.println("Status da Task: " + task.getStatus());
+        // System.out.println("Status da Task: " + task.getStatus());
         po.addTask(task);
 
-        System.out.println("Rating do hunter: " + hunter.getRating());
-        System.out.println("Rating necessário para a Task: " + task.getRatingRequired());
-        System.out.println("Status da Task: " + task.getStatus());
-        System.out.println("Número de hunters aplicados: " + task.getHuntersApplied().size());
+        // System.out.println("Rating do hunter: " + hunter.getRating());
+        // System.out.println("Rating necessário para a Task: " + task.getRatingRequired());
+        // System.out.println("Status da Task: " + task.getStatus());
+        // System.out.println("Número de hunters aplicados: " + task.getHuntersApplied().size());
     }
 
     @When("o hunter aplica para a Task")
     public void hunter_apply_to_task() {
-        System.out.println("Task status agora: " + task.getStatus());
+        // System.out.println("Task status agora: " + task.getStatus());
         try {
-            System.out.println("Task status before applying: " + task.getStatus());
+            // System.out.println("Task status before applying: " + task.getStatus());
             taskService.applyHunterToTask(task, hunter); // O problema pode ser aqui
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você aplicou nessa Task! O PO foi notificado!");
             isPoNotified = notificationService.NotifyPO(po, task.getTitle(),
                     "Você recebeu uma aplicação nova nessa Task do usuário " + hunter.getName());
         } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
+            // System.out.println("Exception: " + e.getMessage());
             exception = e;
         }
     }
 
     @Then("a aplicação {string}")
     public void task_applied(String taskApplied) {
-        System.out.println("Task status after applying in then : " + task.getStatus());
+        // System.out.println("Task status after applying in then : " + task.getStatus());
         if (taskApplied.equals("não é enviada")) {
-            System.out.println("Valor da task" + task.getStatus());
+            // System.out.println("Valor da task" + task.getStatus());
             if (task.getStatus() == TaskStatus.DONE) {
-                System.out.println("Task registrada como done" + task.getStatus());
+                // System.out.println("Task registrada como done" + task.getStatus());
                 assertEquals("Cannot apply to task. The task is already closed.", exception.getMessage());
             } else if (task.getStatus() == TaskStatus.PENDING) {
-                System.out.println("Task registrada como pending");
+                // System.out.println("Task registrada como pending");
                 assertEquals("Cannot apply to task. Rating required: " + task.getRatingRequired()
                         + ". Your rating " + hunter.getRating(), exception.getMessage());
             }

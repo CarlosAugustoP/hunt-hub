@@ -1,9 +1,9 @@
 package com.groupseven.hunthub.steps;
 
+import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
@@ -24,7 +24,6 @@ public class FilterTaskStepDefinitions {
 
     private final TaskService taskService;
     private final POService poService;
-
     private Map<String, Object> searchFilters;
     private List<Task> resultTasks;
     private final PO po;
@@ -97,17 +96,17 @@ public class FilterTaskStepDefinitions {
     public void sistemaRetornaTasksDisponiveis(String answer) {
         if (answer.equals("não são")) {
             assertTrue(resultTasks.isEmpty());
-            System.out.println("Nenhuma task encontrada.");
+            // System.out.println("Nenhuma task encontrada.");
         } else {
             assertNotNull(resultTasks);
-            System.out.println("Encontramos a task: " + resultTasks);
-            System.out.println("Descrição: " + resultTasks.get(0).getDescription());
-            System.out.println("Deadline: " + resultTasks.get(0).getDeadline());
-            System.out.println("Recompensa: " + resultTasks.get(0).getReward());
-            System.out.println("Número de reuniões: " + resultTasks.get(0).getNumberOfMeetings());
-            System.out.println("Número de caçadores necessários: " + resultTasks.get(0).getNumberOfHuntersRequired());
-            System.out.println("Rating necessário: " + resultTasks.get(0).getRatingRequired());
-            System.out.println("Tags: " + resultTasks.get(0).getTags());
+            // System.out.println("Encontramos a task: " + resultTasks);
+            // System.out.println("Descrição: " + resultTasks.get(0).getDescription());
+            // System.out.println("Deadline: " + resultTasks.get(0).getDeadline());
+            // System.out.println("Recompensa: " + resultTasks.get(0).getReward());
+            // System.out.println("Número de reuniões: " + resultTasks.get(0).getNumberOfMeetings());
+            // System.out.println("Número de caçadores necessários: " + resultTasks.get(0).getNumberOfHuntersRequired());
+            // System.out.println("Rating necessário: " + resultTasks.get(0).getRatingRequired());
+            // System.out.println("Tags: " + resultTasks.get(0).getTags());
 
         }
     }

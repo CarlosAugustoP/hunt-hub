@@ -140,7 +140,7 @@ public class AvaliarStepDefinitions {
         int rewardPerHunter = totalReward / numberOfHunters;
         for (Hunter hunter : hunters) {
             hunter.setPoints(hunter.getPoints() + rewardPerHunter);
-            System.out.println("Pagando " + rewardPerHunter + " pontos ao Hunter: " + hunter.getName());
+            // System.out.println("Pagando " + rewardPerHunter + " pontos ao Hunter: " + hunter.getName());
         }
         for (Hunter hunter : hunters) {
             assertEquals(hunter.getPoints(), rewardPerHunter);

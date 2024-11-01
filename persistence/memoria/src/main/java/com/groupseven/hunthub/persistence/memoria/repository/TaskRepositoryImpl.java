@@ -24,13 +24,13 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void save(Task task) {
-        System.out.println("TaskRepositoryImpl.save");
+        // System.out.println("TaskRepositoryImpl.save");
         taskStorage.put(task.getId().getId(), task);
     }
 
     @Override
     public Task findById(UUID id) {
-        System.out.println("TaskRepositoryImpl.findById");
+        // System.out.println("TaskRepositoryImpl.findById");
         return taskStorage.get(id);
     }
 
@@ -46,7 +46,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void applyHunterToTask(UUID taskId, Hunter hunter) {
-        System.out.println("TaskRepositoryImpl.applyHunterToTask");
+        // System.out.println("TaskRepositoryImpl.applyHunterToTask");
         Task task = taskStorage.get(taskId);
 
         taskService.applyHunterToTask(task, hunter);
@@ -56,7 +56,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void acceptHunter(UUID taskId, Hunter hunter) {
-        System.out.println("TaskRepositoryImpl.acceptHunter");
+        // System.out.println("TaskRepositoryImpl.acceptHunter");
         Task task = taskStorage.get(taskId);
 
         TaskService.acceptHunter(task, hunter);

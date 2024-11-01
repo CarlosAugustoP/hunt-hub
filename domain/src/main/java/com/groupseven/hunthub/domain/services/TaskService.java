@@ -148,12 +148,14 @@ public class TaskService {
     public void applyHunterToTask(Task task, Hunter hunter) {
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
             task.applyHunter(hunter);
-            System.out.println(task.getId());
-            System.out.println(hunter.getId());
-            System.out.println(task.getTitle());
-            System.out.println(task.getHuntersApplied());
+            // System.out.println(task.getId());
+            // System.out.println(hunter.getId());
+            // System.out.println(task.getTitle());
+            // System.out.println(task.getHuntersApplied());
             taskRepository.save(task);
-        } else if (task.getStatus().equals(TaskStatus.PENDING)) {
+        }
+
+        else if (task.getStatus().equals(TaskStatus.PENDING)) {
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired()
                     + ". Your rating " + hunter.getRating());
         } else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
