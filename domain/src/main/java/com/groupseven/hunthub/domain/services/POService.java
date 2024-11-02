@@ -66,15 +66,9 @@ public class POService {
     public PO updatePO(UUID id, PO updatedPoData) {
         PO existingPo = poRepository.findById(id);
 
-        if(existingPo == null) {
-            throw new IllegalArgumentException("PO com o ID " + id + "não encontrado.");
+        if (existingPo == null) {
+            throw new IllegalArgumentException("PO com o ID " + id + " não encontrado.");
         }
-
-        updatedPoData.setId(existingPo.getId().getId());
-        updatedPoData.setEmail(existingPo.getEmail());
-        updatedPoData.setCpf(existingPo.getCpf());
-        updatedPoData.setPassword(existingPo.getPassword());
-        updatedPoData.setId(id);
 
         if (updatedPoData.getBio() != null) {
             existingPo.setBio(updatedPoData.getBio());
@@ -84,14 +78,15 @@ public class POService {
             existingPo.setProfilePicture(updatedPoData.getProfilePicture());
         }
 
+        if (updatedPoData.getPoints() != 0) {existingPo.setPoints(updatedPoData.getPoints());}
+        if (updatedPoData.getRating() != 0) {existingPo.setRating(updatedPoData.getRating());}
+
         poRepository.save(existingPo);
 
         return existingPo;
-
     }
 
     public void deletePO(UUID id) {
         poRepository.delete(id);
     }
 }
-

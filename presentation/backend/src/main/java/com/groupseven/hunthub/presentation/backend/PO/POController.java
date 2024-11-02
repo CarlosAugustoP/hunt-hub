@@ -33,6 +33,7 @@ public class POController {
     @PutMapping("/{id}")
     public ResponseEntity<PO> updatePO(@PathVariable UUID id, @RequestBody PO po) {
         po.setId(id);
+        System.out.println(po.getPoints());
         PO updatedPO = poService.updatePO(id, po);
         return ResponseEntity.ok(updatedPO);
     }
