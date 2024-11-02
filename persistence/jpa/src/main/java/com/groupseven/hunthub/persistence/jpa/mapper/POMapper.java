@@ -31,12 +31,12 @@ public class POMapper {
     poJpa.setPassword(po.getPassword());
     poJpa.setLevels(po.getLevels());
     poJpa.setRating(po.getRating());
+    poJpa.setPoints(po.getPoints());
     poJpa.setTotalRating(po.getTotalRating());
     poJpa.setRatingCount(po.getRatingCount());
     poJpa.setProfilePicture(po.getProfilePicture());
     poJpa.setBio(po.getBio());
     poJpa.setTaskIds(taskIds);
-
     return poJpa;
   }
 
@@ -46,6 +46,7 @@ public class POMapper {
     po.setName(poJpa.getName());
     po.setEmail(poJpa.getEmail());
     po.setCpf(poJpa.getCpf());
+    po.setPoints(poJpa.getPoints());
     po.setPassword(poJpa.getPassword());
     po.setLevels(poJpa.getLevels());
     po.setRating(poJpa.getRating());
@@ -54,7 +55,6 @@ public class POMapper {
     po.setProfilePicture(poJpa.getProfilePicture());
     po.setBio(poJpa.getBio());
     po.setTasks(tasks);
-
     return po;
   }
 }
