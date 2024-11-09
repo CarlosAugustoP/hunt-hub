@@ -75,8 +75,8 @@ public class TaskService {
 
         // Associe o PO à task
         task.setPo(po);
-        List<UUID> hunterIds = new ArrayList<>(); // Se houver hunters associados
-        List<UUID> hunterAppliedIds = new ArrayList<>(); // Se houver hunters aplicados
+        List<UUID> hunterIds = new ArrayList<>();
+        List<UUID> hunterAppliedIds = new ArrayList<>();
 
         // Salve a entidade JPA
         taskRepository.save(task);
@@ -145,23 +145,38 @@ public class TaskService {
         }
     }
 
+    public Task getTask(UUID taskId) {
+        Task foundTask = taskRepository.findById(taskId);
+
+        if (foundTask == null) {
+            System.out.println("The task with ID " + taskId + " doesn't exist.");
+        }
+
+        return foundTask;
+    }
+
+    public Hunter getHunter(UUID hunterId) {
+        Hunter foundHunter = hunterRepository.findById(hunterId);
+
+        if (foundHunter == null) {
+            System.out.println("The hunter with ID " + hunterId + " doesn't exist.");
+        }
+
+        return foundHunter;
+    }
+
     public void applyHunterToTask(Task task, Hunter hunter) {
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
             task.applyHunter(hunter);
-            // System.out.println(task.getId());
-            // System.out.println(hunter.getId());
-            // System.out.println(task.getTitle());
-            // System.out.println(task.getHuntersApplied());
             taskRepository.save(task);
-        }
-
-        else if (task.getStatus().equals(TaskStatus.PENDING)) {
+        } else if (task.getStatus().equals(TaskStatus.PENDING)) {
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired()
                     + ". Your rating " + hunter.getRating());
         } else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
     }
+
 
     public static void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);

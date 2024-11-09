@@ -46,20 +46,20 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public void applyHunterToTask(UUID taskId, Hunter hunter) {
-        // System.out.println("TaskRepositoryImpl.applyHunterToTask");
         Task task = taskStorage.get(taskId);
 
         taskService.applyHunterToTask(task, hunter);
 
         taskStorage.put(taskId, task);
+
     }
+
 
     @Override
     public void acceptHunter(UUID taskId, Hunter hunter) {
-        // System.out.println("TaskRepositoryImpl.acceptHunter");
         Task task = taskStorage.get(taskId);
 
-        TaskService.acceptHunter(task, hunter);
+        taskService.acceptHunter(task, hunter);
 
         taskStorage.put(taskId, task);
     }
@@ -68,7 +68,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void declineHunter(UUID taskId, Hunter hunter) {
         Task task = taskStorage.get(taskId);
 
-        TaskService.declineHunter(task, hunter);
+        taskService.declineHunter(task, hunter);
 
         taskStorage.put(taskId, task);
     }
