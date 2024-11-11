@@ -19,6 +19,7 @@ public class HunterController {
 
     @PostMapping()
     public Hunter register(@RequestBody Hunter hunter) {
+        System.out.println("estou aqui hunter controller");
         hunterService.createHunter(hunter);
         return hunter;
     }

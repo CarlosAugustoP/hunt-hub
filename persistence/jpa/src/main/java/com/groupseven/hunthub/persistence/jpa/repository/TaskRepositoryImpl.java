@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
@@ -57,6 +58,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     TaskJpa taskJpa = taskMapper.toEntity(task, poId, hunterIds, hunterAppliedIds);
+    System.out.println("estou aqui task repositoryImpl");
     repository.save(taskJpa);
   }
 
@@ -129,6 +131,7 @@ public class TaskRepositoryImpl implements TaskRepository {
   }
 
   @Override
+  @Transactional
   public void applyHunterToTask(UUID taskId, Hunter hunterId) {
     TaskJpa task = entityManager.find(TaskJpa.class, taskId);
     if (task != null) {
@@ -140,6 +143,7 @@ public class TaskRepositoryImpl implements TaskRepository {
   }
 
 
+  @Transactional
   @Override
   public void acceptHunter(UUID taskId, Hunter hunterId) {
     TaskJpa task = entityManager.find(TaskJpa.class, taskId);
@@ -151,6 +155,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @Transactional
   @Override
   public void declineHunter(UUID taskId, Hunter hunterId) {
     TaskJpa task = entityManager.find(TaskJpa.class, taskId);

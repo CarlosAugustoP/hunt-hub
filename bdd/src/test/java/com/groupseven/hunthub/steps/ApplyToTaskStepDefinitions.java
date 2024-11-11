@@ -215,11 +215,11 @@ public class ApplyToTaskStepDefinitions {
     @When("o PO {string} o hunter para a Task")
     public void po_acao_hunter_para_task(String action) {
         if (action.equals("aceita")) {
-            TaskService.acceptHunter(task, hunter);
+            taskService.acceptHunter(task, hunter);
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você foi aceito para a Task!");
         } else if (action.equals("recusa")) {
-            TaskService.declineHunter(task, hunter);
+            taskService.declineHunter(task, hunter);
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você foi recusado para a Task.");
         }

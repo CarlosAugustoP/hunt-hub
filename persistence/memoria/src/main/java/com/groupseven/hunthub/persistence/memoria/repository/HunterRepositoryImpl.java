@@ -16,6 +16,7 @@ public class HunterRepositoryImpl implements HunterRepository {
     @Override
     public void save(Hunter hunter) {
         if (hunter != null && hunter.getId() != null) {
+            System.out.println("estou aqui hunter repository");
             hunterStorage.put(hunter.getId().getId(), hunter);
         } else {
             throw new IllegalArgumentException("The PO´s ID can not be null");

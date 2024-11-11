@@ -78,6 +78,8 @@ public class TaskService {
         List<UUID> hunterIds = new ArrayList<>();
         List<UUID> hunterAppliedIds = new ArrayList<>();
 
+        System.out.println("estou aqui createTask service");
+
         // Salve a entidade JPA
         taskRepository.save(task);
 
@@ -168,7 +170,7 @@ public class TaskService {
     public void applyHunterToTask(Task task, Hunter hunter) {
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
             task.applyHunter(hunter);
-            taskRepository.save(task);
+            taskRepository.applyHunterToTask(task.getId().getId(), hunter);
         } else if (task.getStatus().equals(TaskStatus.PENDING)) {
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired()
                     + ". Your rating " + hunter.getRating());
@@ -178,12 +180,14 @@ public class TaskService {
     }
 
 
-    public static void acceptHunter(Task task, Hunter hunter) {
+    public void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);
+        taskRepository.acceptHunter(task.getId().getId(), hunter);
     }
 
-    public static void declineHunter(Task task, Hunter hunter) {
+    public void declineHunter(Task task, Hunter hunter) {
         task.refuseHunter(hunter);
+        taskRepository.declineHunter(task.getId().getId(), hunter);
     }
 
     public List<Task> getAll() {
