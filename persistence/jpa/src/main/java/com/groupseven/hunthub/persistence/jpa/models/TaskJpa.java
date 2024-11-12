@@ -4,7 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "task")
@@ -156,6 +162,17 @@ public class TaskJpa {
     return tags.get(index);
   }
 
-
-
+  public void applyHunter(UUID hunterId) {
+    hunterAppliedIds.add(hunterId);
   }
+
+  public void assignHunter(UUID hunterId) {
+    hunterIds.add(hunterId);
+    hunterAppliedIds.remove(hunterId);
+  }
+
+  public void refuseHunter(UUID hunterId) {
+    hunterAppliedIds.remove(hunterId);
+  }
+
+}

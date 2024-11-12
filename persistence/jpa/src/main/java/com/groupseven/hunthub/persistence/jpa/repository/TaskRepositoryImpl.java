@@ -1,5 +1,14 @@
 package com.groupseven.hunthub.persistence.jpa.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Task;
@@ -8,13 +17,9 @@ import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 import com.groupseven.hunthub.persistence.jpa.mapper.TaskMapper;
 import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
@@ -26,10 +31,13 @@ public class TaskRepositoryImpl implements TaskRepository {
   private TaskMapper taskMapper;
 
   @Autowired
-  private ObjectProvider<PoRepository> poRepositoryProvider; // Injeção tardia de PoRepository
+  private ObjectProvider<PoRepository> poRepositoryProvider;
 
   @Autowired
-  private ObjectProvider<HunterRepository> hunterRepositoryProvider; // Injeção tardia de HunterRepository
+  private ObjectProvider<HunterRepository> hunterRepositoryProvider;
+
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Override
   public void save(Task task) {
@@ -45,11 +53,12 @@ public class TaskRepositoryImpl implements TaskRepository {
     List<UUID> hunterAppliedIds = new ArrayList<>();
     if (task.getHuntersApplied() != null) {
       for (Hunter hunter : task.getHuntersApplied()) {
-        hunterIds.add(hunter.getId().getId());
+        hunterAppliedIds.add(hunter.getId().getId());
       }
     }
 
     TaskJpa taskJpa = taskMapper.toEntity(task, poId, hunterIds, hunterAppliedIds);
+    System.out.println("estou aqui task repositoryImpl");
     repository.save(taskJpa);
   }
 
@@ -122,23 +131,40 @@ public class TaskRepositoryImpl implements TaskRepository {
   }
 
   @Override
-  public void applyHunterToTask(UUID taskId, Hunter hunter) {
-    Task task = findById(taskId);
+  @Transactional
+  public void applyHunterToTask(UUID taskId, Hunter hunterId) {
+    TaskJpa task = entityManager.find(TaskJpa.class, taskId);
     if (task != null) {
-      task.applyHunter(hunter);
-      save(task);
+      task.applyHunter(hunterId.getId().getId());
+      entityManager.merge(task);
     } else {
       throw new IllegalArgumentException("Task not found with ID: " + taskId);
     }
   }
 
+
+  @Transactional
   @Override
-  public void acceptHunter(UUID taskId, Hunter hunter) {
-    throw new UnsupportedOperationException("Not implemented yet");
+  public void acceptHunter(UUID taskId, Hunter hunterId) {
+    TaskJpa task = entityManager.find(TaskJpa.class, taskId);
+    if (task != null) {
+      task.assignHunter(hunterId.getId().getId());
+      entityManager.merge(task);
+    } else {
+      throw new IllegalArgumentException("Task not found with ID: " + taskId);
+    }
   }
 
+  @Transactional
   @Override
-  public void declineHunter(UUID taskId, Hunter hunter) {
-    throw new UnsupportedOperationException("Not implemented yet");
+  public void declineHunter(UUID taskId, Hunter hunterId) {
+    TaskJpa task = entityManager.find(TaskJpa.class, taskId);
+    if (task != null) {
+      task.refuseHunter(hunterId.getId().getId());
+      entityManager.merge(task);
+    } else {
+      throw new IllegalArgumentException("Task not found with ID: " + taskId);
+    }
   }
+
 }

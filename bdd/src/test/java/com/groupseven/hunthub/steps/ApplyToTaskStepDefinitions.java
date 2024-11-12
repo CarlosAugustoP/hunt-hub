@@ -6,17 +6,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
-import io.cucumber.java.Before;
-
-import com.groupseven.hunthub.domain.models.*;
+import com.groupseven.hunthub.domain.models.Achievement;
+import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Project;
+import com.groupseven.hunthub.domain.models.Tags;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskId;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.services.NotificationService;
 import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
+import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -206,11 +215,11 @@ public class ApplyToTaskStepDefinitions {
     @When("o PO {string} o hunter para a Task")
     public void po_acao_hunter_para_task(String action) {
         if (action.equals("aceita")) {
-            TaskService.acceptHunter(task, hunter);
+            taskService.acceptHunter(task, hunter);
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você foi aceito para a Task!");
         } else if (action.equals("recusa")) {
-            TaskService.declineHunter(task, hunter);
+            taskService.declineHunter(task, hunter);
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você foi recusado para a Task.");
         }

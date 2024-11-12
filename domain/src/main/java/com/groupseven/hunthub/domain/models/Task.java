@@ -163,11 +163,16 @@ public class Task {
     }
 
     public void applyHunter(Hunter hunter) {
-        huntersApplied.add(hunter);
+        if (!huntersApplied.contains(hunter)) {
+            huntersApplied.add(hunter);
+        }
     }
 
     public void assignHunter(Hunter hunter) {
-        hunters.add(hunter);
+        if (!hunters.contains(hunter)) {
+            hunters.add(hunter);
+            huntersApplied.remove(hunter);
+        }
     }
 
     public void refuseHunter(Hunter hunter) {

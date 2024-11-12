@@ -21,6 +21,7 @@ public class POController {
 
     @PostMapping()
     public User register(@RequestBody PO po) {
+        System.out.println("estou aqui po controller");
         poService.createPO(po);
         return po;
     }

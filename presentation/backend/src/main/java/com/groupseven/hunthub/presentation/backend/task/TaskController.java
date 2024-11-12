@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.models.TaskId;
+import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
 
@@ -81,15 +82,56 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("{taskId}/applying/{hunterId}")
+    @PostMapping("/{taskId}/applying/{hunterId}")
     public ResponseEntity<String> applyHunterToTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         try {
-            if (taskService.getElements(taskId, hunterId) == 0) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task or Hunter not found.");
-            } else {
+            Task task = taskService.getTask(taskId);
+            Hunter hunter = taskService.getHunter(hunterId);
+
+            if (task != null && hunter != null) {
+                taskService.applyHunterToTask(task, hunter);
                 return ResponseEntity.ok("Hunter applied to the task successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task or Hunter not found.");
             }
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+
+    @PostMapping("/{taskId}/accept/{hunterId}")
+    public ResponseEntity<String> acceptHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
+        try {
+            Task task = taskService.getTask(taskId);
+            Hunter hunter = taskService.getHunter(hunterId);
+
+            if (task != null && hunter != null) {
+                taskService.acceptHunter(task, hunter);
+                return ResponseEntity.ok("Hunter accepted for the task successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task or Hunter not found.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{taskId}/decline/{hunterId}")
+    public ResponseEntity<String> declineHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
+        try {
+            // Obtém a Task e o Hunter
+            Task task = taskService.getTask(taskId);
+            Hunter hunter = taskService.getHunter(hunterId);
+
+            // Verifica se a Task e o Hunter foram encontrados
+            if (task != null && hunter != null) {
+                taskService.declineHunter(task, hunter);
+                return ResponseEntity.ok("Hunter declined for the task successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task or Hunter not found.");
+            }
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
