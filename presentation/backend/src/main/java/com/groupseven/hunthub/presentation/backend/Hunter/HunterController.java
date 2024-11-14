@@ -19,6 +19,7 @@ public class HunterController {
 
     @PostMapping()
     public Hunter register(@RequestBody Hunter hunter) {
+        hunter.setRole("ROLE_HUNTER");
         hunterService.createHunter(hunter);
         return hunter;
     }
@@ -47,6 +48,3 @@ public class HunterController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
-
