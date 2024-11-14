@@ -34,11 +34,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers(HttpMethod.POST,"/hunters").permitAll()
-//                        .requestMatchers(HttpMethod.POST,"/po").permitAll()
-//                        .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
-//                        .anyRequest().authenticated()
-                        .anyRequest().permitAll()
+                       .requestMatchers(HttpMethod.POST,"/hunters").permitAll()
+                       .requestMatchers(HttpMethod.POST,"/po").permitAll()
+                       .requestMatchers(HttpMethod.POST,"/users/login").permitAll()
+                       .anyRequest().authenticated()
+                        // .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
