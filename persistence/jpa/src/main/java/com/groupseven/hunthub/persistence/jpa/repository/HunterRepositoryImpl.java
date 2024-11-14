@@ -2,6 +2,7 @@ package com.groupseven.hunthub.persistence.jpa.repository;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.UserId;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 import com.groupseven.hunthub.persistence.jpa.mapper.HunterMapper;
@@ -37,7 +38,8 @@ public class HunterRepositoryImpl implements HunterRepository {
   @Override
   public void save(Hunter hunter) {
     HunterJpa hunterJpa = hunterMapper.toEntity(hunter, extractTaskIds(hunter));
-    repository.save(hunterJpa);
+    HunterJpa savedHunterJpa = repository.save(hunterJpa);
+    hunter.setId(new UserId(savedHunterJpa.getId()).getId());
   }
 
   @Override

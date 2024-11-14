@@ -2,6 +2,7 @@ package com.groupseven.hunthub.persistence.jpa.repository;
 
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.UserId;
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 import com.groupseven.hunthub.persistence.jpa.mapper.POMapper;
@@ -23,11 +24,8 @@ public class PORepositoryImpl implements PoRepository {
   private POMapper poMapper;
 
   @Autowired
-  private TaskRepository taskRepository; // Injetar TaskRepository
-
-  @Override
+  private TaskRepository taskRepository;
   public void save(PO po) {
-    // Obter os IDs das Tasks associadas
     List<UUID> taskIds = new ArrayList<>();
     if (po.getTasks() != null) {
       for (Task task : po.getTasks()) {
@@ -35,7 +33,8 @@ public class PORepositoryImpl implements PoRepository {
       }
     }
     POJpa poJpa = poMapper.toEntity(po, taskIds);
-    repository.save(poJpa);
+    POJpa savedPoJpa = repository.save(poJpa);
+    po.setId(new UserId(savedPoJpa.getId()).getId());
   }
 
   @Override

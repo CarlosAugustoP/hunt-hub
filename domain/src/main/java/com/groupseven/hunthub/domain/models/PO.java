@@ -14,7 +14,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class PO extends User {
 
     private int levels = 0;
-
     private int rating = 0;
 
     private int totalRating = 0;
@@ -143,5 +142,6 @@ public class PO extends User {
         this.ratingCount++;
         this.rating = this.totalRating / this.ratingCount;
     }
+
 
 }

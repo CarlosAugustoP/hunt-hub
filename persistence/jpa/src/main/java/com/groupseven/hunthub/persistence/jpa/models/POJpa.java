@@ -8,7 +8,6 @@ import java.util.UUID;
 @Entity
 public class POJpa extends UserJpa {
   private UUID id;
-
   private int levels;
   private int rating;
   private int totalRating;

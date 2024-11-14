@@ -23,8 +23,14 @@ public class POController {
     public User register(@RequestBody PO po) {
         po.setRole("ROLE_PO");
         poService.createPO(po);
+        try {
+            System.out.println(po.getId().getId());
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
         return po;
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<PO> getHunterById(@PathVariable UUID id) {

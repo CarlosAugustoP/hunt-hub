@@ -3,6 +3,7 @@ package com.groupseven.hunthub.presentation.backend.User;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.groupseven.hunthub.domain.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +68,9 @@ public class UserController {
      * preocupar, no banco aparece tudo certo.
      */
     @PostMapping()
-    public User register(@RequestBody User user) {
+    public UUID register(@RequestBody User user) {
         userService.createUser(user, user.getRole());
-        return user;
+        return user.getId().getId();
     }
 
     // @GetMapping("/{id}")
