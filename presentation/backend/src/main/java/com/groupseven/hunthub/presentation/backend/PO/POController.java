@@ -21,7 +21,7 @@ public class POController {
 
     @PostMapping()
     public User register(@RequestBody PO po) {
-        System.out.println("estou aqui po controller");
+        po.setRole("ROLE_PO");
         poService.createPO(po);
         return po;
     }
@@ -50,6 +50,3 @@ public class POController {
         return ResponseEntity.ok(poService.getAllPOs());
     }
 }
-
-
-

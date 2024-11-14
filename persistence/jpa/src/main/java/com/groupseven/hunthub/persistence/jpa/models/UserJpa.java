@@ -22,7 +22,6 @@ public class UserJpa {
 
     private int points;
 
-    @NotNull
     private String role;
 
     @NotNull
