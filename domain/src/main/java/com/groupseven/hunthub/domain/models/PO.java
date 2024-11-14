@@ -1,8 +1,15 @@
 package com.groupseven.hunthub.domain.models;
 
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.UUID;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class PO extends User {
 
@@ -20,7 +27,7 @@ public class PO extends User {
 
     public PO(String cpf, String name, String email, String password, List<Task> tasks, String profilePicture,
             String bio) {
-        super(name, email, password, cpf, new UserId(UUID.randomUUID()));
+        super(name, email, password, cpf, "ROLE_PO", new UserId(UUID.randomUUID()));
         this.levels = 0;
         this.rating = 5;
         this.tasks = tasks;
@@ -28,6 +35,12 @@ public class PO extends User {
         this.bio = bio;
         this.totalRating = 0;
         this.ratingCount = 0;
+        this.setRole("ROLE_PO");
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(this.getRole()));
     }
 
     public PO() {

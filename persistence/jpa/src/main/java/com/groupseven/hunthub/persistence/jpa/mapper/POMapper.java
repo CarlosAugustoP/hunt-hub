@@ -3,7 +3,6 @@ package com.groupseven.hunthub.persistence.jpa.mapper;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.persistence.jpa.models.POJpa;
-import com.groupseven.hunthub.persistence.jpa.models.TaskJpa;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class POMapper {
@@ -37,6 +35,7 @@ public class POMapper {
     poJpa.setProfilePicture(po.getProfilePicture());
     poJpa.setBio(po.getBio());
     poJpa.setTaskIds(taskIds);
+    poJpa.setRole(po.getRole());
     return poJpa;
   }
 
@@ -55,6 +54,7 @@ public class POMapper {
     po.setProfilePicture(poJpa.getProfilePicture());
     po.setBio(poJpa.getBio());
     po.setTasks(tasks);
+    po.setRole(poJpa.getRole());
     return po;
   }
 }
