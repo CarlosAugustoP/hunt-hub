@@ -22,8 +22,6 @@ public class HunterMapper {
   @Autowired
   private ProjectMapper projectMapper;
 
-  // No need for UserMapper since we'll map the fields directly
-
   public HunterJpa toEntity(Hunter hunter, List<UUID> taskIds) {
     HunterJpa hunterJpa = new HunterJpa();
 
@@ -45,8 +43,9 @@ public class HunterMapper {
     hunterJpa.setCertifications(hunter.getCertifications());
     hunterJpa.setLinks(hunter.getLinks());
     hunterJpa.setAchievements(
-            hunter.getAchievements().stream().map(achievementMapper::toEntity).collect(Collectors.toList()));
+        hunter.getAchievements().stream().map(achievementMapper::toEntity).collect(Collectors.toList()));
     hunterJpa.setProjects(hunter.getProjects().stream().map(projectMapper::toEntity).collect(Collectors.toList()));
+    hunterJpa.setRole(hunter.getRole());
     return hunterJpa;
   }
 
@@ -68,9 +67,9 @@ public class HunterMapper {
     hunter.setCertifications(hunterJpa.getCertifications());
     hunter.setLinks(hunterJpa.getLinks());
     hunter.setAchievements(
-            hunterJpa.getAchievements().stream().map(achievementMapper::toDomain).collect(Collectors.toList()));
+        hunterJpa.getAchievements().stream().map(achievementMapper::toDomain).collect(Collectors.toList()));
     hunter.setProjects(hunterJpa.getProjects().stream().map(projectMapper::toDomain).collect(Collectors.toList()));
-
+    hunter.setRole(hunterJpa.getRole());
     return hunter;
   }
 }

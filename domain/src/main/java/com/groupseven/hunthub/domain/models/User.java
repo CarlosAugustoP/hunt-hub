@@ -1,9 +1,11 @@
 package com.groupseven.hunthub.domain.models;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class User implements UserDetails {
@@ -20,12 +22,32 @@ public class User implements UserDetails {
 
     public String password;
 
-    public User(String name, String email, String password, String cpf, UserId id) {
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role != null && !this.role.isEmpty()) {
+            return List.of(new SimpleGrantedAuthority(this.role));
+        } else {
+            throw new IllegalStateException("User role cannot be null or empty");
+        }
+    }
+
+    public User(String name, String email, String password, String cpf, String role, UserId id) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.cpf = cpf;
         this.id = id;
+        this.role = role;
     }
 
     public User() {
@@ -57,11 +79,6 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
     }
 
     @Override
@@ -97,7 +114,6 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public void setPoints(int points) {
         this.points = points;

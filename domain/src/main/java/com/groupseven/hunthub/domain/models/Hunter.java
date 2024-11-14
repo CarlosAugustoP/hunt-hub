@@ -3,7 +3,12 @@ package com.groupseven.hunthub.domain.models;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class Hunter extends User {
     DecimalFormat df = new DecimalFormat("#.00");
@@ -28,7 +33,7 @@ public class Hunter extends User {
     public Hunter(String cpf, String name, String email, String password, String linkPortfolio, List<Task> tasks,
             String bio, String profilePicture, List<String> certifications, List<String> links,
             List<Achievement> achievements, List<Project> projects) {
-        super(name, email, password, cpf, new UserId(UUID.randomUUID()));
+        super(name, email, password, cpf, "ROLE_HUNTER", new UserId(UUID.randomUUID()));
         this.linkPortfolio = linkPortfolio;
         this.tasks = tasks;
         this.bio = bio;
@@ -41,6 +46,12 @@ public class Hunter extends User {
         this.links = links;
         this.achievements = achievements;
         this.projects = projects;
+        this.setRole("ROLE_HUNTER");
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(this.getRole()));
     }
 
     public Hunter() {

@@ -21,9 +21,9 @@ public class UserMapper {
     userJpa.setName(user.getName());
     userJpa.setEmail(user.getEmail());
     userJpa.setPassword(user.getPassword());
+    userJpa.setRole(user.getRole());
     return userJpa;
   }
-
 
   public User toDomain(UserJpa userJpa) {
     UserId newUserId = new UserId(userJpa.getId());
@@ -32,7 +32,7 @@ public class UserMapper {
         userJpa.getEmail(),
         userJpa.getPassword(),
         userJpa.getCpf(),
-        newUserId
-    );
+        userJpa.getRole(),
+        newUserId);
   }
 }

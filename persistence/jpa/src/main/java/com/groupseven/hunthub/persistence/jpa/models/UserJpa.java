@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +21,9 @@ public class UserJpa {
     private String cpf;
 
     private int points;
+
+    @NotNull
+    private String role;
 
     @NotNull
     private String name;
@@ -39,6 +44,14 @@ public class UserJpa {
             return false;
         UserJpa user = (UserJpa) o;
         return Objects.equals(id, user.id);
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override

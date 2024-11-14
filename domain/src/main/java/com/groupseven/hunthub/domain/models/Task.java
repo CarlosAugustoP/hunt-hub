@@ -32,7 +32,7 @@ public class Task {
     private double ratingRequired;
 
     public Task(PO po, String description, String title, Date deadline, int reward, int numberOfMeetings,
-                int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
+            int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, TaskId id) {
         this.po = po;
         this.description = description;
         this.title = title;
@@ -134,7 +134,8 @@ public class Task {
         if (hunters.size() < numberOfHuntersRequired) {
             hunters.add(hunter);
         } else {
-            throw new IllegalStateException("Cannot add more hunters. The required number of hunters is already reached.");
+            throw new IllegalStateException(
+                    "Cannot add more hunters. The required number of hunters is already reached.");
         }
     }
 
