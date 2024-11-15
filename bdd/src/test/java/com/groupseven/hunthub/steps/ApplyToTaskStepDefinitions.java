@@ -6,89 +6,82 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.groupseven.hunthub.domain.models.Achievement;
-import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.models.Project;
-import com.groupseven.hunthub.domain.models.Tags;
-import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.models.TaskId;
-import com.groupseven.hunthub.domain.models.TaskStatus;
+import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.services.NotificationService;
 import com.groupseven.hunthub.domain.services.TaskService;
-import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
-import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
-
+import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
+import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@ComponentScan(basePackages = "com.groupseven.hunthub")
 public class ApplyToTaskStepDefinitions {
 
-    Exception exception;
-    boolean isPoNotified = false;
-    boolean isHunterNotified = false;
+    private Exception exception;
+    private boolean isPoNotified = false;
+    private boolean isHunterNotified = false;
 
-    private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
-    private final TaskService taskService = new TaskService(new TaskRepositoryImpl(), new PoRepositoryImpl());
+    NotificationService notificationService;
 
-    String cpfHunter = "12345678901";
-    String nameHunter = "John Doe";
-    String emailHunter = "john.doe@example.com";
-    String passwordHunter = "hunter123";
-    String linkPortfolio = "https://portfolio.example.com/johndoe";
-    List<Task> tasksHunter = new ArrayList<>();
-    String bioHunter = "Experienced developer and hunter.";
-    String profilePictureHunter = "https://example.com/johndoe.jpg";
-    List<String> certificationsHunter = List.of("Java Certification", "AWS Certified");
-    List<String> linksHunter = List.of("https://github.com/johndoe", "https://linkedin.com/in/johndoe");
-    List<Achievement> achievementsHunter = new ArrayList<>();
-    List<Project> projectsHunter = new ArrayList<>();
+    TaskService taskService;
 
-    Hunter hunter;
+    private Hunter hunter;
+    private PO po;
+    private Task task;
+    private TaskStatus taskStatus;
 
-    String cpfPO = "98765432101";
-    String namePO = "Jane Smith";
-    String emailPO = "jane.smith@example.com";
-    String passwordPO = "po123";
-    String profilePicturePO = "https://example.com/janesmith.jpg";
-    String bioPO = "Product Owner with 10 years of experience.";
+    private final String cpfHunter = "12345678901";
+    private final String nameHunter = "John Doe";
+    private final String emailHunter = "john.doe@example.com";
+    private final String passwordHunter = "hunter123";
+    private final String linkPortfolio = "https://portfolio.example.com/johndoe";
+    private final String bioHunter = "Experienced developer and hunter.";
+    private final String profilePictureHunter = "https://example.com/johndoe.jpg";
+    private final List<String> certificationsHunter = List.of("Java Certification", "AWS Certified");
+    private final List<String> linksHunter = List.of("https://github.com/johndoe", "https://linkedin.com/in/johndoe");
+    private final List<Achievement> achievementsHunter = new ArrayList<>();
+    private final List<Project> projectsHunter = new ArrayList<>();
 
-    PO po;
+    private final String cpfPO = "98765432101";
+    private final String namePO = "Jane Smith";
+    private final String emailPO = "jane.smith@example.com";
+    private final String passwordPO = "po123";
+    private final String profilePicturePO = "https://example.com/janesmith.jpg";
+    private final String bioPO = "Product Owner with 10 years of experience.";
 
-    String descriptionTask = "Develop a new feature for the application.";
-    String titleTask = "Feature Development";
-    Date deadlineTask = new Date();
-    int rewardTask = 1000;
-    int numberOfMeetingsTask = 5;
-    int numberOfHuntersRequiredTask = 3;
-    List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
-    TaskStatus taskStatus;
-
-    Task task;
+    private final String descriptionTask = "Develop a new feature for the application.";
+    private final String titleTask = "Feature Development";
+    private final Date deadlineTask = new Date();
+    private final int rewardTask = 1000;
+    private final int numberOfMeetingsTask = 5;
+    private final int numberOfHuntersRequiredTask = 3;
+    private final List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
 
     @Before
     public void setUp() {
+
         isPoNotified = false;
         isHunterNotified = false;
         exception = null;
 
-        tasksHunter = new ArrayList<>();
         hunter = new Hunter(
                 cpfHunter,
                 nameHunter,
                 emailHunter,
                 passwordHunter,
                 linkPortfolio,
-                tasksHunter,
+                new ArrayList<>(),
                 bioHunter,
                 profilePictureHunter,
                 certificationsHunter,
@@ -106,10 +99,10 @@ public class ApplyToTaskStepDefinitions {
                 profilePicturePO,
                 bioPO);
 
-
+        taskService = new TaskService(new TaskRepositoryImpl(), new PoRepositoryImpl());
+        notificationService = new NotificationService(new NotificationRepositoryImpl());
     }
 
-    //
     @Given("que o hunter tem a avaliação {double} e a Task tem a avaliação necessária {double} e o status da vaga é {string}")
     public void task_qualification(double hunterRating, double taskRating, String taskStatusStr) {
         hunter.setRating(hunterRating);
@@ -124,47 +117,37 @@ public class ApplyToTaskStepDefinitions {
                 numberOfHuntersRequiredTask,
                 taskRating,
                 tags,
-                new TaskId(UUID.randomUUID())
-        );
+                new TaskId(UUID.randomUUID()));
 
-        TaskStatus status = TaskStatus.valueOf(taskStatusStr.toUpperCase());
-        this.taskStatus = status;
-        task.setStatus(status);
-        // System.out.println("Status da Task: " + task.getStatus());
+        taskStatus = TaskStatus.valueOf(taskStatusStr.toUpperCase());
+        task.setStatus(taskStatus);
         po.addTask(task);
-
-        // System.out.println("Rating do hunter: " + hunter.getRating());
-        // System.out.println("Rating necessário para a Task: " + task.getRatingRequired());
-        // System.out.println("Status da Task: " + task.getStatus());
-        // System.out.println("Número de hunters aplicados: " + task.getHuntersApplied().size());
+        taskService.createTask(task);
     }
 
     @When("o hunter aplica para a Task")
     public void hunter_apply_to_task() {
-        // System.out.println("Task status agora: " + task.getStatus());
         try {
-            // System.out.println("Task status before applying: " + task.getStatus());
-            taskService.applyHunterToTask(task, hunter); // O problema pode ser aqui
+            taskService.applyHunterToTask(task, hunter);
+
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você aplicou nessa Task! O PO foi notificado!");
             isPoNotified = notificationService.NotifyPO(po, task.getTitle(),
                     "Você recebeu uma aplicação nova nessa Task do usuário " + hunter.getName());
+
         } catch (Exception e) {
-            // System.out.println("Exception: " + e.getMessage());
             exception = e;
         }
     }
 
+
     @Then("a aplicação {string}")
     public void task_applied(String taskApplied) {
-        // System.out.println("Task status after applying in then : " + task.getStatus());
         if (taskApplied.equals("não é enviada")) {
-            // System.out.println("Valor da task" + task.getStatus());
+            assertNotNull(exception, "Expected an exception, but none occurred");
             if (task.getStatus() == TaskStatus.DONE) {
-                // System.out.println("Task registrada como done" + task.getStatus());
                 assertEquals("Cannot apply to task. The task is already closed.", exception.getMessage());
             } else if (task.getStatus() == TaskStatus.PENDING) {
-                // System.out.println("Task registrada como pending");
                 assertEquals("Cannot apply to task. Rating required: " + task.getRatingRequired()
                         + ". Your rating " + hunter.getRating(), exception.getMessage());
             }
@@ -172,6 +155,7 @@ public class ApplyToTaskStepDefinitions {
             assertNull(exception, "Did not expect an exception, but one occurred");
             assertFalse(task.getHuntersApplied().isEmpty(), "No hunters have applied to the task.");
             assertEquals(hunter, task.getHuntersApplied().get(task.getHuntersApplied().size() - 1));
+
         }
     }
 
@@ -201,9 +185,14 @@ public class ApplyToTaskStepDefinitions {
                 new TaskId(UUID.randomUUID())
         );
         task.setStatus(TaskStatus.PENDING);
+        po.addTask(task);
+        taskService.createTask(task);
+
         try {
             taskService.applyHunterToTask(task, hunter);
-        } catch (Exception e) {
+        }
+
+        catch (Exception e) {
             exception = e;
         }
         isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
@@ -218,7 +207,9 @@ public class ApplyToTaskStepDefinitions {
             taskService.acceptHunter(task, hunter);
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você foi aceito para a Task!");
-        } else if (action.equals("recusa")) {
+        }
+
+        else if (action.equals("recusa")) {
             taskService.declineHunter(task, hunter);
             isHunterNotified = notificationService.NotifyHunter(hunter, task.getTitle(),
                     "Você foi recusado para a Task.");
@@ -229,7 +220,9 @@ public class ApplyToTaskStepDefinitions {
     public void verifica_status_hunter_na_task(String status) {
         if (status.equals("designado a fazer parte")) {
             assertTrue(task.getHunters().contains(hunter));
-        } else if (status.equals("removido da lista de aplicados")) {
+        }
+
+        else if (status.equals("removido da lista de aplicados")) {
             assertFalse(task.getHuntersApplied().contains(hunter));
         }
     }
@@ -238,5 +231,4 @@ public class ApplyToTaskStepDefinitions {
     public void hunter_notificado_para_task(String notificacaoStatus) {
         assertTrue(isHunterNotified);
     }
-
 }

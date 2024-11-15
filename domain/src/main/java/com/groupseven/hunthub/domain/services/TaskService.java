@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.groupseven.hunthub.domain.models.Hunter;
@@ -27,7 +26,6 @@ import jakarta.transaction.Transactional;
 public class TaskService {
 
     @Autowired
-    @Lazy
     private TaskRepository taskRepository;
 
     @Autowired
@@ -36,6 +34,7 @@ public class TaskService {
     @Autowired
     private HunterRepository hunterRepository;
 
+    @Autowired
     public TaskService(TaskRepository taskRepository, PoRepository poRepository) {
         this.poRepository = poRepository;
         this.taskRepository = taskRepository;
@@ -77,8 +76,6 @@ public class TaskService {
         task.setPo(po);
         List<UUID> hunterIds = new ArrayList<>();
         List<UUID> hunterAppliedIds = new ArrayList<>();
-
-        System.out.println("estou aqui createTask service");
 
         // Salve a entidade JPA
         taskRepository.save(task);
@@ -131,23 +128,9 @@ public class TaskService {
         return filteredTasks;
     }
 
-    public int getElements(UUID taskId, UUID hunterId) {
-        Task foundTask = taskRepository.findById(taskId);
-        Hunter foundHunter = hunterRepository.findById(hunterId);
-
-        if (foundTask == null) {
-            System.out.println("The task with ID " + taskId + " doesn't exist.");
-            return 0;
-        } else if (foundHunter == null) {
-            System.out.println("The hunter with ID " + hunterId + " doesn't exist.");
-            return 0;
-        } else {
-            applyHunterToTask(foundTask, foundHunter);
-            return 1;
-        }
-    }
 
     public Task getTask(UUID taskId) {
+
         Task foundTask = taskRepository.findById(taskId);
 
         if (foundTask == null) {
@@ -169,16 +152,20 @@ public class TaskService {
 
     public void applyHunterToTask(Task task, Hunter hunter) {
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
+
             task.applyHunter(hunter);
             taskRepository.applyHunterToTask(task.getId().getId(), hunter);
-        } else if (task.getStatus().equals(TaskStatus.PENDING)) {
+        }
+
+        else if (task.getStatus().equals(TaskStatus.PENDING)) {
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired()
                     + ". Your rating " + hunter.getRating());
-        } else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
+        }
+
+        else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
     }
-
 
     public void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);

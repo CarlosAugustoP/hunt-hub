@@ -6,19 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
-import com.groupseven.hunthub.domain.services.TaskService;
 
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
-
-    @Autowired
-    private TaskService taskService;
 
     private final Map<UUID, Task> taskStorage = new HashMap<>();
 
@@ -47,11 +42,14 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void applyHunterToTask(UUID taskId, Hunter hunter) {
         Task task = taskStorage.get(taskId);
+        if (task != null) {
+            task.applyHunter(hunter);
+            taskStorage.put(taskId, task);
+        }
 
-        taskService.applyHunterToTask(task, hunter);
-
-        taskStorage.put(taskId, task);
-
+        else {
+            throw new IllegalArgumentException("Task with ID " + taskId + " not found.");
+        }
     }
 
 
@@ -59,18 +57,28 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void acceptHunter(UUID taskId, Hunter hunter) {
         Task task = taskStorage.get(taskId);
 
-        taskService.acceptHunter(task, hunter);
+        if (task != null) {
+            task.assignHunter(hunter);
+            taskStorage.put(taskId, task);
+        }
 
-        taskStorage.put(taskId, task);
+        else {
+            throw new IllegalArgumentException("Task with ID " + taskId + " not found.");
+        }
     }
 
     @Override
     public void declineHunter(UUID taskId, Hunter hunter) {
         Task task = taskStorage.get(taskId);
 
-        taskService.declineHunter(task, hunter);
+        if (task != null) {
+            task.refuseHunter(hunter);
+            taskStorage.put(taskId, task);
+        }
 
-        taskStorage.put(taskId, task);
+        else {
+            throw new IllegalArgumentException("Task with ID " + taskId + " not found.");
+        }
     }
 
 }

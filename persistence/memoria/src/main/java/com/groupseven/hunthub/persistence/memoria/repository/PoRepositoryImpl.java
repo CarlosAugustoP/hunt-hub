@@ -2,12 +2,14 @@ package com.groupseven.hunthub.persistence.memoria.repository;
 
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.PoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Repository
 public class PoRepositoryImpl implements PoRepository {
 
     private final Map<UUID, PO> PoStorage = new HashMap<>();

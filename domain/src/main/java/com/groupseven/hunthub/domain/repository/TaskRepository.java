@@ -5,7 +5,9 @@ import java.util.UUID;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Task;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TaskRepository {
 
     public void save(Task task);

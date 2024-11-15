@@ -4,6 +4,7 @@ import com.groupseven.hunthub.domain.models.Notification;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.repository.NotificationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
 
+    @Autowired
     public NotificationService(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
     }

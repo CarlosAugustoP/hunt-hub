@@ -5,9 +5,11 @@ import com.groupseven.hunthub.domain.models.User;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.repository.NotificationRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class NotificationRepositoryImpl implements NotificationRepository {
     private final List<Notification> notificationStorage = new ArrayList<>();
 
