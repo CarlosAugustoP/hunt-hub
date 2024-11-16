@@ -187,4 +187,8 @@ public class Task {
     public void setTags(List<Tags> tags) {
         this.tags = tags;
     }
+
+    public void complete() {
+        this.status = TaskStatus.DONE;
+    }
 }

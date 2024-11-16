@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class User implements UserDetails {
 
@@ -121,5 +122,9 @@ public class User implements UserDetails {
 
     public int getPoints() {
         return points;
+    }
+
+    protected void setId(UUID id) {
+        this.id = new UserId(id);
     }
 }

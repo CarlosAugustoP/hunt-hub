@@ -56,10 +56,11 @@ public class POService {
         return poRepository.findById(id);
     }
 
-    public void createPO(PO po) {
+    public PO createPO(PO po) {
         assert passwordEncoder != null;
         po.setPassword(passwordEncoder.encode(po.getPassword()));
         poRepository.save(po);
+        return po;
     }
 
     @Transactional

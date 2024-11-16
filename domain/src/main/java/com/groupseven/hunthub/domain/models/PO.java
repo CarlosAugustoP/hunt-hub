@@ -137,6 +137,16 @@ public class PO extends User {
         this.setCpf(user.getCpf());
     }
 
+    public User getUser () {
+        User user = new User();
+        user.setId(this.id.getId());
+        user.setEmail(this.email);
+        user.setName(this.name);
+        user.setPassword(this.password);
+        user.setCpf(this.cpf);
+        return user;
+    }
+
     public void rate(int rating) {
         this.totalRating += rating;
         this.ratingCount++;
