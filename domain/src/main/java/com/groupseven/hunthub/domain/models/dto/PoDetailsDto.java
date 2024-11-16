@@ -41,6 +41,8 @@ public class PoDetailsDto extends PODto{
         poDetailsDto.setId(po.getId().getId());
         poDetailsDto.setEmail(po.getEmail());
         poDetailsDto.setName(po.getName());
+        poDetailsDto.setPoints(po.getPoints());
+        poDetailsDto.setRating(po.getRating());
 
         return poDetailsDto;
     }

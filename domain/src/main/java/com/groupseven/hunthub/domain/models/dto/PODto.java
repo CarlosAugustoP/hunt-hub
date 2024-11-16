@@ -10,9 +10,15 @@ import java.util.UUID;
 public class PODto extends UserDTO {
     private int levels;
     private int totalRating;
+
+    public UUID getId() {
+        return id;
+    }
+
     private String profilePicture;
     private String bio;
     public UUID id;
+    public double rating;
 
     public int getLevels() {
         return levels;
@@ -65,8 +71,13 @@ public class PODto extends UserDTO {
         poDto.setEmail(po.getEmail());
         poDto.setId(po.getId().getId());
         poDto.setPoints(po.getPoints());
+        poDto.setRating(po.getRating());
 
         return poDto;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public void setId(UUID id) {
