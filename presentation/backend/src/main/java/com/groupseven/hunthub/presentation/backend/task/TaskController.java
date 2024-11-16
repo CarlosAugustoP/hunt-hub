@@ -3,6 +3,8 @@ package com.groupseven.hunthub.presentation.backend.task;
 import java.util.List;
 import java.util.UUID;
 
+import com.groupseven.hunthub.domain.models.dto.TaskDTO;
+import com.groupseven.hunthub.domain.models.dto.TaskDetailsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,38 +34,46 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
-    @GetMapping()
-    public List<Task> getAllTasks() {
-        return taskService.getAll();
+    @GetMapping
+    public ResponseEntity<List<TaskDTO>> getAllTasks() {
+        try {
+            List<Task> tasks = taskService.getAll();
+            List<TaskDTO> taskDtos = tasks.stream().map(task -> new TaskDTO().convertToDTO(task)).toList();
+            return ResponseEntity.ok(taskDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
 
     @PostMapping("/{poId}")
-    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO, @PathVariable UUID poId) {
-        System.out.println("Id do PO no parametro:" + poId);
+    public ResponseEntity<?> createTask(@RequestBody TaskDTO taskDTO, @PathVariable UUID poId) {
+        try {
+            PO po = poService.findPOById(poId);
 
-        PO po = poService.findPOById(poId);
+            if (po == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");
+            }
 
-        System.out.println("Nome do PO:" + po.getName());
-        System.out.println("Id do PO:" + po.getId().getId());
+            Task task = taskService.createTask(
+                    po.getId().getId(),
+                    taskDTO.getDescription(),
+                    taskDTO.getTitle(),
+                    taskDTO.getDeadline(),
+                    taskDTO.getReward(),
+                    taskDTO.getNumberOfMeetings(),
+                    taskDTO.getNumberOfHuntersRequired(),
+                    taskDTO.getRatingRequired(),
+                    taskDTO.getTags()
+            );
 
-        if (po == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            TaskDTO responseDTO = taskDTO.convertToDTO(task);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
         }
-
-        Task task = taskService.createTask(
-                po.getId().getId(),
-                taskDTO.getDescription(),
-                taskDTO.getTitle(),
-                taskDTO.getDeadline(),
-                taskDTO.getReward(),
-                taskDTO.getNumberOfMeetings(),
-                taskDTO.getNumberOfHuntersRequired(),
-                taskDTO.getRatingRequired(),
-                taskDTO.getTags()
-        );
-
-        TaskDTO responseDTO = taskDTO.convertToDTO(task);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -96,8 +106,26 @@ public class TaskController {
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTaskById(@PathVariable UUID id) {
+        try {
+            Task task = taskService.getTask(id);
+            if (task == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found.");
+            }
+            TaskDetailsDto taskDetailsDto = TaskDetailsDto.convertToTaskDetailsDTO(task);
+            return ResponseEntity.ok(taskDetailsDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+        }
+    }
+
 
 
     @PostMapping("/{taskId}/accept/{hunterId}")
@@ -114,17 +142,15 @@ public class TaskController {
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
         }
     }
-
-    @PostMapping("/{taskId}/decline/{hunterId}")
     public ResponseEntity<String> declineHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         try {
-            // Obtém a Task e o Hunter
             Task task = taskService.getTask(taskId);
             Hunter hunter = taskService.getHunter(hunterId);
 
-            // Verifica se a Task e o Hunter foram encontrados
             if (task != null && hunter != null) {
                 taskService.declineHunter(task, hunter);
                 return ResponseEntity.ok("Hunter declined for the task successfully.");
@@ -133,6 +159,8 @@ public class TaskController {
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
         }
     }
 

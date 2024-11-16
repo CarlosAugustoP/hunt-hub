@@ -3,15 +3,9 @@ package com.groupseven.hunthub.domain.services;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.repository.HunterRepository;
-import com.groupseven.hunthub.domain.repository.PoRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 
-import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -69,10 +63,11 @@ public class HunterService {
 
     }
 
-    public void createHunter(Hunter hunter) {
+    public Hunter createHunter(Hunter hunter) {
         assert passwordEncoder != null;
         hunter.setPassword(passwordEncoder.encode(hunter.getPassword()));
         hunterRepository.save(hunter);
+        return hunter;
     }
 
     @Transactional

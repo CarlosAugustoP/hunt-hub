@@ -3,9 +3,12 @@ package com.groupseven.hunthub.presentation.backend.PO;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.User;
+import com.groupseven.hunthub.domain.models.dto.PODto;
+import com.groupseven.hunthub.domain.models.dto.PoDetailsDto;
 import com.groupseven.hunthub.domain.services.HunterService;
 import com.groupseven.hunthub.domain.services.POService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,40 +22,79 @@ public class POController {
     @Autowired
     private POService poService;
 
-    @PostMapping()
-    public User register(@RequestBody PO po) {
-        po.setRole("ROLE_PO");
-        poService.createPO(po);
+    @PostMapping
+    public ResponseEntity<?> register(@RequestBody PO po) {
         try {
-            System.out.println(po.getId().getId());
+            po.setRole("ROLE_PO");
+            PO createdPO = poService.createPO(po);
+
+            PODto poDto = PODto.convertToPODTO(createdPO);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(poDto);
         } catch (Exception e) {
-            System.out.println("Error: " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to create PO: " + e.getMessage());
         }
-        return po;
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<PO> getHunterById(@PathVariable UUID id) {
-        return ResponseEntity.ok(poService.findPOById(id));
+    public ResponseEntity<?> getPoById(@PathVariable UUID id) {
+        try {
+            PO po = poService.findPOById(id);
+
+            PoDetailsDto poDetailsDto = PoDetailsDto.convertToPoDetailsDto(po);
+
+            return ResponseEntity.ok(poDetailsDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while retrieving the PO: " + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PO> updatePO(@PathVariable UUID id, @RequestBody PO po) {
-        po.setId(id);
-        System.out.println(po.getPoints());
-        PO updatedPO = poService.updatePO(id, po);
-        return ResponseEntity.ok(updatedPO);
+    public ResponseEntity<?> updatePO(@PathVariable UUID id, @RequestBody PO po) {
+        try {
+            po.setId(id);
+            PO updatedPO = poService.updatePO(id, po);
+
+            PODto poDto = PODto.convertToPODTO(updatedPO);
+
+            return ResponseEntity.ok(poDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while updating the PO: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHunter(@PathVariable UUID id) {
-        poService.deletePO(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deletePO(@PathVariable UUID id) {
+        try {
+            poService.deletePO(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while deleting the PO: " + e.getMessage());
+        }
     }
 
-    @GetMapping()
-    public ResponseEntity<List<PO>> getAllPo() {
-        return ResponseEntity.ok(poService.getAllPOs());
+    @GetMapping
+    public ResponseEntity<?> getAllPOs() {
+        try {
+            List<PO> poList = poService.getAllPOs();
+
+            List<PODto> poDtoList = PODto.convertToPODTOList(poList);
+
+            return ResponseEntity.ok(poDtoList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while retrieving the POs: " + e.getMessage());
+        }
     }
 }
