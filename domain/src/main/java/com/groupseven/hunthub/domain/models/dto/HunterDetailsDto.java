@@ -85,6 +85,7 @@ public class HunterDetailsDto extends HunterDto {
         hunterDetailsDto.setEmail(hunter.getEmail());
         hunterDetailsDto.setPoints(hunter.getPoints());
         hunterDetailsDto.setTasks(TaskDTO.convertToTaskDTOList(hunter.getTasks()));
+        hunterDetailsDto.setRating(hunter.getRating());
         return hunterDetailsDto;
     }
 }

@@ -11,12 +11,21 @@ public class HunterDto extends UserDTO {
     private double totalRating;
     private int levels;
     public UUID id;
+    public double rating;
 
     public HunterDto(String bio, String profilePicture, double totalRating, int levels) {
         this.bio = bio;
         this.profilePicture = profilePicture;
         this.totalRating = totalRating;
         this.levels = levels;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public String getBio() {
@@ -70,6 +79,8 @@ public class HunterDto extends UserDTO {
         hunterDto.setName(hunter.getName());
         hunterDto.setEmail(hunter.getEmail());
         hunterDto.setId(hunter.getId().getId());
+        hunterDto.setPoints(hunter.getPoints());
+        hunterDto.setRating(hunter.getRating());
 
         return hunterDto;
     }
