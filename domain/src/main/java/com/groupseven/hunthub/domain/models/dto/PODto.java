@@ -64,11 +64,12 @@ public class PODto extends UserDTO {
         poDto.setName(po.getName());
         poDto.setEmail(po.getEmail());
         poDto.setId(po.getId().getId());
+        poDto.setPoints(po.getPoints());
 
         return poDto;
     }
 
-    private void setId(UUID id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

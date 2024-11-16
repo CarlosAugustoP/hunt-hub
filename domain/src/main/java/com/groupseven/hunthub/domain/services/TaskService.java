@@ -178,7 +178,9 @@ public class TaskService {
     }
 
     public List<Task> getAll() {
-        return taskRepository.findAll();
+        return taskRepository.findAll().stream()
+                .filter(task -> !task.getStatus().equals(TaskStatus.DONE))
+                .toList();
     }
 
     public void createTask(Task task) {
@@ -235,4 +237,8 @@ public class TaskService {
         return existingTask;
     }
 
+    public void completeTask(Task task) {
+        task.complete();
+        taskRepository.save(task);
+    }
 }

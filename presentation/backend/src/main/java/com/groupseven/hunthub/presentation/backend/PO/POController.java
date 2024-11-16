@@ -42,9 +42,7 @@ public class POController {
     public ResponseEntity<?> getPoById(@PathVariable UUID id) {
         try {
             PO po = poService.findPOById(id);
-
             PoDetailsDto poDetailsDto = PoDetailsDto.convertToPoDetailsDto(po);
-
             return ResponseEntity.ok(poDetailsDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");

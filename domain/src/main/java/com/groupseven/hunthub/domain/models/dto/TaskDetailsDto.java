@@ -8,17 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class TaskDetailsDto extends TaskDTO {
-    private UUID poId;
     private List<HunterDto> hunters;
     private PODto po;
 
-    public UUID getPoId() {
-        return poId;
-    }
-
-    public void setPoId(UUID poId) {
-        this.poId = poId;
-    }
 
     public List<HunterDto> getHunters() {
         return hunters;
@@ -36,11 +28,11 @@ public class TaskDetailsDto extends TaskDTO {
         this.po = po;
     }
 
-    public TaskDetailsDto(String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, List<HunterDto> hunters, PODto po, UUID poId, UUID id) {
+    public TaskDetailsDto(String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, List<HunterDto> hunters, PODto po, UUID id) {
         super(description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags, id);
         this.hunters = hunters;
         this.po = po;
-        this.poId = poId;
+
     }
 
     public static TaskDetailsDto convertToTaskDetailsDTO(Task task) {
@@ -55,7 +47,6 @@ public class TaskDetailsDto extends TaskDTO {
                 task.getTags(),
                 HunterDto.convertToHunterDTOList(task.getHunters()),
                 PODto.convertToPODTO(task.getPo()),
-                task.getPo().getId().getId(),
                 task.getId().getId()
 
         );

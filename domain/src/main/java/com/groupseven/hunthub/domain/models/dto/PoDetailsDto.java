@@ -38,6 +38,10 @@ public class PoDetailsDto extends PODto{
         );
         poDetailsDto.setRatingCount(po.getRatingCount());
         poDetailsDto.setTasks(TaskDTO.convertToTaskDTOList(po.getTasks()));
+        poDetailsDto.setId(po.getId().getId());
+        poDetailsDto.setEmail(po.getEmail());
+        poDetailsDto.setName(po.getName());
+
         return poDetailsDto;
     }
 }

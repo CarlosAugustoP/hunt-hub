@@ -76,16 +76,6 @@ public class TaskController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable UUID id, @RequestBody Task task) {
-        TaskId taskId = new TaskId(id);
-        task.setId(taskId);
-
-        Task updatedTask = taskService.updateTask(id, task);
-
-        return ResponseEntity.ok(updatedTask);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable UUID id) {
         taskService.deleteTask(id);
@@ -146,6 +136,8 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
         }
     }
+
+    @PostMapping("/{taskId}/decline/{hunterId}")
     public ResponseEntity<String> declineHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         try {
             Task task = taskService.getTask(taskId);
@@ -156,6 +148,24 @@ public class TaskController {
                 return ResponseEntity.ok("Hunter declined for the task successfully.");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task or Hunter not found.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+        }
+    }
+
+    @PostMapping("/{taskId}/complete")
+    public ResponseEntity<String> completeTask(@PathVariable UUID taskId) {
+        try {
+            Task task = taskService.getTask(taskId);
+
+            if (task != null) {
+                taskService.completeTask(task);
+                return ResponseEntity.ok("Task completed successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found.");
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
