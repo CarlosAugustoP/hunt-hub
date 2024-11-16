@@ -90,4 +90,8 @@ public class POService {
     public void deletePO(UUID id) {
         poRepository.delete(id);
     }
+
+    public void save (PO po) {
+        poRepository.save(po);
+    }
 }

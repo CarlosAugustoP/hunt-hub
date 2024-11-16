@@ -17,21 +17,20 @@ import java.util.UUID;
 
 @Service
 public class HunterService {
-    private final HunterRepository hunterRepository;
-    private final PoRepository poRepository;
-    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private HunterRepository hunterRepository;
+
+    @Autowired
+    private PoRepository poRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public HunterService(HunterRepository hunterRepository, PoRepository poRepository) {
         this.hunterRepository = hunterRepository;
         this.poRepository = poRepository;
         this.passwordEncoder = null;
-    }
-
-    @Autowired
-    public HunterService(HunterRepository hunterRepository, PoRepository poRepository, PasswordEncoder passwordEncoder) {
-        this.hunterRepository = hunterRepository;
-        this.poRepository = poRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Hunter> getAllHunters() {
@@ -111,4 +110,8 @@ public class HunterService {
     public void deleteHunter(Hunter hunter) {
         hunterRepository.delete(hunter);
     }
+    public void save (Hunter hunter){
+        hunterRepository.save(hunter);
+    }
+
 }
