@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.groupseven.hunthub.domain.models.dto.TaskDTO;
 import com.groupseven.hunthub.domain.models.dto.TaskDetailsDto;
+import com.groupseven.hunthub.domain.services.HunterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,9 @@ public class TaskController {
 
     @Autowired
     TaskService taskService;
+
+    @Autowired
+    HunterService hunterService;
 
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getAllTasks() {
@@ -173,5 +177,22 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
         }
     }
+
+    @PostMapping("/hunter/{hunterId}/request-payment/{taskId}")
+    public ResponseEntity<String> requestPayment(@PathVariable UUID hunterId, @PathVariable UUID taskId) {
+        try {
+            if (hunterService.hunterRequestsPayment(hunterId, taskId)) {
+                return ResponseEntity.ok("Payment requested successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment request failed.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+        }
+    }
+
+
 
 }

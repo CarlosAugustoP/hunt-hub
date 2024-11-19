@@ -1,11 +1,9 @@
 package com.groupseven.hunthub.domain.services;
 
-import com.groupseven.hunthub.domain.models.Task;
-import com.groupseven.hunthub.domain.models.TaskStatus;
+import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.PoRepository;
-import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.repository.RatingCheckRepository;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -32,6 +30,9 @@ public class HunterService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RatingCheckRepository ratingCheckRepository;
 
     public HunterService(HunterRepository hunterRepository, PoRepository poRepository) {
         this.hunterRepository = hunterRepository;
@@ -90,10 +91,6 @@ public class HunterService {
         existingHunter.setPoints(updatedHunterData.getPoints());
 
 
-        System.out.println("OLA CHEGUEI AQUI" + updatedHunterData.getPoints());
-
-
-
         if (updatedHunterData.getBio() != null) {
             existingHunter.setBio(updatedHunterData.getBio());
         }
@@ -147,6 +144,36 @@ public class HunterService {
         foundHunter.setPoints(totalPayload);
         hunterRepository.save(foundHunter);
         return foundHunter;
+    }
+
+    public boolean hunterRequestsPayment(UUID hunterId, UUID taskId) {
+        if (hunterRepository.findById(hunterId) == null) return logAndReturnFalse("The hunter with ID " + hunterId + " doesn't exist.");
+        Task task = taskRepository.findById(taskId);
+        if (task == null) return logAndReturnFalse("The task with ID " + taskId + " doesn't exist.");
+        List<Hunter> huntersInTask = task.getHunters();
+        if (huntersInTask.isEmpty()) return logAndReturnFalse("No hunters are associated with the task.");
+        UserId poId = task.getPo().getId();
+        List<RatingCheck> ratingChecks = ratingCheckRepository.getRatingChecksByTaskId(taskId);
+
+        for (Hunter hunter : huntersInTask) {
+            if (hunter.getId().getId().equals(hunterId)) continue;
+            if (!ratingChecks.stream().anyMatch(rc -> rc.getHunterId().getId().equals(hunterId) &&
+                    rc.getTaskId().getId().equals(taskId) &&
+                    rc.getPoId().getId().equals(hunter.getId().getId())))
+                return logAndReturnFalse("Hunter " + hunterId + " has not rated Hunter " + hunter.getId().getId());
+        }
+        if (!ratingChecks.stream().anyMatch(rc -> rc.getHunterId().getId().equals(hunterId) &&
+                rc.getTaskId().getId().equals(taskId) &&
+                rc.getPoId().getId().equals(poId.getId())))
+            return logAndReturnFalse("Hunter " + hunterId + " has not rated the PO " + poId.getId());
+
+        System.out.println("Hunter " + hunterId + " has rated all hunters and the PO for Task " + taskId);
+        return true;
+    }
+
+    private boolean logAndReturnFalse(String message) {
+        System.out.println(message);
+        return false;
     }
 
 
