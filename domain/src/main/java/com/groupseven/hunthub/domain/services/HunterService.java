@@ -1,9 +1,12 @@
 package com.groupseven.hunthub.domain.services;
 
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class HunterService {
 
     @Autowired
     private PoRepository poRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -81,6 +87,11 @@ public class HunterService {
         updatedHunterData.setCpf(existingHunter.getCpf());
         updatedHunterData.setPassword(existingHunter.getPassword());
         updatedHunterData.setId(id);
+        existingHunter.setPoints(updatedHunterData.getPoints());
+
+
+        System.out.println("OLA CHEGUEI AQUI" + updatedHunterData.getPoints());
+
 
 
         if (updatedHunterData.getBio() != null) {
@@ -113,5 +124,30 @@ public class HunterService {
     public void save (Hunter hunter){
         hunterRepository.save(hunter);
     }
+
+    @Transactional
+    public Hunter payTheHunter (UUID hunterID, UUID taskID) {
+        Hunter foundHunter = hunterRepository.findById(hunterID);
+        Task foundTask = taskRepository.findById(taskID);
+        if (foundHunter == null) {
+            System.out.println("The hunter with ID " + hunterID + " doesn't exist.");
+            return null;
+        }
+
+        if (foundTask == null) {
+            System.out.println("The task with ID " + taskID + " doesn't exist.");
+        }
+
+        if (!(foundTask.getStatus() == TaskStatus.DONE)){
+            System.out.println("The task with ID " + taskID + " has status " + foundTask.getStatus());
+        }
+
+        int payment = foundTask.getReward()/foundTask.getHunters().size();
+        int totalPayload = foundHunter.getPoints() + payment;
+        foundHunter.setPoints(totalPayload);
+        hunterRepository.save(foundHunter);
+        return foundHunter;
+    }
+
 
 }

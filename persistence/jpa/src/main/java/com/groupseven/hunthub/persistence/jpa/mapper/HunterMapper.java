@@ -28,6 +28,7 @@ public class HunterMapper {
     if (hunter.getId() != null) {
       hunterJpa.setId(hunter.getId().getId());
     }
+    hunterJpa.setPoints(hunter.getPoints());
     hunterJpa.setName(hunter.getName());
     hunterJpa.setEmail(hunter.getEmail());
     hunterJpa.setCpf(hunter.getCpf());
@@ -51,6 +52,7 @@ public class HunterMapper {
 
   public Hunter toDomain(HunterJpa hunterJpa, List<Task> tasks) {
     Hunter hunter = new Hunter();
+    hunter.setPoints(hunterJpa.getPoints());
     hunter.setId(hunterJpa.getId());
     hunter.setName(hunterJpa.getName());
     hunter.setEmail(hunterJpa.getEmail());
