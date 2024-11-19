@@ -21,6 +21,11 @@ public class UserId {
         return id.equals(userId.id);
     }
 
+    @Override
+    public String toString() {
+        return id.toString();
+    }
+
     public int hashCode() {
         return Objects.hashCode(id);
     }

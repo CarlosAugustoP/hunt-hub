@@ -39,6 +39,7 @@ public class HunterRepositoryImpl implements HunterRepository {
   public void save(Hunter hunter) {
     HunterJpa hunterJpa = hunterMapper.toEntity(hunter, extractTaskIds(hunter));
     HunterJpa savedHunterJpa = repository.save(hunterJpa);
+    System.out.println(savedHunterJpa.getPoints());
     hunter.setId(new UserId(savedHunterJpa.getId()).getId());
   }
 

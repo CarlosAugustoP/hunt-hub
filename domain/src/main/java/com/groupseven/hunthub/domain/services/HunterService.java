@@ -1,9 +1,10 @@
 package com.groupseven.hunthub.domain.services;
 
+import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.PoRepository;
-import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.repository.RatingCheckRepository;
+import com.groupseven.hunthub.domain.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,13 @@ public class HunterService {
     private PoRepository poRepository;
 
     @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RatingCheckRepository ratingCheckRepository;
 
     public HunterService(HunterRepository hunterRepository, PoRepository poRepository) {
         this.hunterRepository = hunterRepository;
@@ -81,6 +88,7 @@ public class HunterService {
         updatedHunterData.setCpf(existingHunter.getCpf());
         updatedHunterData.setPassword(existingHunter.getPassword());
         updatedHunterData.setId(id);
+        existingHunter.setPoints(updatedHunterData.getPoints());
 
 
         if (updatedHunterData.getBio() != null) {
@@ -113,5 +121,60 @@ public class HunterService {
     public void save (Hunter hunter){
         hunterRepository.save(hunter);
     }
+
+    @Transactional
+    public Hunter payTheHunter (UUID hunterID, UUID taskID) {
+        Hunter foundHunter = hunterRepository.findById(hunterID);
+        Task foundTask = taskRepository.findById(taskID);
+        if (foundHunter == null) {
+            System.out.println("The hunter with ID " + hunterID + " doesn't exist.");
+            return null;
+        }
+
+        if (foundTask == null) {
+            System.out.println("The task with ID " + taskID + " doesn't exist.");
+        }
+
+        if (!(foundTask.getStatus() == TaskStatus.DONE)){
+            System.out.println("The task with ID " + taskID + " has status " + foundTask.getStatus());
+        }
+
+        int payment = foundTask.getReward()/foundTask.getHunters().size();
+        int totalPayload = foundHunter.getPoints() + payment;
+        foundHunter.setPoints(totalPayload);
+        hunterRepository.save(foundHunter);
+        return foundHunter;
+    }
+
+    public boolean hunterRequestsPayment(UUID hunterId, UUID taskId) {
+        if (hunterRepository.findById(hunterId) == null) return logAndReturnFalse("The hunter with ID " + hunterId + " doesn't exist.");
+        Task task = taskRepository.findById(taskId);
+        if (task == null) return logAndReturnFalse("The task with ID " + taskId + " doesn't exist.");
+        List<Hunter> huntersInTask = task.getHunters();
+        if (huntersInTask.isEmpty()) return logAndReturnFalse("No hunters are associated with the task.");
+        UserId poId = task.getPo().getId();
+        List<RatingCheck> ratingChecks = ratingCheckRepository.getRatingChecksByTaskId(taskId);
+
+        for (Hunter hunter : huntersInTask) {
+            if (hunter.getId().getId().equals(hunterId)) continue;
+            if (!ratingChecks.stream().anyMatch(rc -> rc.getHunterId().getId().equals(hunterId) &&
+                    rc.getTaskId().getId().equals(taskId) &&
+                    rc.getPoId().getId().equals(hunter.getId().getId())))
+                return logAndReturnFalse("Hunter " + hunterId + " has not rated Hunter " + hunter.getId().getId());
+        }
+        if (!ratingChecks.stream().anyMatch(rc -> rc.getHunterId().getId().equals(hunterId) &&
+                rc.getTaskId().getId().equals(taskId) &&
+                rc.getPoId().getId().equals(poId.getId())))
+            return logAndReturnFalse("Hunter " + hunterId + " has not rated the PO " + poId.getId());
+
+        System.out.println("Hunter " + hunterId + " has rated all hunters and the PO for Task " + taskId);
+        return true;
+    }
+
+    private boolean logAndReturnFalse(String message) {
+        System.out.println(message);
+        return false;
+    }
+
 
 }

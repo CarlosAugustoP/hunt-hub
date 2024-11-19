@@ -64,7 +64,6 @@ public class TaskService {
             throw new IllegalArgumentException("Not enough points");
         }
 
-        // Deduz os pontos necessários para criar a tarefa
         po.setPoints(po.getPoints() - reward);
         poRepository.save(po);
 
@@ -241,4 +240,6 @@ public class TaskService {
         task.complete();
         taskRepository.save(task);
     }
+
+
 }
