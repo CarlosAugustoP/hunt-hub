@@ -182,6 +182,7 @@ public class TaskController {
     public ResponseEntity<String> requestPayment(@PathVariable UUID hunterId, @PathVariable UUID taskId) {
         try {
             if (hunterService.hunterRequestsPayment(hunterId, taskId)) {
+                hunterService.payTheHunter(hunterId, taskId);
                 return ResponseEntity.ok("Payment requested successfully.");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment request failed.");

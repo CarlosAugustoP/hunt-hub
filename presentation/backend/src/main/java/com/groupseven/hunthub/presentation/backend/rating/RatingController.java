@@ -40,10 +40,6 @@ public class RatingController {
             hunterService.ratePO(ratedPO, rating);
             poService.save(ratedPO);
 
-            Hunter payedHunter = hunterService.payTheHunter(hunterId, taskId);
-            hunterService.save(payedHunter);
-
-            System.out.println("Hunter points " + payedHunter.getPoints());
             PODto responseDto = PODto.convertToPODTO(ratedPO);
 
             return ResponseEntity.ok(responseDto);
