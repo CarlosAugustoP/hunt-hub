@@ -24,4 +24,6 @@ public interface TaskRepository {
 
     public void declineHunter(UUID taskId, Hunter hunter);
 
+    public List<Task> findTasksNotAppliedByHunter(UUID hunterId);
+
 }

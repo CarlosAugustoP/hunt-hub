@@ -182,6 +182,16 @@ public class TaskService {
                 .toList();
     }
 
+    public List<Task> getTasksNotAppliedByHunter(UUID hunterId) {
+        List<Task> allTasks = taskRepository.findAll();
+        return allTasks.stream()
+                       .filter(task -> !task.getHuntersApplied().stream()
+                                            .anyMatch(hunter -> hunter.getId().getId().equals(hunterId))
+                               && task.getStatus().equals(TaskStatus.PENDING))
+                       .toList();
+    }
+    
+
     public void createTask(Task task) {
         taskRepository.save(task);
     }

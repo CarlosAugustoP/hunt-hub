@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
@@ -128,6 +129,41 @@ public class TaskRepositoryImpl implements TaskRepository {
   @Override
   public void delete(UUID id) {
     repository.deleteById(id);
+  }
+
+  @Override
+  public List<Task> findTasksNotAppliedByHunter(UUID hunterId) {
+      List<TaskJpa> taskJpaList = repository.findAll();
+      List<Task> tasks = new ArrayList<>();
+
+      for (TaskJpa taskJpa : taskJpaList) {
+          if (!taskJpa.getHunterAppliedIds().contains(hunterId)) {
+              PO po = poRepositoryProvider.getIfAvailable().findById(taskJpa.getPoId());
+
+              List<Hunter> hunters = new ArrayList<>();
+              if (taskJpa.getHunterIds() != null) {
+                  for (UUID hId : taskJpa.getHunterIds()) {
+                      Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hId);
+                      if (hunter != null) {
+                          hunters.add(hunter);
+                      }
+                  }
+              }
+
+              List<Hunter> huntersApplied = new ArrayList<>();
+              if (taskJpa.getHunterAppliedIds() != null) {
+                  for (UUID hId : taskJpa.getHunterAppliedIds()) {
+                      Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hId);
+                      if (hunter != null) {
+                          huntersApplied.add(hunter);
+                      }
+                  }
+              }
+
+              tasks.add(taskMapper.toDomain(taskJpa, po, hunters, huntersApplied));
+          }
+      }
+      return tasks;
   }
 
   @Override
