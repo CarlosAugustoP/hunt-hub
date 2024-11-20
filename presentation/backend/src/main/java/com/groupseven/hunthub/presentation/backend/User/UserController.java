@@ -43,8 +43,15 @@ public class UserController {
         try {
             var userNamePassword = new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword());
             var auth = this.authenticationManager.authenticate(userNamePassword);
-            var token = tokenService.generateToken((User) auth.getPrincipal());
-            return ResponseEntity.ok(token);
+            var user = (User) auth.getPrincipal();
+            var token = tokenService.generateToken(user);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("id", user.getId().getId());
+            response.put("role", user.getRole());
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, String> response = new HashMap<>();
             response.put("error", "Credenciais inválidas");
