@@ -50,6 +50,20 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/not-applied/{hunterId}")
+    public ResponseEntity<List<TaskDTO>> getTasksNotAppliedByHunter(@PathVariable UUID hunterId) {
+        try {
+            List<Task> tasks = taskService.getTasksNotAppliedByHunter(hunterId);
+            List<TaskDTO> taskDtos = tasks.stream()
+                                        .map(task -> new TaskDTO().convertToDTO(task))
+                                        .toList();
+            return ResponseEntity.ok(taskDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
     @PostMapping("/{poId}")
     public ResponseEntity<?> createTask(@RequestBody TaskDTO taskDTO, @PathVariable UUID poId) {
         try {

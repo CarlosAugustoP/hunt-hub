@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 
 @Repository
@@ -80,5 +81,22 @@ public class TaskRepositoryImpl implements TaskRepository {
             throw new IllegalArgumentException("Task with ID " + taskId + " not found.");
         }
     }
+
+    @Override
+    public List<Task> findTasksNotAppliedByHunter(UUID hunterId) {
+        List<Task> tasksNotApplied = new ArrayList<>();
+
+        for (Task task : taskStorage.values()) {
+            // Verifica se o hunter ainda não aplicou e se a task está pendente
+            boolean hasNotApplied = task.getHuntersApplied().stream()
+                                        .noneMatch(hunter -> hunter.getId().getId().equals(hunterId));
+            if (hasNotApplied && task.getStatus() == TaskStatus.PENDING) {
+                tasksNotApplied.add(task);
+            }
+        }
+
+        return tasksNotApplied;
+    }
+
 
 }
