@@ -2,6 +2,8 @@ package com.groupseven.hunthub.domain.services;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
+import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,21 @@ public class POService {
         if (hunter == null) {
             throw new IllegalArgumentException("Hunter não pode ser nulo.");
         }
-        if (rating < 1 || rating > 5) { // Exemplo de validação do rating
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("A classificação deve estar entre 1 e 5.");
+        }
+
+        hunter.rate(rating);
+    }
+
+    public void rateHunter(Hunter hunter, int rating, Task task) {
+        if (task.getStatus() != TaskStatus.DONE) {
+            throw new IllegalArgumentException("A avaliação só pode ser feita após a conclusão da tarefa.");
+        }
+        if (hunter == null) {
+            throw new IllegalArgumentException("Hunter não pode ser nulo.");
+        }
+        if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("A classificação deve estar entre 1 e 5.");
         }
 

@@ -1,15 +1,14 @@
-package com.groupseven.hunthub.domain.models.dto;
+package com.groupseven.hunthub.presentation.backend.dto.response;
 import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.models.Task;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PoDetailsDto extends PODto{
+public class PoDetailsResponseDto extends PoResponseDto {
     private int ratingCount;
-    List<TaskDTO> tasks = new ArrayList<>();
+    List<TaskResponseDto> tasks = new ArrayList<>();
 
-    public PoDetailsDto(int levels, int totalRating, String profilePicture, String bio) {
+    public PoDetailsResponseDto(int levels, int totalRating, String profilePicture, String bio) {
         super(levels, totalRating, profilePicture, bio);
     }
 
@@ -21,23 +20,23 @@ public class PoDetailsDto extends PODto{
         this.ratingCount = ratingCount;
     }
 
-    public List<TaskDTO> getTasks() {
+    public List<TaskResponseDto> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<TaskDTO> tasks) {
+    public void setTasks(List<TaskResponseDto> tasks) {
         this.tasks = tasks;
     }
 
-    public static PoDetailsDto convertToPoDetailsDto(PO po) {
-        PoDetailsDto poDetailsDto = new PoDetailsDto(
+    public static PoDetailsResponseDto convertToPoDetailsDto(PO po) {
+        PoDetailsResponseDto poDetailsDto = new PoDetailsResponseDto(
                 po.getLevels(),
                 po.getTotalRating(),
                 po.getProfilePicture(),
                 po.getBio()
         );
         poDetailsDto.setRatingCount(po.getRatingCount());
-        poDetailsDto.setTasks(TaskDTO.convertToTaskDTOList(po.getTasks()));
+        poDetailsDto.setTasks(TaskResponseDto.convertToTaskDTOList(po.getTasks()));
         poDetailsDto.setId(po.getId().getId());
         poDetailsDto.setEmail(po.getEmail());
         poDetailsDto.setName(po.getName());

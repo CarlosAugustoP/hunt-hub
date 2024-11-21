@@ -1,4 +1,4 @@
-package com.groupseven.hunthub.domain.models.dto;
+package com.groupseven.hunthub.presentation.backend.dto.response;
 
 import com.groupseven.hunthub.domain.models.Achievement;
 import com.groupseven.hunthub.domain.models.Hunter;
@@ -6,10 +6,10 @@ import com.groupseven.hunthub.domain.models.Project;
 
 import java.util.List;
 
-public class HunterDetailsDto extends HunterDto {
+public class HunterDetailsResponseDto extends HunterResponseDto {
     private int ratingCount;
     private String linkPortfolio;
-    private List<TaskDTO> tasks;
+    private List<TaskResponseDto> tasks;
 
     public List<String> getCertifications() {
         return certifications;
@@ -48,7 +48,7 @@ public class HunterDetailsDto extends HunterDto {
     private List<Project> projects;
 
 
-    public HunterDetailsDto(String bio, String profilePicture, double totalRating, int levels) {
+    public HunterDetailsResponseDto(String bio, String profilePicture, double totalRating, int levels) {
         super(bio, profilePicture, totalRating, levels);
     }
 
@@ -60,32 +60,32 @@ public class HunterDetailsDto extends HunterDto {
         this.ratingCount = ratingCount;
     }
 
-    public List<TaskDTO> getTasks() {
+    public List<TaskResponseDto> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<TaskDTO> tasks) {
+    public void setTasks(List<TaskResponseDto> tasks) {
         this.tasks = tasks;
     }
 
-    public static HunterDetailsDto convertToHunterDetailsDto(Hunter hunter) {
-        HunterDetailsDto hunterDetailsDto = new HunterDetailsDto(
+    public static HunterDetailsResponseDto convertToHunterDetailsDto(Hunter hunter) {
+        HunterDetailsResponseDto hunterDetailsResponseDto = new HunterDetailsResponseDto(
                 hunter.getBio(),
                 hunter.getProfilePicture(),
                 hunter.getTotalRating(),
                 hunter.getLevel()
         );
-        hunterDetailsDto.setRatingCount(hunter.getRatingCount());
-        hunterDetailsDto.setCertifications(hunter.getCertifications());
-        hunterDetailsDto.setAchievements(hunter.getAchievements());
-        hunterDetailsDto.setProjects(hunter.getProjects());
-        hunterDetailsDto.setLinkPortfolio(hunter.getLinkPortfolio());
-        hunterDetailsDto.setId(hunter.getId().getId());
-        hunterDetailsDto.setName(hunter.getName());
-        hunterDetailsDto.setEmail(hunter.getEmail());
-        hunterDetailsDto.setPoints(hunter.getPoints());
-        hunterDetailsDto.setTasks(TaskDTO.convertToTaskDTOList(hunter.getTasks()));
-        hunterDetailsDto.setRating(hunter.getRating());
-        return hunterDetailsDto;
+        hunterDetailsResponseDto.setRatingCount(hunter.getRatingCount());
+        hunterDetailsResponseDto.setCertifications(hunter.getCertifications());
+        hunterDetailsResponseDto.setAchievements(hunter.getAchievements());
+        hunterDetailsResponseDto.setProjects(hunter.getProjects());
+        hunterDetailsResponseDto.setLinkPortfolio(hunter.getLinkPortfolio());
+        hunterDetailsResponseDto.setId(hunter.getId().getId());
+        hunterDetailsResponseDto.setName(hunter.getName());
+        hunterDetailsResponseDto.setEmail(hunter.getEmail());
+        hunterDetailsResponseDto.setPoints(hunter.getPoints());
+        hunterDetailsResponseDto.setTasks(TaskResponseDto.convertToTaskDTOList(hunter.getTasks()));
+        hunterDetailsResponseDto.setRating(hunter.getRating());
+        return hunterDetailsResponseDto;
     }
 }

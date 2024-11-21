@@ -1,8 +1,6 @@
-package com.groupseven.hunthub.domain.models.dto;
+package com.groupseven.hunthub.presentation.backend.dto.response;
 
-import java.util.UUID;
-
-public class UserDTO {
+public class UserResponseDto {
     public String name;
     public String email;
     public int points;

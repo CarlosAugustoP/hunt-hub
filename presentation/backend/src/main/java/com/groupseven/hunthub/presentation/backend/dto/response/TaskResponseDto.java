@@ -1,4 +1,4 @@
-package com.groupseven.hunthub.domain.models.dto;
+package com.groupseven.hunthub.presentation.backend.dto.response;
 
 import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class TaskDTO {
+public class TaskResponseDto {
         private String description;
         private String title;
         private Date deadline;
@@ -18,7 +18,7 @@ public class TaskDTO {
         private double ratingRequired;
         private UUID id;
 
-        public TaskDTO(String description, String title, Date deadline, int numberOfMeetings, int reward, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, UUID id) {
+        public TaskResponseDto(String description, String title, Date deadline, int numberOfMeetings, int reward, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, UUID id) {
             this.description = description;
             this.title = title;
             this.deadline = deadline;
@@ -30,7 +30,7 @@ public class TaskDTO {
             this.id = id;
         }
 
-        public TaskDTO() {
+        public TaskResponseDto() {
 
         }
 
@@ -44,21 +44,21 @@ public class TaskDTO {
         this.id = id;
     }
 
-    public static List<TaskDTO> convertToTaskDTOList(List<Task> tasks) {
-            List<TaskDTO> taskDTOS = new ArrayList<>();
+    public static List<TaskResponseDto> convertToTaskDTOList(List<Task> tasks) {
+            List<TaskResponseDto> taskResponseDtos = new ArrayList<>();
             for (Task task : tasks) {
-                TaskDTO taskDTO = new TaskDTO();
-                taskDTO.setDescription(task.getDescription());
-                taskDTO.setTitle(task.getTitle());
-                taskDTO.setDeadline(task.getDeadline());
-                taskDTO.setReward(task.getReward());
-                taskDTO.setNumberOfMeetings(task.getNumberOfMeetings());
-                taskDTO.setNumberOfHuntersRequired(task.getNumberOfHuntersRequired());
-                taskDTO.setRatingRequired(task.getRatingRequired());
-                taskDTO.setTags(task.getTags());
-                taskDTOS.add(taskDTO);
+                TaskResponseDto taskResponseDto = new TaskResponseDto();
+                taskResponseDto.setDescription(task.getDescription());
+                taskResponseDto.setTitle(task.getTitle());
+                taskResponseDto.setDeadline(task.getDeadline());
+                taskResponseDto.setReward(task.getReward());
+                taskResponseDto.setNumberOfMeetings(task.getNumberOfMeetings());
+                taskResponseDto.setNumberOfHuntersRequired(task.getNumberOfHuntersRequired());
+                taskResponseDto.setRatingRequired(task.getRatingRequired());
+                taskResponseDto.setTags(task.getTags());
+                taskResponseDtos.add(taskResponseDto);
             }
-            return taskDTOS;
+            return taskResponseDtos;
         }
 
         public String getDescription() {
@@ -125,8 +125,8 @@ public class TaskDTO {
             this.tags = tags;
         }
 
-        public TaskDTO convertToDTO(Task task) {
-            TaskDTO dto = new TaskDTO();
+        public TaskResponseDto convertToDTO(Task task) {
+            TaskResponseDto dto = new TaskResponseDto();
             dto.setDescription(task.getDescription());
             dto.setTitle(task.getTitle());
             dto.setDeadline(task.getDeadline());

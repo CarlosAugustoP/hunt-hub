@@ -15,7 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import com.groupseven.hunthub.domain.models.User;
-import com.groupseven.hunthub.domain.models.AuthenticationDTO;
+import com.groupseven.hunthub.presentation.backend.dto.request.AuthenticationDTO;
 import com.groupseven.hunthub.domain.services.UserService;
 
 import jakarta.validation.Valid;

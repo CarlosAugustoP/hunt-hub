@@ -1,11 +1,11 @@
-package com.groupseven.hunthub.domain.models.dto;
+package com.groupseven.hunthub.presentation.backend.dto.response;
 
 import com.groupseven.hunthub.domain.models.Hunter;
 
 import java.util.List;
 import java.util.UUID;
 
-public class HunterDto extends UserDTO {
+public class HunterResponseDto extends UserResponseDto {
     private String bio;
     private String profilePicture;
     private double totalRating;
@@ -13,7 +13,7 @@ public class HunterDto extends UserDTO {
     public UUID id;
     public double rating;
 
-    public HunterDto(String bio, String profilePicture, double totalRating, int levels) {
+    public HunterResponseDto(String bio, String profilePicture, double totalRating, int levels) {
         this.bio = bio;
         this.profilePicture = profilePicture;
         this.totalRating = totalRating;
@@ -68,26 +68,26 @@ public class HunterDto extends UserDTO {
         this.id = id;
     }
 
-    public static HunterDto convertToHunterDTO(Hunter hunter) {
-        HunterDto hunterDto = new HunterDto(
+    public static HunterResponseDto convertToHunterDTO(Hunter hunter) {
+        HunterResponseDto hunterResponseDto = new HunterResponseDto(
                 hunter.getBio(),
                 hunter.getProfilePicture(),
                 hunter.getRating(),
                 hunter.getLevel()
         );
 
-        hunterDto.setName(hunter.getName());
-        hunterDto.setEmail(hunter.getEmail());
-        hunterDto.setId(hunter.getId().getId());
-        hunterDto.setPoints(hunter.getPoints());
-        hunterDto.setRating(hunter.getRating());
+        hunterResponseDto.setName(hunter.getName());
+        hunterResponseDto.setEmail(hunter.getEmail());
+        hunterResponseDto.setId(hunter.getId().getId());
+        hunterResponseDto.setPoints(hunter.getPoints());
+        hunterResponseDto.setRating(hunter.getRating());
 
-        return hunterDto;
+        return hunterResponseDto;
     }
 
-    public static List<HunterDto> convertToHunterDTOList(List<Hunter> hunters) {
+    public static List<HunterResponseDto> convertToHunterDTOList(List<Hunter> hunters) {
         return hunters.stream()
-                .map(HunterDto::convertToHunterDTO)
+                .map(HunterResponseDto::convertToHunterDTO)
                 .toList();
     }
 }

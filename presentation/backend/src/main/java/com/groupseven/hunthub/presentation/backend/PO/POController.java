@@ -1,12 +1,10 @@
 package com.groupseven.hunthub.presentation.backend.PO;
-
-import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.presentation.backend.dto.request.CreatePoDto;
 import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.models.User;
-import com.groupseven.hunthub.domain.models.dto.PODto;
-import com.groupseven.hunthub.domain.models.dto.PoDetailsDto;
-import com.groupseven.hunthub.domain.services.HunterService;
+import com.groupseven.hunthub.presentation.backend.dto.response.PoResponseDto;
+import com.groupseven.hunthub.presentation.backend.dto.response.PoDetailsResponseDto;
 import com.groupseven.hunthub.domain.services.POService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +21,12 @@ public class POController {
     private POService poService;
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody PO po) {
-        try {
-            po.setRole("ROLE_PO");
-            PO createdPO = poService.createPO(po);
-
-            PODto poDto = PODto.convertToPODTO(createdPO);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(poDto);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to create PO: " + e.getMessage());
-        }
+    public ResponseEntity<PoResponseDto> register(@RequestBody @Valid CreatePoDto createPODto) {
+        PO po = createPODto.convertToPO();
+        po.setRole("ROLE_PO");
+        PO createdPO = poService.createPO(po);
+        PoResponseDto poResponseDto = PoResponseDto.convertToPODTO(createdPO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(poResponseDto);
     }
 
 
@@ -42,7 +34,7 @@ public class POController {
     public ResponseEntity<?> getPoById(@PathVariable UUID id) {
         try {
             PO po = poService.findPOById(id);
-            PoDetailsDto poDetailsDto = PoDetailsDto.convertToPoDetailsDto(po);
+            PoDetailsResponseDto poDetailsDto = PoDetailsResponseDto.convertToPoDetailsDto(po);
             return ResponseEntity.ok(poDetailsDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");
@@ -58,9 +50,9 @@ public class POController {
             po.setId(id);
             PO updatedPO = poService.updatePO(id, po);
 
-            PODto poDto = PODto.convertToPODTO(updatedPO);
+            PoResponseDto poResponseDto = PoResponseDto.convertToPODTO(updatedPO);
 
-            return ResponseEntity.ok(poDto);
+            return ResponseEntity.ok(poResponseDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");
         } catch (Exception e) {
@@ -87,9 +79,9 @@ public class POController {
         try {
             List<PO> poList = poService.getAllPOs();
 
-            List<PODto> poDtoList = PODto.convertToPODTOList(poList);
+            List<PoResponseDto> poResponseDtoList = PoResponseDto.convertToPODTOList(poList);
 
-            return ResponseEntity.ok(poDtoList);
+            return ResponseEntity.ok(poResponseDtoList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while retrieving the POs: " + e.getMessage());

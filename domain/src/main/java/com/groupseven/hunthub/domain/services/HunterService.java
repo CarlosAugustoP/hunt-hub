@@ -48,6 +48,21 @@ public class HunterService {
         return hunterRepository.findById(id);
     }
 
+    public void rateHunter(Hunter evaluator, Hunter target, int rating, Task task) {
+        if (task.getStatus() != TaskStatus.DONE) {
+            throw new IllegalArgumentException("A avaliação só pode ser feita após a conclusão da tarefa.");
+        }
+        if (evaluator.equals(target)) {
+            throw new IllegalArgumentException("A avaliação não pode ser feita a si mesmo.");
+        }
+
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("A avaliação deve estar entre 1 e 5.");
+        }
+        target.addRating(rating);
+        hunterRepository.save(target);
+    }
+
     public void rateHunter(Hunter evaluator, Hunter target, int rating) {
         if (evaluator.equals(target)) {
             throw new IllegalArgumentException("A avaliação não pode ser feita a si mesmo.");
@@ -62,7 +77,19 @@ public class HunterService {
 
     public void ratePO(PO po, int rating) {
         if (rating < 1 || rating > 5) {
-            throw new IllegalArgumentException("The rating must be between 1 and 5");
+            throw new IllegalArgumentException("A avaliação deve estar entre 1 e 5.");
+        }
+        po.addRating(rating);
+        poRepository.save(po);
+
+    }
+
+    public void ratePO(PO po, int rating, Task task) {
+        if (task.getStatus() != TaskStatus.DONE) {
+            throw new IllegalArgumentException("A avaliação só pode ser feita após a conclusão da tarefa.");
+        }
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("A avaliação deve estar entre 1 e 5.");
         }
         po.addRating(rating);
         poRepository.save(po);

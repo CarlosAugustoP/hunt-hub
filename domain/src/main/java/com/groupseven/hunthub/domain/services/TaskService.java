@@ -67,19 +67,15 @@ public class TaskService {
         po.setPoints(po.getPoints() - reward);
         poRepository.save(po);
 
-        // Crie a task
         TaskId taskId = new TaskId(UUID.randomUUID());
         Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired,ratingRequired, tags, taskId);
 
-        // Associe o PO à task
         task.setPo(po);
         List<UUID> hunterIds = new ArrayList<>();
         List<UUID> hunterAppliedIds = new ArrayList<>();
 
-        // Salve a entidade JPA
         taskRepository.save(task);
 
-        // Retorne a task criada
         return task;
     }
 
@@ -182,6 +178,10 @@ public class TaskService {
                 .toList();
     }
 
+    public Task getTaskById(UUID taskId) {
+        return taskRepository.findById(taskId);
+    }
+
     public List<Task> getTasksNotAppliedByHunter(UUID hunterId) {
         List<Task> allTasks = taskRepository.findAll();
         return allTasks.stream()
@@ -252,4 +252,7 @@ public class TaskService {
     }
 
 
+    public void save(Task task) {
+        taskRepository.save(task);
+    }
 }

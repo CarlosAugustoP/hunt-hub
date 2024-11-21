@@ -1,9 +1,11 @@
 package com.groupseven.hunthub.presentation.backend.Hunter;
 
 import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.domain.models.dto.HunterDetailsDto;
-import com.groupseven.hunthub.domain.models.dto.HunterDto;
+import com.groupseven.hunthub.presentation.backend.dto.request.CreateHunterDto;
+import com.groupseven.hunthub.presentation.backend.dto.response.HunterDetailsResponseDto;
+import com.groupseven.hunthub.presentation.backend.dto.response.HunterResponseDto;
 import com.groupseven.hunthub.domain.services.HunterService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,13 @@ public class HunterController {
     private HunterService hunterService;
 
     @PostMapping()
-    public ResponseEntity<HunterDto> register(@RequestBody Hunter hunter) {
+    public ResponseEntity<HunterResponseDto> register(@RequestBody @Valid CreateHunterDto hunterDto) {
         try {
+            Hunter hunter = hunterDto.convertToHunter();
             hunter.setRole("ROLE_HUNTER");
             Hunter createdHunter = hunterService.createHunter(hunter);
-            HunterDto hunterDto = HunterDto.convertToHunterDTO(createdHunter);
-            return ResponseEntity.status(HttpStatus.CREATED).body(hunterDto);
+            HunterResponseDto hunterResponseDto = HunterResponseDto.convertToHunterDTO(createdHunter);
+            return ResponseEntity.status(HttpStatus.CREATED).body(hunterResponseDto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -35,10 +38,8 @@ public class HunterController {
     public ResponseEntity<?> getHunterById(@PathVariable UUID id) {
         try {
             Hunter hunter = hunterService.findHunterById(id);
-
-            HunterDetailsDto hunterDetailsDto = HunterDetailsDto.convertToHunterDetailsDto(hunter);
-
-            return ResponseEntity.ok(hunterDetailsDto);
+            HunterDetailsResponseDto hunterDetailsResponseDto = HunterDetailsResponseDto.convertToHunterDetailsDto(hunter);
+            return ResponseEntity.ok(hunterDetailsResponseDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Hunter not found.");
         } catch (Exception e) {
@@ -48,11 +49,11 @@ public class HunterController {
 
 
     @GetMapping()
-    public ResponseEntity<List<HunterDto>> findAll() {
+    public ResponseEntity<List<HunterResponseDto>> findAll() {
         try {
             List<Hunter> hunters = hunterService.getAllHunters();
-            List<HunterDto> hunterDtos = HunterDto.convertToHunterDTOList(hunters);
-            return ResponseEntity.ok(hunterDtos);
+            List<HunterResponseDto> hunterResponseDtos = HunterResponseDto.convertToHunterDTOList(hunters);
+            return ResponseEntity.ok(hunterResponseDtos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -63,8 +64,8 @@ public class HunterController {
         try {
             hunter.setId(id);
             Hunter updatedHunter = hunterService.updateHunter(id, hunter);
-            HunterDto hunterDto = HunterDto.convertToHunterDTO(updatedHunter);
-            return ResponseEntity.ok(hunterDto);
+            HunterResponseDto hunterResponseDto = HunterResponseDto.convertToHunterDTO(updatedHunter);
+            return ResponseEntity.ok(hunterResponseDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Hunter not found.");
         } catch (Exception e) {

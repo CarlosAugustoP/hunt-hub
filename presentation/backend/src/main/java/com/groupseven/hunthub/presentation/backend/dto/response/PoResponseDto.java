@@ -1,13 +1,12 @@
-package com.groupseven.hunthub.domain.models.dto;
+package com.groupseven.hunthub.presentation.backend.dto.response;
 
 import com.groupseven.hunthub.domain.models.PO;
-import com.groupseven.hunthub.domain.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PODto extends UserDTO {
+public class PoResponseDto extends UserResponseDto {
     private int levels;
     private int totalRating;
 
@@ -52,28 +51,28 @@ public class PODto extends UserDTO {
         this.bio = bio;
     }
 
-    public PODto(int levels, int totalRating, String profilePicture, String bio) {
+    public PoResponseDto(int levels, int totalRating, String profilePicture, String bio) {
         this.levels = levels;
         this.totalRating = totalRating;
         this.profilePicture = profilePicture;
         this.bio = bio;
     }
 
-   public static PODto convertToPODTO(PO po) {
-        PODto poDto = new PODto(
+   public static PoResponseDto convertToPODTO(PO po) {
+        PoResponseDto poResponseDto = new PoResponseDto(
                 po.getLevels(),
                 po.getTotalRating(),
                 po.getProfilePicture(),
                 po.getBio()
         );
 
-        poDto.setName(po.getName());
-        poDto.setEmail(po.getEmail());
-        poDto.setId(po.getId().getId());
-        poDto.setPoints(po.getPoints());
-        poDto.setRating(po.getRating());
+        poResponseDto.setName(po.getName());
+        poResponseDto.setEmail(po.getEmail());
+        poResponseDto.setId(po.getId().getId());
+        poResponseDto.setPoints(po.getPoints());
+        poResponseDto.setRating(po.getRating());
 
-        return poDto;
+        return poResponseDto;
     }
 
     public void setRating(double rating) {
@@ -84,12 +83,12 @@ public class PODto extends UserDTO {
         this.id = id;
     }
 
-    public static List<PODto> convertToPODTOList(List<PO> poList) {
-        List<PODto> poDtoList = new ArrayList<>();
+    public static List<PoResponseDto> convertToPODTOList(List<PO> poList) {
+        List<PoResponseDto> poResponseDtoList = new ArrayList<>();
         for (PO po : poList) {
-            poDtoList.add(convertToPODTO(po));
+            poResponseDtoList.add(convertToPODTO(po));
         }
-        return poDtoList;
+        return poResponseDtoList;
     }
 
 }
