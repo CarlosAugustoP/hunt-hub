@@ -4,8 +4,10 @@ import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.services.NotificationService;
 import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
+import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 import io.cucumber.java.en.And;
@@ -34,7 +36,8 @@ public class FilterTaskStepDefinitions {
         this.poService = new POService(poRepository);
 
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-        this.taskService = new TaskService(taskRepository, poRepository);
+        NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
+        this.taskService = new TaskService(taskRepository, poRepository, notificationService);
 
         String cpf = "12345678900";
         String name = "John Doe";

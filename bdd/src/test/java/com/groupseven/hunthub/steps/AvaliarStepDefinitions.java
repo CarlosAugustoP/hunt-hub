@@ -50,7 +50,7 @@ public class AvaliarStepDefinitions {
     public AvaliarStepDefinitions() {
         this.hunters = new ArrayList<>();
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-        this.taskService = new TaskService(taskRepository, poRepository);
+        this.taskService = new TaskService(taskRepository, poRepository, notificationService);
         String cpfPO = "12345678900";
         String namePO = "John Doe";
         String emailPO = "johndoe@example.com";

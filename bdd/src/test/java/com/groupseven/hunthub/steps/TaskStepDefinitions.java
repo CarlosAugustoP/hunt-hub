@@ -2,8 +2,10 @@ package com.groupseven.hunthub.steps;
 
 import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.repository.PoRepository;
+import com.groupseven.hunthub.domain.services.NotificationService;
 import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
+import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 import io.cucumber.java.en.Given;
@@ -26,7 +28,8 @@ public class TaskStepDefinitions {
     private final POService poService = new POService(poRepository);
 
     private final TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-    private final TaskService taskService = new TaskService(taskRepository, poRepository);
+    NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
+    private final TaskService taskService = new TaskService(taskRepository, poRepository, notificationService);
 
     private Exception excecao;
 

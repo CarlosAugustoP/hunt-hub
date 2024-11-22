@@ -39,9 +39,10 @@ public class TaskService {
     private NotificationService notificationService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, PoRepository poRepository) {
+    public TaskService(TaskRepository taskRepository, PoRepository poRepository, NotificationService notificationService) {
         this.poRepository = poRepository;
         this.taskRepository = taskRepository;
+        this.notificationService = notificationService;
     }
 
     public TaskService() {

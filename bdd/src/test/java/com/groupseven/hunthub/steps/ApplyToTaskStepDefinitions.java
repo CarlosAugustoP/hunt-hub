@@ -99,8 +99,8 @@ public class ApplyToTaskStepDefinitions {
                 profilePicturePO,
                 bioPO);
 
-        taskService = new TaskService(new TaskRepositoryImpl(), new PoRepositoryImpl());
         notificationService = new NotificationService(new NotificationRepositoryImpl());
+        taskService = new TaskService(new TaskRepositoryImpl(), new PoRepositoryImpl(), notificationService);
     }
 
     @Given("que o hunter tem a avaliação {double} e a Task tem a avaliação necessária {double} e o status da vaga é {string}")
