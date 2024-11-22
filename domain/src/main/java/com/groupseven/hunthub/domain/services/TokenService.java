@@ -23,6 +23,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("hunt-hub")
                     .withSubject(user.getEmail())
+                    .withClaim("role", user.getRole())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
             return token;
