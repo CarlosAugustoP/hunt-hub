@@ -1,5 +1,5 @@
 // AppConfig.java
-package com.groupseven.hunthub.domain.security;
+package com.groupseven.hunthub.application.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

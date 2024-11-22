@@ -1,4 +1,4 @@
-package com.groupseven.hunthub.domain.security;
+package com.groupseven.hunthub.application.config;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
