@@ -73,11 +73,27 @@ public class TaskController {
 
     @PostMapping("/{taskId}/applying/{hunterId}")
     public ResponseEntity<String> applyHunterToTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
-        Task task = taskService.getTask(taskId);
-        Hunter hunter = taskService.getHunter(hunterId);
+        try {
+            Task task = taskService.getTask(taskId);
+            Hunter hunter = taskService.getHunter(hunterId);
 
-        taskService.applyHunterToTask(task, hunter);
-        return ResponseEntity.ok("Hunter applied to the task successfully.");
+            if (task != null && hunter != null) {
+                // Verifica se o hunter já aplicou para essa task
+                if (taskService.hasHunterApplied(task, hunter)) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Hunter has already applied to this task.");
+                }
+
+                taskService.applyHunterToTask(task, hunter);
+                return ResponseEntity.ok("Hunter applied to the task successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task or Hunter not found.");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+        }
     }
 
     @GetMapping("/{id}")

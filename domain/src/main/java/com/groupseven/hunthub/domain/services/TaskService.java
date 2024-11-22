@@ -162,6 +162,12 @@ public class TaskService {
         }
     }
 
+    public boolean hasHunterApplied(Task task, Hunter hunter) {
+        return task.getHunters().stream()
+                   .anyMatch(h -> h.getId().equals(hunter.getId()));
+    }
+    
+
     public void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);
         taskRepository.acceptHunter(task.getId().getId(), hunter);

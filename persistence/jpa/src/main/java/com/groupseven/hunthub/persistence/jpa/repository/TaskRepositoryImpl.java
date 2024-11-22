@@ -168,15 +168,19 @@ public class TaskRepositoryImpl implements TaskRepository {
 
   @Override
   @Transactional
-  public void applyHunterToTask(UUID taskId, Hunter hunterId) {
-    TaskJpa task = entityManager.find(TaskJpa.class, taskId);
-    if (task != null) {
-      task.applyHunter(hunterId.getId().getId());
-      entityManager.merge(task);
-    } else {
-      throw new IllegalArgumentException("Task not found with ID: " + taskId);
-    }
+  public void applyHunterToTask(UUID taskId, Hunter hunter) {
+      TaskJpa task = entityManager.find(TaskJpa.class, taskId);
+      if (task != null) {
+          if (task.getHunterAppliedIds().contains(hunter.getId().getId())) {
+              throw new IllegalStateException("Hunter has already applied to this task.");
+          }
+          task.applyHunter(hunter.getId().getId());
+          entityManager.merge(task);
+      } else {
+          throw new IllegalArgumentException("Task not found with ID: " + taskId);
+      }
   }
+
 
 
   @Transactional
