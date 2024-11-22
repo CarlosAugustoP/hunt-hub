@@ -1,4 +1,4 @@
-package com.groupseven.hunthub.domain.security;
+package com.groupseven.hunthub.application.security;
 
 import com.groupseven.hunthub.domain.repository.UserRepository;
 import com.groupseven.hunthub.domain.services.TokenService;
