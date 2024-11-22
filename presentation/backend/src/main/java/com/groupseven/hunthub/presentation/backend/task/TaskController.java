@@ -1,7 +1,9 @@
 package com.groupseven.hunthub.presentation.backend.task;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.groupseven.hunthub.presentation.backend.dto.response.TaskResponseDto;
 import com.groupseven.hunthub.presentation.backend.dto.response.TaskDetailsResponseDto;
@@ -39,6 +41,19 @@ public class TaskController {
         List<TaskResponseDto> taskResponseDtos = tasks.stream()
                 .map(task -> new TaskResponseDto().convertToDTO(task))
                 .toList();
+        return ResponseEntity.ok(taskResponseDtos);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<TaskResponseDto>> getTasksByFilter(@RequestParam Map<String, String> filters) {
+        Map<String, Object> parsedFilters = taskService.parseFilters(filters);
+
+        List<Task> filteredTasks = taskService.findByFilter(parsedFilters);
+
+        List<TaskResponseDto> taskResponseDtos = filteredTasks.stream()
+                .map(task -> new TaskResponseDto().convertToDTO(task))
+                .toList();
+
         return ResponseEntity.ok(taskResponseDtos);
     }
 

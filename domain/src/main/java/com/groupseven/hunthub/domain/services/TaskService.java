@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.groupseven.hunthub.domain.repository.PoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +124,27 @@ public class TaskService {
         return filteredTasks;
     }
 
+    public Map<String, Object> parseFilters(Map<String, String> filters) {
+        return filters.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> {
+                            String key = entry.getKey();
+                            String value = entry.getValue();
+
+                            switch (key) {
+                                case "reward", "numberOfMeetings", "PORating", "numberOfHuntersRequired":
+                                    return Integer.parseInt(value);
+                                case "ratingRequired":
+                                    return Double.parseDouble(value);
+                                case "tags":
+                                    return List.of(value.split(","));
+                                default:
+                                    return value;
+                            }
+                        }
+                ));
+    }
 
     public Task getTask(UUID taskId) {
 
