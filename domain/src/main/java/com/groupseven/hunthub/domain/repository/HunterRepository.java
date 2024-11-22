@@ -11,5 +11,6 @@ public interface HunterRepository  {
     public void save(Hunter hunter);
     public void delete(Hunter hunter);
     public List<Hunter> findAll();
+    public void taskAccepteded(Hunter hunter, UUID taskId);
     
 }

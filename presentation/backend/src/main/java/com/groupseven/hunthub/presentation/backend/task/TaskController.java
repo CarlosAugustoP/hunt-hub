@@ -116,6 +116,7 @@ public class TaskController {
         }
 
         taskService.acceptHunter(task, hunter);
+        hunterService.acceptTask(hunter, task);
         return ResponseEntity.ok("Hunter accepted for the task successfully.");
     }
 

@@ -7,8 +7,13 @@ import com.groupseven.hunthub.domain.repository.HunterRepository;
 import com.groupseven.hunthub.domain.repository.TaskRepository;
 import com.groupseven.hunthub.persistence.jpa.mapper.HunterMapper;
 import com.groupseven.hunthub.persistence.jpa.models.HunterJpa;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +27,9 @@ public class HunterRepositoryImpl implements HunterRepository {
 
   @Autowired
   private HunterMapper hunterMapper;
+
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Override
   public Hunter findById(UUID id) {
@@ -69,4 +77,16 @@ public class HunterRepositoryImpl implements HunterRepository {
     }
     return taskIds;
   }
+
+  @Transactional
+  @Override
+  public void taskAccepteded(Hunter hunter, UUID taskId) {
+    HunterJpa hunterJpa = entityManager.find(HunterJpa.class, hunter.getId().getId());
+
+    if (hunterJpa != null){
+      hunterJpa.addTask(taskId);
+      entityManager.merge(hunterJpa);
+    }
+  }
 }
+
