@@ -36,6 +36,9 @@ public class TaskService {
     private HunterRepository hunterRepository;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     public TaskService(TaskRepository taskRepository, PoRepository poRepository) {
         this.poRepository = poRepository;
         this.taskRepository = taskRepository;
@@ -76,6 +79,7 @@ public class TaskService {
         List<UUID> hunterAppliedIds = new ArrayList<>();
 
         taskRepository.save(task);
+        notificationService.notifyAllObservers("Uma nova task foi criada:"+ task.getTitle(), "New task", task);
 
         return task;
     }
@@ -169,7 +173,6 @@ public class TaskService {
 
     public void applyHunterToTask(Task task, Hunter hunter) {
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
-
             task.applyHunter(hunter);
             taskRepository.applyHunterToTask(task.getId().getId(), hunter);
         }
@@ -182,10 +185,15 @@ public class TaskService {
         else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
+
+        notificationService.notifyAllObservers("O hunter " + hunter.getName() + " aplicou para a task " + task.getTitle(), "Hunter applied", task);
+        notificationService.NotifyHunter(hunter, "Task applied", "Você aplicou para a task " + task.getTitle());
     }
 
     public void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);
+        notificationService.notifyAllObservers("O hunter " + hunter.getName() + " foi aceito a task: " + task.getTitle() + "Bom trabalho, " + hunter.getName() + "!", "Hunter accepted", task);
+        notificationService.NotifyHunter(hunter, "Task accepted", "Você foi aceito para a task " + task.getTitle()+"! Parabéns, " + hunter.getName() + "!");
         taskRepository.acceptHunter(task.getId().getId(), hunter);
     }
 
@@ -264,6 +272,7 @@ public class TaskService {
         }
 
         taskRepository.save(existingTask);
+        notificationService.notifyAllObservers("A task " + existingTask.getTitle() + " foi atualizada", "Task updated", existingTask);
 
         return existingTask;
     }
@@ -271,6 +280,7 @@ public class TaskService {
     public void completeTask(Task task) {
         task.complete();
         taskRepository.save(task);
+        notificationService.notifyAllObservers("Parabéns pelo trabalho! A task " + task.getTitle() + " foi completada", "Task completed", task);
     }
 
 
