@@ -203,5 +203,10 @@ public class HunterService {
         return false;
     }
 
+    public void acceptTask(Hunter hunter, Task task) {
+        hunter.assignTask(task);
+        hunterRepository.taskAccepteded(hunter, task.getId().getId());
+    }
+
 
 }

@@ -132,6 +132,10 @@ public class HunterJpa extends UserJpa {
     this.projects = projects;
   }
 
+  public void addTask(UUID taskId) {
+    taskIds.add(taskId);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

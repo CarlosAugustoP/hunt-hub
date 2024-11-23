@@ -42,4 +42,8 @@ public class HunterRepositoryImpl implements HunterRepository {
     public Hunter findById(UUID id){
         return hunterStorage.get(id);
     }
+
+    public void taskAccepteded(Hunter hunter, UUID taskId){
+        hunterStorage.get(hunter.getId().getId()).getTaskIds().add(taskId);
+    }
 }

@@ -44,14 +44,17 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void applyHunterToTask(UUID taskId, Hunter hunter) {
         Task task = taskStorage.get(taskId);
         if (task != null) {
+            // Verifica se o hunter já está associado à task
+            if (task.getHunters().stream().anyMatch(h -> h.getId().equals(hunter.getId()))) {
+                throw new IllegalStateException("Hunter has already applied to this task.");
+            }
             task.applyHunter(hunter);
             taskStorage.put(taskId, task);
-        }
-
-        else {
+        } else {
             throw new IllegalArgumentException("Task with ID " + taskId + " not found.");
         }
     }
+
 
 
     @Override

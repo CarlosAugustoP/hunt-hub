@@ -191,6 +191,12 @@ public class TaskService {
         notificationService.NotifyHunter(hunter, "Task applied", "Você aplicou para a task " + task.getTitle());
     }
 
+    public boolean hasHunterApplied(Task task, Hunter hunter) {
+        return task.getHunters().stream()
+                   .anyMatch(h -> h.getId().equals(hunter.getId()));
+    }
+    
+
     public void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);
         notificationService.notifyAllObservers("O hunter " + hunter.getName() + " foi aceito a task: " + task.getTitle() + "Bom trabalho, " + hunter.getName() + "!", "Hunter accepted", task);

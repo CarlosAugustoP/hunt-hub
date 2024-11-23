@@ -1,5 +1,6 @@
 package com.groupseven.hunthub.presentation.backend.PO;
 import com.groupseven.hunthub.presentation.backend.dto.request.CreatePoDto;
+import com.groupseven.hunthub.presentation.backend.dto.request.UpdatePointsDto;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.presentation.backend.dto.response.PoResponseDto;
 import com.groupseven.hunthub.presentation.backend.dto.response.PoDetailsResponseDto;
@@ -87,4 +88,22 @@ public class POController {
                     .body("An error occurred while retrieving the POs: " + e.getMessage());
         }
     }
+
+    @PutMapping("/points/{poId}")
+    public ResponseEntity<String> updatePoints(
+            @PathVariable UUID poId, 
+            @RequestBody @Valid UpdatePointsDto updatePointsDto) {
+        try {
+            PO po = poService.findPOById(poId);
+            po.setPoints(po.getPoints() + updatePointsDto.getPoints());
+            poService.save(po);
+            return ResponseEntity.ok("Points updated successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PO not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while updating the PO: " + e.getMessage());
+        }
+    }
+
 }
