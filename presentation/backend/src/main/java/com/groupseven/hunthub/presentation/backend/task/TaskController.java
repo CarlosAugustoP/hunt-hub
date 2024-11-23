@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.groupseven.hunthub.presentation.backend.dto.request.CreateTaskDto;
 import com.groupseven.hunthub.domain.models.PO;
@@ -86,6 +87,7 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_HUNTER')")
     @PostMapping("/{taskId}/applying/{hunterId}")
     public ResponseEntity<String> applyHunterToTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         Task task = taskService.getTask(taskId);
@@ -105,6 +107,7 @@ public class TaskController {
         return ResponseEntity.ok(taskDetailsResponseDto);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PO')")
     @PostMapping("/{taskId}/accept/{hunterId}")
     public ResponseEntity<String> acceptHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         Task task = taskService.getTask(taskId);
@@ -118,6 +121,7 @@ public class TaskController {
         return ResponseEntity.ok("Hunter accepted for the task successfully.");
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PO')")
     @PostMapping("/{taskId}/decline/{hunterId}")
     public ResponseEntity<String> declineHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         Task task = taskService.getTask(taskId);
@@ -131,6 +135,7 @@ public class TaskController {
         return ResponseEntity.ok("Hunter declined for the task successfully.");
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PO')")
     @PutMapping("/{taskId}/complete")
     public ResponseEntity<String> completeTask(@PathVariable UUID taskId) {
         Task task = taskService.getTask(taskId);
@@ -143,6 +148,7 @@ public class TaskController {
         return ResponseEntity.ok("Task completed successfully.");
     }
 
+    @PreAuthorize("hasAuthority('ROLE_HUNTER')")
     @PostMapping("/hunter/{hunterId}/request-payment/{taskId}")
     public ResponseEntity<String> requestPayment(@PathVariable UUID hunterId, @PathVariable UUID taskId) {
         if (!hunterService.hunterRequestsPayment(hunterId, taskId)) {

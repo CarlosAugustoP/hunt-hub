@@ -69,11 +69,12 @@ public class TaskService {
             throw new IllegalArgumentException("Not enough points");
         }
 
-        po.setPoints(po.getPoints() - reward);
-        poRepository.save(po);
-
         TaskId taskId = new TaskId(UUID.randomUUID());
         Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired,ratingRequired, tags, taskId);
+
+        po.setPoints(po.getPoints() - reward);
+        po.addTask(task);
+        poRepository.save(po);
 
         task.setPo(po);
         List<UUID> hunterIds = new ArrayList<>();
@@ -280,6 +281,13 @@ public class TaskService {
 
     public void completeTask(Task task) {
         task.complete();
+        List<Hunter> taskHunters = task.getHunters();
+
+        for (Hunter hunter : taskHunters) {
+            hunter.setRating(hunter.getLevel() + 1);
+            hunterRepository.save(hunter);
+        }
+
         taskRepository.save(task);
         notificationService.notifyAllObservers("Parabéns pelo trabalho! A task " + task.getTitle() + " foi completada", "Task completed", task);
     }

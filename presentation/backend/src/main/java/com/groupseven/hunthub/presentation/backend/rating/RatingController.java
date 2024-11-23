@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.groupseven.hunthub.domain.models.*;
 import com.groupseven.hunthub.domain.services.HunterService;
@@ -25,6 +26,7 @@ public class RatingController {
     private @Autowired TaskService taskService;
     private @Autowired RatingCheckService ratingCheckService;
 
+    @PreAuthorize("hasAuthority('ROLE_HUNTER')")
     @PostMapping("/hunter/{hunterId}/po/{poId}/task/{taskId}")
     public ResponseEntity<PoResponseDto> hunterRatePO(@PathVariable UUID hunterId,
                                                       @PathVariable UUID poId,
@@ -47,6 +49,7 @@ public class RatingController {
 
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PO')")
     @PostMapping("/po/{poId}/hunter/{hunterId}")
     public ResponseEntity<HunterResponseDto> poRateHunter(@PathVariable UUID poId, @PathVariable UUID hunterId, @RequestBody @Valid CreateRatingDto rating) {
 
@@ -61,6 +64,7 @@ public class RatingController {
             return ResponseEntity.ok(responseDto);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_HUNTER')")
     @PostMapping("/hunter/{ratingHunterId}/rate/{ratedHunterId}/task/{taskId}")
     public ResponseEntity<HunterResponseDto> hunterRateHunter(@PathVariable UUID ratingHunterId,
                                                               @PathVariable UUID ratedHunterId,
