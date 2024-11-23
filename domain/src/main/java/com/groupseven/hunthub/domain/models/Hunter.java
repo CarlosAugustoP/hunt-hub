@@ -7,10 +7,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+import javax.management.Notification;
+
+import com.groupseven.hunthub.domain.interfaces.Observer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-public class Hunter extends User {
+public class Hunter extends User implements Observer {
     DecimalFormat df = new DecimalFormat("#.00");
     private String linkPortfolio;
 
@@ -221,7 +224,7 @@ public class Hunter extends User {
     }
 
     public void assignTask(Task task) {
-        this.tasks.add(task);    
+        this.tasks.add(task);
     }
 
     public List<UUID> getTaskIds() {
@@ -240,5 +243,10 @@ public class Hunter extends User {
 
     public void setId(UUID id) {
         this.id = new UserId(id);
+    }
+
+    @Override
+    public void update(String message, String theme, Task task) {
+        System.out.println("Notificação para Hunter: " + name + " - " + message);
     }
 }

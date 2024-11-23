@@ -10,6 +10,7 @@ public class Notification {
     private String message;
     private LocalDate createdAt;
 
+
     public Notification(String message, String theme, Hunter hunter, PO po) {
         if (hunter == null && po == null) {
             throw new IllegalArgumentException("A notificação precisa de pelo menos um Hunter ou PO.");
@@ -22,7 +23,6 @@ public class Notification {
         this.createdAt = LocalDate.now();
     }
 
-    // Construtor alternativo para notificação apenas com mensagem e tema
     public Notification(String message, String theme, Hunter hunter) {
         this(message, theme, hunter, null);
     }
@@ -58,6 +58,7 @@ public class Notification {
     public Hunter getHunter() {
         return hunter;
     }
+
     public Hunter setHunter(Hunter hunter) {
         return this.hunter;
     }

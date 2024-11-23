@@ -8,10 +8,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.UUID;
 
+import javax.management.Notification;
+
+import com.groupseven.hunthub.domain.interfaces.Observer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-public class PO extends User {
+public class PO extends User implements Observer {
 
     private int levels = 0;
     private int rating = 0;
@@ -137,7 +140,7 @@ public class PO extends User {
         this.setCpf(user.getCpf());
     }
 
-    public User getUser () {
+    public User getUser() {
         User user = new User();
         user.setId(this.id.getId());
         user.setEmail(this.email);
@@ -153,5 +156,8 @@ public class PO extends User {
         this.rating = this.totalRating / this.ratingCount;
     }
 
-
+    @Override
+    public void update(String message, String theme, Task task) {
+        System.out.println("Notificação para PO: " + name + " - " + message);
+    }
 }

@@ -39,7 +39,8 @@ public class TaskService {
     private NotificationService notificationService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, PoRepository poRepository, NotificationService notificationService) {
+    public TaskService(TaskRepository taskRepository, PoRepository poRepository,
+                       NotificationService notificationService) {
         this.poRepository = poRepository;
         this.taskRepository = taskRepository;
         this.notificationService = notificationService;
@@ -73,14 +74,15 @@ public class TaskService {
         poRepository.save(po);
 
         TaskId taskId = new TaskId(UUID.randomUUID());
-        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired,ratingRequired, tags, taskId);
+        Task task = new Task(po, description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired,
+                ratingRequired, tags, taskId);
 
         task.setPo(po);
         List<UUID> hunterIds = new ArrayList<>();
         List<UUID> hunterAppliedIds = new ArrayList<>();
 
         taskRepository.save(task);
-        notificationService.notifyAllObservers("Uma nova task foi criada:"+ task.getTitle(), "New task", task);
+        notificationService.notifyAllObservers("Uma nova task foi criada:" + task.getTitle(), "New task", task);
 
         return task;
     }
@@ -94,15 +96,15 @@ public class TaskService {
 
             switch (filter) {
                 case "reward" ->
-                    filteredTasks.removeIf(task -> task.getReward() < (int) value);
+                        filteredTasks.removeIf(task -> task.getReward() < (int) value);
                 case "numberOfMeetings" ->
-                    filteredTasks.removeIf(task -> task.getNumberOfMeetings() > (int) value);
+                        filteredTasks.removeIf(task -> task.getNumberOfMeetings() > (int) value);
                 case "ratingRequired" ->
-                    filteredTasks.removeIf(task -> task.getRatingRequired() < (double) value);
+                        filteredTasks.removeIf(task -> task.getRatingRequired() < (double) value);
                 case "PORating" ->
-                    filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
+                        filteredTasks.removeIf(task -> task.getPo().getRating() > (int) value);
                 case "numberOfHuntersRequired" ->
-                    filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() < (int) value);
+                        filteredTasks.removeIf(task -> task.getNumberOfHuntersRequired() < (int) value);
                 case "tags" -> {
                     List<Tags> tags;
 
@@ -147,8 +149,7 @@ public class TaskService {
                                 default:
                                     return value;
                             }
-                        }
-                ));
+                        }));
     }
 
     public Task getTask(UUID taskId) {
@@ -176,36 +177,44 @@ public class TaskService {
         if (hunter.getRating() >= task.getRatingRequired() && task.getStatus().equals(TaskStatus.PENDING)) {
             task.applyHunter(hunter);
             taskRepository.applyHunterToTask(task.getId().getId(), hunter);
-        }
 
-        else if (task.getStatus().equals(TaskStatus.PENDING)) {
+            // Notifica o PO
+            notificationService.notifyObserver(task.getPo(),
+                    "O hunter " + hunter.getName() + " aplicou para a task " + task.getTitle(),
+                    "Task applied", task);
+
+            // Notifica o Hunter
+            notificationService.notifyObserver(hunter,
+                    "Você aplicou para a task " + task.getTitle(),
+                    "Task applied", task);
+        } else if (task.getStatus().equals(TaskStatus.PENDING)) {
             throw new IllegalStateException("Cannot apply to task. Rating required: " + task.getRatingRequired()
                     + ". Your rating " + hunter.getRating());
-        }
-
-        else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
+        } else if (task.getStatus().equals(TaskStatus.DONE) || task.getStatus().equals(TaskStatus.CANCELED)) {
             throw new IllegalStateException("Cannot apply to task. The task is already closed.");
         }
-
-        notificationService.notifyAllObservers("O hunter " + hunter.getName() + " aplicou para a task " + task.getTitle(), "Hunter applied", task);
-        notificationService.NotifyHunter(hunter, "Task applied", "Você aplicou para a task " + task.getTitle());
     }
 
     public boolean hasHunterApplied(Task task, Hunter hunter) {
         return task.getHunters().stream()
-                   .anyMatch(h -> h.getId().equals(hunter.getId()));
+                .anyMatch(h -> h.getId().equals(hunter.getId()));
     }
-    
 
     public void acceptHunter(Task task, Hunter hunter) {
         task.assignHunter(hunter);
-        notificationService.notifyAllObservers("O hunter " + hunter.getName() + " foi aceito a task: " + task.getTitle() + "Bom trabalho, " + hunter.getName() + "!", "Hunter accepted", task);
-        notificationService.NotifyHunter(hunter, "Task accepted", "Você foi aceito para a task " + task.getTitle()+"! Parabéns, " + hunter.getName() + "!");
         taskRepository.acceptHunter(task.getId().getId(), hunter);
+
+        // Notifica o Hunter
+        notificationService.notifyObserver(hunter,
+                "Você foi aceito para a task " + task.getTitle() + "! Parabéns, " + hunter.getName() + "!",
+                "Task accepted", task);
     }
 
     public void declineHunter(Task task, Hunter hunter) {
         task.refuseHunter(hunter);
+        notificationService.notifyObserver(hunter,
+                "Você foi rejeitado para a task " + task.getTitle(),
+                "Task declined", task);
         taskRepository.declineHunter(task.getId().getId(), hunter);
     }
 
@@ -222,12 +231,11 @@ public class TaskService {
     public List<Task> getTasksNotAppliedByHunter(UUID hunterId) {
         List<Task> allTasks = taskRepository.findAll();
         return allTasks.stream()
-                       .filter(task -> !task.getHuntersApplied().stream()
-                                            .anyMatch(hunter -> hunter.getId().getId().equals(hunterId))
-                               && task.getStatus().equals(TaskStatus.PENDING))
-                       .toList();
+                .filter(task -> !task.getHuntersApplied().stream()
+                        .anyMatch(hunter -> hunter.getId().getId().equals(hunterId))
+                        && task.getStatus().equals(TaskStatus.PENDING))
+                .toList();
     }
-    
 
     public void createTask(Task task) {
         taskRepository.save(task);
@@ -279,7 +287,8 @@ public class TaskService {
         }
 
         taskRepository.save(existingTask);
-        notificationService.notifyAllObservers("A task " + existingTask.getTitle() + " foi atualizada", "Task updated", existingTask);
+        notificationService.notifyAllObservers("A task " + existingTask.getTitle() + " foi atualizada", "Task updated",
+                existingTask);
 
         return existingTask;
     }
@@ -287,13 +296,21 @@ public class TaskService {
     public void completeTask(Task task) {
         task.complete();
         for (Hunter hunter : task.getHunters()) {
-            hunter.setLevel(hunter.getLevel() + 1) ;
+            hunter.setLevel(hunter.getLevel() + 1);
             hunterRepository.save(hunter);
+
+            // Notifica cada Hunter
+            notificationService.notifyObserver(hunter,
+                    "Parabéns pelo trabalho! A task " + task.getTitle() + " foi completada",
+                    "Task completed", task);
         }
         taskRepository.save(task);
-        notificationService.notifyAllObservers("Parabéns pelo trabalho! A task " + task.getTitle() + " foi completada", "Task completed", task);
-    }
 
+        // Notifica o PO
+        notificationService.notifyObserver(task.getPo(),
+                "A task " + task.getTitle() + " foi completada pelos Hunters",
+                "Task completed", task);
+    }
 
     public void save(Task task) {
         taskRepository.save(task);
