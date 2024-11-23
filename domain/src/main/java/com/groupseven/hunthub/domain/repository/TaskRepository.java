@@ -30,4 +30,6 @@ public interface TaskRepository {
     public List<Task> findTasksByPoId(UUID poId);
 
     public List<Task> findTasksByHunterId(UUID hunterId);
+
+    public List<Hunter> findHuntersAppliedByTaskId(UUID taskId);
 }

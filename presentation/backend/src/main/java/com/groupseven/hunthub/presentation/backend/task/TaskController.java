@@ -141,6 +141,23 @@ public class TaskController {
         return ResponseEntity.ok(taskDetails);
     }
 
+    @GetMapping("/{taskId}/hunters")
+    public ResponseEntity<List<Hunter>> getHuntersAppliedToTask(@PathVariable UUID taskId) {
+        Task task = taskService.getTask(taskId);
+
+        if (task == null) {
+            throw new IllegalArgumentException("Task not found.");
+        }
+
+        List<Hunter> huntersApplied = taskService.getHuntersAppliedToTask(task);
+
+        if (huntersApplied.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(huntersApplied);
+    }
+
     @PostMapping("/{taskId}/accept/{hunterId}")
     public ResponseEntity<String> acceptHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         Task task = taskService.getTask(taskId);

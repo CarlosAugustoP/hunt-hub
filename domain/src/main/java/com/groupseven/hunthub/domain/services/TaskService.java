@@ -236,6 +236,10 @@ public class TaskService {
         return taskRepository.findTasksByHunterId(hunterId);
     }
 
+    public List<Hunter> getHuntersAppliedToTask(Task task) {
+        return taskRepository.findHuntersAppliedByTaskId(task.getId().getId());
+    }
+
     public List<Task> getTasksNotAppliedByHunter(UUID hunterId) {
         List<Task> allTasks = taskRepository.findAll();
         return allTasks.stream()

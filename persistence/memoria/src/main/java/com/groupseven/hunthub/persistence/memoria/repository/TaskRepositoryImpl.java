@@ -125,5 +125,16 @@ public class TaskRepositoryImpl implements TaskRepository {
         return tasksByHunter;
     }
 
+    @Override
+    public List<Hunter> findHuntersAppliedByTaskId(UUID taskId) {
+        Task task = taskStorage.get(taskId);
+
+        if (task == null) {
+            throw new IllegalArgumentException("Task not found with ID: " + taskId);
+        }
+
+        return new ArrayList<>(task.getHuntersApplied());
+    }
+
 
 }

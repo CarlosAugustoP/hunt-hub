@@ -207,7 +207,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
   @Override
   public List<Task> findTasksByPoId(UUID poId) {
-    List<TaskJpa> taskJpaList = repository.findAll(); // Ou otimize com um query customizado
+    List<TaskJpa> taskJpaList = repository.findAll();
     List<Task> tasks = new ArrayList<>();
 
     for (TaskJpa taskJpa : taskJpaList) {
@@ -271,6 +271,28 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     return tasks;
+  }
+
+  @Override
+  @Transactional
+  public List<Hunter> findHuntersAppliedByTaskId(UUID taskId) {
+    TaskJpa taskJpa = entityManager.find(TaskJpa.class, taskId);
+    if (taskJpa == null) {
+        throw new IllegalArgumentException("Task not found with ID: " + taskId);
+    }
+
+    List<Hunter> huntersApplied = new ArrayList<>();
+
+    if (taskJpa.getHunterAppliedIds() != null) {
+        for (UUID hunterId : taskJpa.getHunterAppliedIds()) {
+            Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hunterId);
+            if (hunter != null) {
+                huntersApplied.add(hunter);
+            }
+        }
+    }
+
+    return huntersApplied;
   }
 
 }
