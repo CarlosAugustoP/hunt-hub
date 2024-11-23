@@ -4,6 +4,7 @@ package com.groupseven.hunthub.application.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -38,12 +39,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-//                .requestMatchers(HttpMethod.POST, "/hunters").permitAll()
-//                .requestMatchers(HttpMethod.POST, "/po").permitAll()
-//                .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-//                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                .requestMatchers(HttpMethod.POST, "/hunters").permitAll()
+                .requestMatchers(HttpMethod.POST, "/po").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                .anyRequest().authenticated()
         )
 
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

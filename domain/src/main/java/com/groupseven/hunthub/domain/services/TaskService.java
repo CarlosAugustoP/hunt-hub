@@ -286,6 +286,10 @@ public class TaskService {
 
     public void completeTask(Task task) {
         task.complete();
+        for (Hunter hunter : task.getHunters()) {
+            hunter.setLevel(hunter.getLevel() + 1) ;
+            hunterRepository.save(hunter);
+        }
         taskRepository.save(task);
         notificationService.notifyAllObservers("Parabéns pelo trabalho! A task " + task.getTitle() + " foi completada", "Task completed", task);
     }
