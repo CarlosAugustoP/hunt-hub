@@ -191,4 +191,8 @@ public class Task {
     public void complete() {
         this.status = TaskStatus.DONE;
     }
+
+    public void setPO(PO po) {
+        this.po = po;
+    }
 }
