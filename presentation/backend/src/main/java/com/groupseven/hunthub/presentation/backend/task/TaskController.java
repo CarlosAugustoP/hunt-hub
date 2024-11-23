@@ -111,6 +111,36 @@ public class TaskController {
         return ResponseEntity.ok(taskDetailsResponseDto);
     }
 
+    @GetMapping("/po/{poId}")
+    public ResponseEntity<List<TaskDetailsResponseDto>> getPoTasks(@PathVariable UUID poId) {
+        List<Task> tasks = taskService.getTasksByPo(poId);
+
+        if (tasks.isEmpty()) {
+            throw new IllegalArgumentException("No tasks found for the given PO.");
+        }
+
+        List<TaskDetailsResponseDto> taskDetails = tasks.stream()
+                .map(TaskDetailsResponseDto::convertToTaskDetailsDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(taskDetails);
+    }
+
+    @GetMapping("/hunter/{hunterId}")
+    public ResponseEntity<List<TaskDetailsResponseDto>> getHunterTasks(@PathVariable UUID hunterId) {
+        List<Task> tasks = taskService.getTasksByHunterId(hunterId);
+
+        if (tasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<TaskDetailsResponseDto> taskDetails = tasks.stream()
+                .map(TaskDetailsResponseDto::convertToTaskDetailsDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(taskDetails);
+    }
+
     @PostMapping("/{taskId}/accept/{hunterId}")
     public ResponseEntity<String> acceptHunterForTask(@PathVariable UUID taskId, @PathVariable UUID hunterId) {
         Task task = taskService.getTask(taskId);

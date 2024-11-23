@@ -101,5 +101,29 @@ public class TaskRepositoryImpl implements TaskRepository {
         return tasksNotApplied;
     }
 
+    @Override
+    public List<Task> findTasksByPoId(UUID poId) {
+        List<Task> tasksByPo = new ArrayList<>();
+        for (Task task : taskStorage.values()) {
+            if (task.getPo().getId().getId().equals(poId)) {
+                tasksByPo.add(task);
+            }
+        }
+        return tasksByPo;
+    }
+
+    @Override
+    public List<Task> findTasksByHunterId(UUID hunterId) {
+        List<Task> tasksByHunter = new ArrayList<>();
+        for (Task task : taskStorage.values()) {
+            boolean isHunterInTask = task.getHunters().stream()
+                    .anyMatch(hunter -> hunter.getId().getId().equals(hunterId));
+            if (isHunterInTask) {
+                tasksByHunter.add(task);
+            }
+        }
+        return tasksByHunter;
+    }
+
 
 }
