@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/hello-po")
+@RequestMapping("/api/hello-po")
 public class HelloPoController {
 
     @PreAuthorize("hasAuthority('ROLE_PO')")

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/hello-hunter")
+@RequestMapping("/api/hello-hunter")
 public class HelloHunterController {
 
     @PreAuthorize("hasAuthority('ROLE_HUNTER')")
