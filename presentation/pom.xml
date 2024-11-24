@@ -54,6 +54,7 @@
                 <executions>
                     <execution>
                         <id>install-node-and-npm</id>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
@@ -66,10 +67,10 @@
                     </execution>
                     <execution>
                         <id>install-npm-frontend</id>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>initialize</phase>
                         <configuration>
                             <arguments>install</arguments>
                             <workingDirectory>frontend</workingDirectory>
@@ -77,10 +78,10 @@
                     </execution>
                     <execution>
                         <id>build-frontend</id>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <phase>generate-resources</phase>
                         <configuration>
                             <arguments>run build</arguments>
                             <workingDirectory>frontend</workingDirectory>
