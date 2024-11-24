@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class HunterController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_HUNTER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getHunterById(@PathVariable UUID id) {
         try {
@@ -59,6 +61,7 @@ public class HunterController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_HUNTER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHunter(@PathVariable UUID id, @RequestBody Hunter hunter) {
         try {
@@ -73,6 +76,7 @@ public class HunterController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_HUNTER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHunter(@PathVariable UUID id) {
         try {

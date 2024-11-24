@@ -22,6 +22,7 @@
 
     <modules>
         <module>backend</module>
+        <module>frontend</module>
     </modules>
 
     <dependencies>
@@ -53,19 +54,6 @@
                 <version>1.12.0</version>
                 <executions>
                     <execution>
-                        <id>install-node-and-npm</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>v22.11.0</nodeVersion>
-                            <npmVersion>10.9.0</npmVersion>
-                            <workingDirectory>frontend</workingDirectory>
-                        </configuration>
-                        <inherited>false</inherited>
-                    </execution>
-                    <execution>
                         <id>install-npm-frontend</id>
                         <phase>generate-resources</phase>
                         <goals>
@@ -76,43 +64,8 @@
                             <workingDirectory>frontend</workingDirectory>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>build-frontend</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build</arguments>
-                            <workingDirectory>frontend</workingDirectory>
-                        </configuration>
-                    </execution>
                 </executions>
                 <inherited>false</inherited>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-frontend-to-static</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/../application/src/main/resources/static</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.basedir}/frontend/out</directory>
-                                    <includes>
-                                        <include>**/*</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
 

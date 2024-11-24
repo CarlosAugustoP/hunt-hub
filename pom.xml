@@ -23,8 +23,8 @@
         <module>domain</module>
         <module>persistence</module>
         <module>bdd</module>
-        <module>application</module>
         <module>presentation</module>
+        <module>application</module>
     </modules>
 
     <properties>

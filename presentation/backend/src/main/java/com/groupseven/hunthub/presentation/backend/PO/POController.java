@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class POController {
                 return ResponseEntity.status(HttpStatus.CREATED).body(poResponseDto);
         }
 
+        @PreAuthorize("hasAuthority('ROLE_PO')")
         @GetMapping("/{id}")
         public ResponseEntity<?> getPoById(@PathVariable UUID id) {
                 PO po = poService.findPOById(id);
@@ -38,6 +40,7 @@ public class POController {
                 return ResponseEntity.ok(poDetailsDto);
         }
 
+        @PreAuthorize("hasAuthority('ROLE_PO')")
         @PutMapping("/{id}")
         public ResponseEntity<?> updatePO(@PathVariable UUID id, @RequestBody PO po) {
                 po.setId(id);
@@ -46,6 +49,7 @@ public class POController {
                 return ResponseEntity.ok(poResponseDto);
         }
 
+        @PreAuthorize("hasAuthority('ROLE_PO')")
         @DeleteMapping("/{id}")
         public ResponseEntity<?> deletePO(@PathVariable UUID id) {
                 poService.deletePO(id);
@@ -59,6 +63,7 @@ public class POController {
                 return ResponseEntity.ok(poResponseDtoList);
         }
 
+        @PreAuthorize("hasAuthority('ROLE_PO')")
         @PutMapping("/points/{poId}")
         public ResponseEntity<String> updatePoints(
                         @PathVariable UUID poId,
