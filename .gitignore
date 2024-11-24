@@ -4,6 +4,13 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignorar tudo dentro de static
+application/src/main/resources/static/*
+
+# Não ignorar a pasta static em si e o .gitkeep
+!application/src/main/resources/static/
+!application/src/main/resources/static/.gitkeep
+
 ### STS ###
 .apt_generated
 .classpath
