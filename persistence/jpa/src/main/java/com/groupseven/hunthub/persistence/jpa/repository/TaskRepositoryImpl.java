@@ -181,8 +181,6 @@ public class TaskRepositoryImpl implements TaskRepository {
       }
   }
 
-
-
   @Transactional
   @Override
   public void acceptHunter(UUID taskId, Hunter hunterId) {
@@ -205,6 +203,96 @@ public class TaskRepositoryImpl implements TaskRepository {
     } else {
       throw new IllegalArgumentException("Task not found with ID: " + taskId);
     }
+  }
+
+  @Override
+  public List<Task> findTasksByPoId(UUID poId) {
+    List<TaskJpa> taskJpaList = repository.findAll();
+    List<Task> tasks = new ArrayList<>();
+
+    for (TaskJpa taskJpa : taskJpaList) {
+        if (taskJpa.getPoId().equals(poId)) {
+            PO po = poRepositoryProvider.getIfAvailable().findById(taskJpa.getPoId());
+
+            List<Hunter> hunters = new ArrayList<>();
+            if (taskJpa.getHunterIds() != null) {
+                for (UUID hunterId : taskJpa.getHunterIds()) {
+                    Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hunterId);
+                    if (hunter != null) {
+                        hunters.add(hunter);
+                    }
+                }
+            }
+
+            List<Hunter> huntersApplied = new ArrayList<>();
+            if (taskJpa.getHunterAppliedIds() != null) {
+                for (UUID hunterId : taskJpa.getHunterAppliedIds()) {
+                    Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hunterId);
+                    if (hunter != null) {
+                        huntersApplied.add(hunter);
+                    }
+                }
+            }
+
+            tasks.add(taskMapper.toDomain(taskJpa, po, hunters, huntersApplied));
+        }
+    }
+
+    return tasks;
+  }
+
+  @Override
+  public List<Task> findTasksByHunterId(UUID hunterId) {
+    List<TaskJpa> taskJpaList = repository.findAll();
+    List<Task> tasks = new ArrayList<>();
+
+    for (TaskJpa taskJpa : taskJpaList) {
+        if (taskJpa.getHunterIds() != null && taskJpa.getHunterIds().contains(hunterId)) {
+            PO po = poRepositoryProvider.getIfAvailable().findById(taskJpa.getPoId());
+
+            List<Hunter> hunters = new ArrayList<>();
+            for (UUID hId : taskJpa.getHunterIds()) {
+                Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hId);
+                if (hunter != null) {
+                    hunters.add(hunter);
+                }
+            }
+
+            List<Hunter> huntersApplied = new ArrayList<>();
+            for (UUID hId : taskJpa.getHunterAppliedIds()) {
+                Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hId);
+                if (hunter != null) {
+                    huntersApplied.add(hunter);
+                }
+            }
+
+            tasks.add(taskMapper.toDomain(taskJpa, po, hunters, huntersApplied));
+        }
+    }
+
+    return tasks;
+  }
+
+  @Override
+  @Transactional
+  public List<Hunter> findHuntersAppliedByTaskId(UUID taskId) {
+    TaskJpa taskJpa = entityManager.find(TaskJpa.class, taskId);
+    if (taskJpa == null) {
+        throw new IllegalArgumentException("Task not found with ID: " + taskId);
+    }
+
+    List<Hunter> huntersApplied = new ArrayList<>();
+
+    if (taskJpa.getHunterAppliedIds() != null) {
+        for (UUID hunterId : taskJpa.getHunterAppliedIds()) {
+            Hunter hunter = hunterRepositoryProvider.getIfAvailable().findById(hunterId);
+            if (hunter != null) {
+                huntersApplied.add(hunter);
+            }
+        }
+    }
+
+    return huntersApplied;
   }
 
 }

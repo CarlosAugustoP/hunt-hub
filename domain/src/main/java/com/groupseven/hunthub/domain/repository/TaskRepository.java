@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.groupseven.hunthub.domain.models.Hunter;
+import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.domain.models.Task;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +27,9 @@ public interface TaskRepository {
 
     public List<Task> findTasksNotAppliedByHunter(UUID hunterId);
 
+    public List<Task> findTasksByPoId(UUID poId);
+
+    public List<Task> findTasksByHunterId(UUID hunterId);
+
+    public List<Hunter> findHuntersAppliedByTaskId(UUID taskId);
 }
