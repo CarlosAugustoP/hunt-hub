@@ -21,7 +21,7 @@ import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/task")
 public class TaskController {
 
     private final POService poService;
@@ -58,7 +58,8 @@ public class TaskController {
     }
 
     @PostMapping("/{poId}")
-    public ResponseEntity<TaskResponseDto> createTask(@RequestBody @Valid CreateTaskDto createTaskDto, @PathVariable UUID poId) {
+    public ResponseEntity<TaskResponseDto> createTask(@RequestBody @Valid CreateTaskDto createTaskDto,
+            @PathVariable UUID poId) {
         PO po = poService.findPOById(poId);
         if (po == null) {
             throw new IllegalArgumentException("PO not found.");
@@ -73,8 +74,7 @@ public class TaskController {
                 createTaskDto.getNumberOfMeetings(),
                 createTaskDto.getNumberOfHuntersRequired(),
                 createTaskDto.getRatingRequired(),
-                createTaskDto.getTags()
-        );
+                createTaskDto.getTags());
 
         TaskResponseDto response = new TaskResponseDto().convertToDTO(createdTask);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -91,12 +91,12 @@ public class TaskController {
         Task task = taskService.getTask(taskId);
         Hunter hunter = taskService.getHunter(hunterId);
 
-            if (taskService.hasHunterApplied(task, hunter)) {
-                throw new IllegalArgumentException("Hunter has already applied to the task.");
-            }
+        if (taskService.hasHunterApplied(task, hunter)) {
+            throw new IllegalArgumentException("Hunter has already applied to the task.");
+        }
 
-            taskService.applyHunterToTask(task, hunter);
-            return ResponseEntity.ok("Hunter applied to the task successfully.");
+        taskService.applyHunterToTask(task, hunter);
+        return ResponseEntity.ok("Hunter applied to the task successfully.");
 
     }
 

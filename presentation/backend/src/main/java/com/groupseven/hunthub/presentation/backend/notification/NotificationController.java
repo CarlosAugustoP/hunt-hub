@@ -13,55 +13,55 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
 public class NotificationController {
 
-    @Autowired
-    private NotificationJpaRepository notificationRepository;
+        @Autowired
+        private NotificationJpaRepository notificationRepository;
 
-    @GetMapping("/hunter/{id}")
-    public ResponseEntity<List<NotificationDto>> getNotificationsByHunter(@PathVariable UUID id) {
-        List<NotificationJpa> notifications = notificationRepository.findByHunterId(id);
+        @GetMapping("/hunter/{id}")
+        public ResponseEntity<List<NotificationDto>> getNotificationsByHunter(@PathVariable UUID id) {
+                List<NotificationJpa> notifications = notificationRepository.findByHunterId(id);
 
-        List<NotificationDto> response = notifications.stream()
-                .map(n -> new NotificationDto(
-                        n.getId(),
-                        n.getTheme(),
-                        n.getMessage(),
-                        n.getCreatedAt(),
-                        n.getHunterId(),
-                        n.getPoId()))
-                .collect(Collectors.toList());
+                List<NotificationDto> response = notifications.stream()
+                                .map(n -> new NotificationDto(
+                                                n.getId(),
+                                                n.getTheme(),
+                                                n.getMessage(),
+                                                n.getCreatedAt(),
+                                                n.getHunterId(),
+                                                n.getPoId()))
+                                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(response);
-    }
+                return ResponseEntity.ok(response);
+        }
 
-    @GetMapping("/po/{id}")
-    public ResponseEntity<List<NotificationDto>> getNotificationsByPo(@PathVariable UUID id) {
-        List<NotificationJpa> notifications = notificationRepository.findByPoId(id);
+        @GetMapping("/po/{id}")
+        public ResponseEntity<List<NotificationDto>> getNotificationsByPo(@PathVariable UUID id) {
+                List<NotificationJpa> notifications = notificationRepository.findByPoId(id);
 
-        List<NotificationDto> response = notifications.stream()
-                .map(n -> new NotificationDto(
-                        n.getId(),
-                        n.getTheme(),
-                        n.getMessage(),
-                        n.getCreatedAt(),
-                        n.getHunterId(),
-                        n.getPoId()))
-                .collect(Collectors.toList());
+                List<NotificationDto> response = notifications.stream()
+                                .map(n -> new NotificationDto(
+                                                n.getId(),
+                                                n.getTheme(),
+                                                n.getMessage(),
+                                                n.getCreatedAt(),
+                                                n.getHunterId(),
+                                                n.getPoId()))
+                                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(response);
-    }
+                return ResponseEntity.ok(response);
+        }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<NotificationResponseDto> getNotificationById(@PathVariable UUID id) {
-        return notificationRepository.findById(id)
-                .map(notificationJpa -> new NotificationResponseDto(
-                        notificationJpa.getTheme(),
-                        notificationJpa.getMessage(),
-                        notificationJpa.getCreatedAt()))
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+        @GetMapping("/{id}")
+        public ResponseEntity<NotificationResponseDto> getNotificationById(@PathVariable UUID id) {
+                return notificationRepository.findById(id)
+                                .map(notificationJpa -> new NotificationResponseDto(
+                                                notificationJpa.getTheme(),
+                                                notificationJpa.getMessage(),
+                                                notificationJpa.getCreatedAt()))
+                                .map(ResponseEntity::ok)
+                                .orElse(ResponseEntity.notFound().build());
+        }
 
 }

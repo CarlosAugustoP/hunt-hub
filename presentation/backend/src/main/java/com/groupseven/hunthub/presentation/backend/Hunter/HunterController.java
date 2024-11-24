@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/hunters")
+@RequestMapping("/api/hunters")
 public class HunterController {
 
     @Autowired
@@ -38,7 +38,8 @@ public class HunterController {
     public ResponseEntity<?> getHunterById(@PathVariable UUID id) {
         try {
             Hunter hunter = hunterService.findHunterById(id);
-            HunterDetailsResponseDto hunterDetailsResponseDto = HunterDetailsResponseDto.convertToHunterDetailsDto(hunter);
+            HunterDetailsResponseDto hunterDetailsResponseDto = HunterDetailsResponseDto
+                    .convertToHunterDetailsDto(hunter);
             return ResponseEntity.ok(hunterDetailsResponseDto);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Hunter not found.");
@@ -46,7 +47,6 @@ public class HunterController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
         }
     }
-
 
     @GetMapping()
     public ResponseEntity<List<HunterResponseDto>> findAll() {
