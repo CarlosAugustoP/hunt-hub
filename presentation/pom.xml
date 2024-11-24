@@ -65,6 +65,17 @@
                         <inherited>false</inherited>
                     </execution>
                     <execution>
+                        <id>install-npm-frontend</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <arguments>install</arguments>
+                            <workingDirectory>frontend</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>build-frontend</id>
                         <goals>
                             <goal>npm</goal>
