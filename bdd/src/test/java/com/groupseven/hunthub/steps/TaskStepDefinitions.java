@@ -8,6 +8,11 @@ import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
+import com.groupseven.hunthub.steps.builder.BasicPoBuilder;
+import com.groupseven.hunthub.steps.builder.BasicTaskBuilder;
+import com.groupseven.hunthub.steps.director.PODirector;
+import com.groupseven.hunthub.steps.director.TaskDirector;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -26,32 +31,42 @@ public class TaskStepDefinitions {
 
     private final PoRepository poRepository = new PoRepositoryImpl();
     private final POService poService = new POService(poRepository);
-
     private final TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-    NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
+    private final NotificationService notificationService = new NotificationService(new NotificationRepositoryImpl());
     private final TaskService taskService = new TaskService(taskRepository, poRepository, notificationService);
 
     private Exception excecao;
+    private PO po;
+    private Task task;
+    private List<Task> tasks;
+    private int po_initial_points;
 
-    String cpf = "12345678900";
-    String name = "John Doe";
-    String email = "johndoe@example.com";
-    String password = "password123";
-    int levels = 5;
-    int rating = 4;
-    List<Task> tasks = new ArrayList<>();
-    String profilePicture = "https://example.com/profile/johndoe.jpg";
-    String bio = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
-    private final PO po = new PO(cpf, name, email, password, tasks, profilePicture, bio);
-    Task novaTask;
-    String description = "Desenvolver nova funcionalidade";
-    String title = "Nova Funcionalidade";
-    int po_initial_points;
-    int reward;
-    int numberOfMeetings = 2;
-    int numberOfHuntersRequired = 1;
-    int ratingRequired = 1;
-    List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
+    private final String description = "Desenvolver nova funcionalidade";
+    private final String title = "Nova Funcionalidade";
+    private final int numberOfMeetings = 2;
+    private final int numberOfHuntersRequired = 1;
+    private final int ratingRequired = 1;
+    private final List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
+    private int reward;
+
+    @Before
+    public void setUp() {
+        excecao = null;
+        tasks = new ArrayList<>();
+
+        BasicPoBuilder poBuilder = new BasicPoBuilder();
+        PODirector poDirector = new PODirector(poBuilder);
+        poDirector.constructPO();
+        po = poDirector.getPO();
+        po.setTasks(tasks);
+
+        BasicTaskBuilder taskBuilder = new BasicTaskBuilder();
+        TaskDirector taskDirector = new TaskDirector(taskBuilder);
+        taskDirector.constructTask();
+        task = taskDirector.getTask();
+        task.setPO(po);
+        task.setStatus(TaskStatus.PENDING);
+    }
 
     @Given("que o PO possui a quantidade de pontos {int}")
     public void pontos_disponiveis(int pts_disponiveis) {
@@ -66,7 +81,6 @@ public class TaskStepDefinitions {
         try {
             deadline = new SimpleDateFormat("yyyy-MM-dd").parse("2024-10-01");
         }
-
         catch (ParseException e) {
             e.printStackTrace();
         }
@@ -74,11 +88,10 @@ public class TaskStepDefinitions {
         reward = pts_reward;
 
         try {
-            novaTask = taskService.createTask(po.getId().getId(), description, title, deadline, reward,
+            task = taskService.createTask(po.getId().getId(), description, title, deadline, reward,
                     numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags);
-            tasks.add(novaTask);
+            tasks.add(task);
         }
-
         catch (Exception e) {
             this.excecao = e;
         }
@@ -86,8 +99,8 @@ public class TaskStepDefinitions {
 
     @Then("a Task e criada com sucesso")
     public void task_criada() {
-        Task task = po.getTasks().get(0);
-        assertEquals(task, novaTask);
+        Task createdTask = po.getTasks().get(0);
+        assertEquals(createdTask, task);
     }
 
     @Then("o sistema não deixa o PO criar a Task")
@@ -104,11 +117,11 @@ public class TaskStepDefinitions {
     @And("a Task aparece no sistema para os hunters")
     public void task_aparece() {
         Task lastTask = tasks.get(tasks.size() - 1);
-        assertEquals(lastTask, novaTask);
+        assertEquals(lastTask, task);
     }
 
     @And("o pagamento do valor da task e feito e retido no sistema ate a finalizacao da task")
     public void task_pagamento() {
-        assertEquals(po_initial_points - novaTask.getReward(), po.getPoints());
+        assertEquals(po_initial_points - task.getReward(), po.getPoints());
     }
 }

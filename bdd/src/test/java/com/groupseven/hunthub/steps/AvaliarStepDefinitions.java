@@ -26,6 +26,12 @@ import com.groupseven.hunthub.persistence.memoria.repository.NotificationReposit
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 
+import com.groupseven.hunthub.steps.builder.BasicHunterBuilder;
+import com.groupseven.hunthub.steps.builder.BasicPoBuilder;
+import com.groupseven.hunthub.steps.builder.BasicTaskBuilder;
+import com.groupseven.hunthub.steps.director.HunterDirector;
+import com.groupseven.hunthub.steps.director.PODirector;
+import com.groupseven.hunthub.steps.director.TaskDirector;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -49,38 +55,33 @@ public class AvaliarStepDefinitions {
 
     public AvaliarStepDefinitions() {
         this.hunters = new ArrayList<>();
-        TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
-        this.taskService = new TaskService(taskRepository, poRepository, notificationService);
-        String cpfPO = "12345678900";
-        String namePO = "John Doe";
-        String emailPO = "johndoe@example.com";
-        String passwordPO = "password123";
-        String profilePicturePO = "https://example.com/profile/johndoe.jpg";
-        String bioPO = "PO experiente com foco em projetos.";
-        this.po = new PO(cpfPO, namePO, emailPO, passwordPO, null, profilePicturePO, bioPO);
-        task = new Task(po, "qualquer descricao", "qualquer titulo", new Date(), 3000, 10,
-                10, 3.5, tags, new TaskId(UUID.randomUUID()));
 
-        String cpfHunter = "12345678901";
-        String nameHunter = "Jessie Hunter";
-        String emailHunter = "jessiehunter@example.com";
-        String passwordHunter = "passwordhunter";
+        BasicPoBuilder poBuilder = new BasicPoBuilder();
+        PODirector poDirector = new PODirector(poBuilder);
+        poDirector.constructPO();
+        this.po = poBuilder.getPo();
 
-        String profilePicturehunter = "https://example.com/profile/jessie.jpg";
-        String bioHunter = "Desenvolvedor experiente com paixão por criar soluções inovadoras.";
-        this.hunter1 = new Hunter(cpfHunter, nameHunter, emailHunter, passwordHunter, null, null, bioHunter,
-                profilePicturehunter, null, null, null, null);
-        String cpfHunter2 = "12345678902";
-        String nameHunter2 = "Alex Hunter";
-        String emailHunter2 = "alexhunter@example.com";
-        String passwordHunter2 = "passwordhunter2";
+        BasicTaskBuilder taskBuilder = new BasicTaskBuilder();
+        TaskDirector taskDirector = new TaskDirector(taskBuilder);
+        taskDirector.constructTask();
+        this.task = taskBuilder.getTask();
 
-        String profilePictureHunter2 = "https://example.com/profile/alex.jpg";
-        String bioHunter2 = "Caçador de soluções com experiência em diversos projetos.";
-        this.hunter2 = new Hunter(cpfHunter2, nameHunter2, emailHunter2, passwordHunter2, null, null, bioHunter2,
-                profilePictureHunter2, null, null, null, null);
+        task.setPO(po);
+
+        BasicHunterBuilder hunterBuilder = new BasicHunterBuilder();
+        HunterDirector hunterDirector = new HunterDirector(hunterBuilder);
+        this.hunter1 = hunterDirector.getSpecificHunter("Jessie");
+
+        this.hunter2 = hunterDirector.getSpecificHunter("Alex");
+
+        //hunter1 = new Hunter("12345678901", "Jessie Hunter", "jessiehunter@example.com", "passwordhunter", null, null, "Desenvolvedor experiente", "https://example.com/profile/jessie.jpg", null, null, null, null);
+        //hunter2 = new Hunter("12345678902", "Alex Hunter", "alexhunter@example.com", "passwordhunter2", null, null, "Caçador de soluções", "https://example.com/profile/alex.jpg", null, null, null, null);
         this.hunters.add(hunter1);
         this.hunters.add(hunter2);
+
+
+        TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
+        this.taskService = new TaskService(taskRepository, poRepository, notificationService);
     }
 
     @Given("que a Task foi finalizada")
@@ -102,14 +103,16 @@ public class AvaliarStepDefinitions {
     @Then("os hunters avaliam o PO e os outros hunters")
     public void hunterAvalia() {
 
-        int ratingForHunter1 = 4;
-        int ratingForHunter2 = 4;
+        int rating1 = 4;
+        int rating2 = 5;
         int ratingForPO = 5;
 
-        hunterService.rateHunter(hunter1, hunter2, ratingForHunter2);
+        hunterService.rateHunter(hunter1, hunter2, rating1);
+        hunterService.rateHunter(hunter1, hunter2, rating2);
         hunterService.ratePO(po, ratingForPO);
 
-        hunterService.rateHunter(hunter2, hunter1, ratingForHunter1);
+        hunterService.rateHunter(hunter2, hunter1, rating1);
+        hunterService.rateHunter(hunter2, hunter1, rating2);
         hunterService.ratePO(po, ratingForPO);
 
         assertEquals(4.5, hunter2.getRating());

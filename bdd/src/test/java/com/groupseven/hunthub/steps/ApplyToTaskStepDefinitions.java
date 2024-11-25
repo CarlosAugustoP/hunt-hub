@@ -12,10 +12,13 @@ import com.groupseven.hunthub.domain.services.TaskService;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.NotificationRepositoryImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
+import com.groupseven.hunthub.steps.builder.BasicHunterBuilder;
+import com.groupseven.hunthub.steps.builder.BasicPoBuilder;
+import com.groupseven.hunthub.steps.builder.BasicTaskBuilder;
+import com.groupseven.hunthub.steps.director.HunterDirector;
+import com.groupseven.hunthub.steps.director.PODirector;
+
+import com.groupseven.hunthub.steps.director.TaskDirector;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -24,8 +27,6 @@ import io.cucumber.java.en.When;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@ComponentScan(basePackages = "com.groupseven.hunthub")
 public class ApplyToTaskStepDefinitions {
 
     private Exception exception;
@@ -41,32 +42,8 @@ public class ApplyToTaskStepDefinitions {
     private Task task;
     private TaskStatus taskStatus;
 
-    private final String cpfHunter = "12345678901";
-    private final String nameHunter = "John Doe";
-    private final String emailHunter = "john.doe@example.com";
-    private final String passwordHunter = "hunter123";
-    private final String linkPortfolio = "https://portfolio.example.com/johndoe";
-    private final String bioHunter = "Experienced developer and hunter.";
-    private final String profilePictureHunter = "https://example.com/johndoe.jpg";
-    private final List<String> certificationsHunter = List.of("Java Certification", "AWS Certified");
-    private final List<String> linksHunter = List.of("https://github.com/johndoe", "https://linkedin.com/in/johndoe");
-    private final List<Achievement> achievementsHunter = new ArrayList<>();
-    private final List<Project> projectsHunter = new ArrayList<>();
 
-    private final String cpfPO = "98765432101";
-    private final String namePO = "Jane Smith";
-    private final String emailPO = "jane.smith@example.com";
-    private final String passwordPO = "po123";
-    private final String profilePicturePO = "https://example.com/janesmith.jpg";
-    private final String bioPO = "Product Owner with 10 years of experience.";
 
-    private final String descriptionTask = "Develop a new feature for the application.";
-    private final String titleTask = "Feature Development";
-    private final Date deadlineTask = new Date();
-    private final int rewardTask = 1000;
-    private final int numberOfMeetingsTask = 5;
-    private final int numberOfHuntersRequiredTask = 3;
-    private final List<Tags> tags = Arrays.asList(Tags.JAVA, Tags.SPRING, Tags.REST);
 
     @Before
     public void setUp() {
@@ -75,29 +52,24 @@ public class ApplyToTaskStepDefinitions {
         isHunterNotified = false;
         exception = null;
 
-        hunter = new Hunter(
-                cpfHunter,
-                nameHunter,
-                emailHunter,
-                passwordHunter,
-                linkPortfolio,
-                new ArrayList<>(),
-                bioHunter,
-                profilePictureHunter,
-                certificationsHunter,
-                linksHunter,
-                achievementsHunter,
-                projectsHunter);
-        hunter.setRating(0.0);
 
-        po = new PO(
-                cpfPO,
-                namePO,
-                emailPO,
-                passwordPO,
-                new ArrayList<>(),
-                profilePicturePO,
-                bioPO);
+        BasicHunterBuilder hunterBuilder = new BasicHunterBuilder();
+        HunterDirector hunterDirector = new HunterDirector(hunterBuilder);
+        this.hunter = hunterDirector.getSpecificHunter("John");
+
+
+        BasicPoBuilder poBuilder = new BasicPoBuilder();
+        PODirector poDirector = new PODirector(poBuilder);
+        poDirector.constructPO();
+        this.po = poDirector.getPO();
+
+        BasicTaskBuilder taskBuilder = new BasicTaskBuilder();
+        TaskDirector taskDirector = new TaskDirector(taskBuilder);
+        taskDirector.constructTask();
+        task = taskDirector.getTask();
+        task.setPO(po);
+        task.setStatus(TaskStatus.PENDING);
+
 
         notificationService = new NotificationService(new NotificationRepositoryImpl());
         taskService = new TaskService(new TaskRepositoryImpl(), new PoRepositoryImpl(), notificationService);
@@ -107,20 +79,13 @@ public class ApplyToTaskStepDefinitions {
     public void task_qualification(double hunterRating, double taskRating, String taskStatusStr) {
         hunter.setRating(hunterRating);
 
-        task = new Task(
-                po,
-                descriptionTask,
-                titleTask,
-                deadlineTask,
-                rewardTask,
-                numberOfMeetingsTask,
-                numberOfHuntersRequiredTask,
-                taskRating,
-                tags,
-                new TaskId(UUID.randomUUID()));
-
-        taskStatus = TaskStatus.valueOf(taskStatusStr.toUpperCase());
-        task.setStatus(taskStatus);
+        BasicTaskBuilder taskBuilder = new BasicTaskBuilder();
+        TaskDirector taskDirector = new TaskDirector(taskBuilder);
+        taskDirector.constructTask();
+        task = taskDirector.getTask();
+        task.setRatingRequired(taskRating);
+        task.setStatus(TaskStatus.valueOf(taskStatusStr.toUpperCase()));
+        task.setPO(po);
         po.addTask(task);
         taskService.createTask(task);
     }
@@ -172,19 +137,11 @@ public class ApplyToTaskStepDefinitions {
     @Given("que a aplicação de um hunter foi recebida pelo PO")
     public void que_a_aplicacao_de_um_hunter_foi_recebida_pelo_PO() {
 
-        task = new Task(
-                po,
-                descriptionTask,
-                titleTask,
-                deadlineTask,
-                rewardTask,
-                numberOfMeetingsTask,
-                numberOfHuntersRequiredTask,
-                0.0,
-                tags,
-                new TaskId(UUID.randomUUID())
-        );
-        task.setStatus(TaskStatus.PENDING);
+        BasicTaskBuilder taskBuilder = new BasicTaskBuilder();
+        TaskDirector taskDirector = new TaskDirector(taskBuilder);
+        taskDirector.constructTask();
+        task = taskDirector.getTask();
+        task.setPO(po);
         po.addTask(task);
         taskService.createTask(task);
 

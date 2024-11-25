@@ -3,6 +3,8 @@ package com.groupseven.hunthub.steps.director;
 import com.groupseven.hunthub.domain.models.Task;
 import com.groupseven.hunthub.steps.interfaces.TaskBuilder;
 
+import java.util.Map;
+
 public class TaskDirector {
     private final TaskBuilder taskBuilder;
 

@@ -2,6 +2,8 @@ package com.groupseven.hunthub.steps.builder;
 
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.steps.interfaces.PoBuilder;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class BasicPoBuilder implements PoBuilder {
@@ -33,8 +35,9 @@ public class BasicPoBuilder implements PoBuilder {
     }
 
     public void buildTasks() {
-        po.setTasks(null);
+        po.setTasks(new ArrayList<>());
     }
+
 
     public void buildTotalRating() {
         po.setTotalRating(0);
