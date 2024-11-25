@@ -51,11 +51,12 @@ public class TaskResponseDto {
                 taskResponseDto.setDescription(task.getDescription());
                 taskResponseDto.setTitle(task.getTitle());
                 taskResponseDto.setDeadline(task.getDeadline());
-                taskResponseDto.setReward(task.getReward());
                 taskResponseDto.setNumberOfMeetings(task.getNumberOfMeetings());
+                taskResponseDto.setReward(task.getReward());
                 taskResponseDto.setNumberOfHuntersRequired(task.getNumberOfHuntersRequired());
                 taskResponseDto.setRatingRequired(task.getRatingRequired());
                 taskResponseDto.setTags(task.getTags());
+                taskResponseDto.setId(task.getId().getId());
                 taskResponseDtos.add(taskResponseDto);
             }
             return taskResponseDtos;
@@ -130,8 +131,8 @@ public class TaskResponseDto {
             dto.setDescription(task.getDescription());
             dto.setTitle(task.getTitle());
             dto.setDeadline(task.getDeadline());
-            dto.setReward(task.getReward());
             dto.setNumberOfMeetings(task.getNumberOfMeetings());
+            dto.setReward(task.getReward());
             dto.setNumberOfHuntersRequired(task.getNumberOfHuntersRequired());
             dto.setRatingRequired(task.getRatingRequired());
             dto.setTags(task.getTags());

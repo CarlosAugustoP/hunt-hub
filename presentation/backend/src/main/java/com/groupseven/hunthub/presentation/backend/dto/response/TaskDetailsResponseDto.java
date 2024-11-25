@@ -11,7 +11,6 @@ public class TaskDetailsResponseDto extends TaskResponseDto {
     private List<HunterResponseDto> hunters;
     private PoResponseDto po;
 
-
     public List<HunterResponseDto> getHunters() {
         return hunters;
     }
@@ -28,11 +27,10 @@ public class TaskDetailsResponseDto extends TaskResponseDto {
         this.po = po;
     }
 
-    public TaskDetailsResponseDto(String description, String title, Date deadline, int reward, int numberOfMeetings, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, List<HunterResponseDto> hunters, PoResponseDto po, UUID id) {
-        super(description, title, deadline, reward, numberOfMeetings, numberOfHuntersRequired, ratingRequired, tags, id);
+    public TaskDetailsResponseDto(String description, String title, Date deadline, int numberOfMeetings, int reward, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, List<HunterResponseDto> hunters, PoResponseDto po, UUID id) {
+        super(description, title, deadline, numberOfMeetings, reward, numberOfHuntersRequired, ratingRequired, tags, id);
         this.hunters = hunters;
         this.po = po;
-
     }
 
     public static TaskDetailsResponseDto convertToTaskDetailsDTO(Task task) {
@@ -40,16 +38,16 @@ public class TaskDetailsResponseDto extends TaskResponseDto {
                 task.getDescription(),
                 task.getTitle(),
                 task.getDeadline(),
-                task.getReward(),
                 task.getNumberOfMeetings(),
+                task.getReward(),
                 task.getNumberOfHuntersRequired(),
                 task.getRatingRequired(),
                 task.getTags(),
                 HunterResponseDto.convertToHunterDTOList(task.getHunters()),
                 PoResponseDto.convertToPODTO(task.getPo()),
                 task.getId().getId()
-
         );
+
         return taskDetailsResponseDto;
     }
 }
