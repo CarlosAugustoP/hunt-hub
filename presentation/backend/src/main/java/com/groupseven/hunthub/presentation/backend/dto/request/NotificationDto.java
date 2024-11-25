@@ -11,14 +11,25 @@ public class NotificationDto {
     private LocalDate createdAt;
     private UUID hunterId;
     private UUID poId;
+    private UUID taskId;
 
-    public NotificationDto(UUID id, String theme, String message, LocalDate createdAt, UUID hunterId, UUID poId) {
+    public NotificationDto(UUID id, String theme, String message, LocalDate createdAt, UUID hunterId, UUID poId,
+            UUID taskId) {
         this.id = id;
         this.theme = theme;
         this.message = message;
         this.createdAt = createdAt;
         this.hunterId = hunterId;
         this.poId = poId;
+        this.taskId = taskId;
+    }
+
+    public UUID getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(UUID taskId) {
+        this.taskId = taskId;
     }
 
     public UUID getId() {

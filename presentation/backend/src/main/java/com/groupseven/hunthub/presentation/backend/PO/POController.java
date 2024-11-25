@@ -4,6 +4,9 @@ import com.groupseven.hunthub.presentation.backend.dto.request.CreatePoDto;
 import com.groupseven.hunthub.presentation.backend.dto.request.UpdatePointsDto;
 import com.groupseven.hunthub.domain.models.PO;
 import com.groupseven.hunthub.presentation.backend.dto.response.PoResponseDto;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import com.groupseven.hunthub.presentation.backend.dto.response.PoDetailsResponseDto;
 import com.groupseven.hunthub.domain.services.POService;
 import jakarta.validation.Valid;
@@ -32,6 +35,7 @@ public class POController {
                 return ResponseEntity.status(HttpStatus.CREATED).body(poResponseDto);
         }
 
+        @SecurityRequirement(name = "bearerAuth")
         @PreAuthorize("hasAuthority('ROLE_PO')")
         @GetMapping("/{id}")
         public ResponseEntity<?> getPoById(@PathVariable UUID id) {
@@ -40,6 +44,7 @@ public class POController {
                 return ResponseEntity.ok(poDetailsDto);
         }
 
+        @SecurityRequirement(name = "bearerAuth")
         @PreAuthorize("hasAuthority('ROLE_PO')")
         @PutMapping("/{id}")
         public ResponseEntity<?> updatePO(@PathVariable UUID id, @RequestBody PO po) {
@@ -49,6 +54,7 @@ public class POController {
                 return ResponseEntity.ok(poResponseDto);
         }
 
+        @SecurityRequirement(name = "bearerAuth")
         @PreAuthorize("hasAuthority('ROLE_PO')")
         @DeleteMapping("/{id}")
         public ResponseEntity<?> deletePO(@PathVariable UUID id) {
@@ -63,6 +69,7 @@ public class POController {
                 return ResponseEntity.ok(poResponseDtoList);
         }
 
+        @SecurityRequirement(name = "bearerAuth")
         @PreAuthorize("hasAuthority('ROLE_PO')")
         @PutMapping("/points/{poId}")
         public ResponseEntity<String> updatePoints(

@@ -26,9 +26,9 @@ public class NotificationService {
         Notification notification = null;
 
         if (observer instanceof PO po) {
-            notification = new Notification(message, theme, po);
+            notification = new Notification(message, theme, po, task);
         } else if (observer instanceof Hunter hunter) {
-            notification = new Notification(message, theme, hunter);
+            notification = new Notification(message, theme, hunter, task);
         } else {
             throw new IllegalArgumentException("Tipo de observador desconhecido");
         }
@@ -54,13 +54,13 @@ public class NotificationService {
     }
 
     public boolean NotifyPO(PO po, String task, String message) {
-        Notification notification = new Notification(message, task, po);
+        Notification notification = new Notification(message, task, po, null);
         notificationRepository.save(notification);
         return true;
     }
 
-    public boolean NotifyHunter (Hunter hunter, String task, String message) {
-        Notification notification = new Notification(message, task, hunter);
+    public boolean NotifyHunter(Hunter hunter, String task, String message) {
+        Notification notification = new Notification(message, task, hunter, null);
         notificationRepository.save(notification);
         return true;
     }

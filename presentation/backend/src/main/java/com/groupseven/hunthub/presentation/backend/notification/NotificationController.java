@@ -1,5 +1,6 @@
 package com.groupseven.hunthub.presentation.backend.notification;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import com.groupseven.hunthub.presentation.backend.dto.request.NotificationDto;
 import com.groupseven.hunthub.persistence.jpa.models.NotificationJpa;
 import com.groupseven.hunthub.persistence.jpa.repository.NotificationJpaRepository;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/notifications")
 public class NotificationController {
 
@@ -32,7 +34,8 @@ public class NotificationController {
                                                 n.getMessage(),
                                                 n.getCreatedAt(),
                                                 n.getHunterId(),
-                                                n.getPoId()))
+                                                n.getPoId(),
+                                                n.getTaskId()))
                                 .collect(Collectors.toList());
 
                 return ResponseEntity.ok(response);
@@ -50,7 +53,8 @@ public class NotificationController {
                                                 n.getMessage(),
                                                 n.getCreatedAt(),
                                                 n.getHunterId(),
-                                                n.getPoId()))
+                                                n.getPoId(),
+                                                n.getTaskId()))
                                 .collect(Collectors.toList());
 
                 return ResponseEntity.ok(response);
@@ -62,7 +66,8 @@ public class NotificationController {
                                 .map(notificationJpa -> new NotificationResponseDto(
                                                 notificationJpa.getTheme(),
                                                 notificationJpa.getMessage(),
-                                                notificationJpa.getCreatedAt()))
+                                                notificationJpa.getCreatedAt(),
+                                                notificationJpa.getTaskId()))
                                 .map(ResponseEntity::ok)
                                 .orElse(ResponseEntity.notFound().build());
         }

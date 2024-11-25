@@ -9,9 +9,9 @@ public class Notification {
     private String theme;
     private String message;
     private LocalDate createdAt;
+    private Task task;
 
-
-    public Notification(String message, String theme, Hunter hunter, PO po) {
+    public Notification(String message, String theme, Hunter hunter, PO po, Task task) {
         if (hunter == null && po == null) {
             throw new IllegalArgumentException("A notificação precisa de pelo menos um Hunter ou PO.");
         }
@@ -20,15 +20,24 @@ public class Notification {
         this.theme = theme;
         this.hunter = hunter;
         this.po = po;
+        this.task = task;
         this.createdAt = LocalDate.now();
     }
 
-    public Notification(String message, String theme, Hunter hunter) {
-        this(message, theme, hunter, null);
+    public Notification(String message, String theme, Hunter hunter, Task task) {
+        this(message, theme, hunter, null, task);
     }
 
-    public Notification(String message, String theme, PO po) {
-        this(message, theme, null, po);
+    public Notification(String message, String theme, PO po, Task task) {
+        this(message, theme, null, po, task);
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
 
     public UUID getHunterId() {

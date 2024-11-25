@@ -6,6 +6,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.groupseven.hunthub.presentation.backend.dto.response.TaskResponseDto;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import com.groupseven.hunthub.presentation.backend.dto.response.TaskDetailsResponseDto;
 import com.groupseven.hunthub.domain.services.HunterService;
 import jakarta.validation.Valid;
@@ -21,6 +24,7 @@ import com.groupseven.hunthub.domain.models.Hunter;
 import com.groupseven.hunthub.domain.services.POService;
 import com.groupseven.hunthub.domain.services.TaskService;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/task")
 public class TaskController {

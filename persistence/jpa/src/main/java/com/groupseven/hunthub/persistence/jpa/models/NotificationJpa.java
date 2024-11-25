@@ -16,6 +16,9 @@ public class NotificationJpa {
   private String message;
   private LocalDate createdAt;
 
+  @Column(name = "task_id", nullable = true)
+  private UUID taskId;
+
   @Column(name = "hunter_id", nullable = true)
   private UUID hunterId;
 
@@ -41,6 +44,14 @@ public class NotificationJpa {
   // Getters e Setters
   public UUID getId() {
     return id;
+  }
+
+  public UUID getTaskId() {
+    return taskId;
+  }
+
+  public void setTaskId(UUID taskId) {
+    this.taskId = taskId;
   }
 
   public void setId(UUID id) {
