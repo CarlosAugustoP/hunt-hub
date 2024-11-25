@@ -26,8 +26,10 @@ import com.groupseven.hunthub.persistence.memoria.repository.NotificationReposit
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 
+import com.groupseven.hunthub.steps.builder.BasicHunterBuilder;
 import com.groupseven.hunthub.steps.builder.BasicPoBuilder;
 import com.groupseven.hunthub.steps.builder.BasicTaskBuilder;
+import com.groupseven.hunthub.steps.director.HunterDirector;
 import com.groupseven.hunthub.steps.director.PODirector;
 import com.groupseven.hunthub.steps.director.TaskDirector;
 import io.cucumber.java.en.And;
@@ -66,10 +68,17 @@ public class AvaliarStepDefinitions {
 
         task.setPO(po);
 
-        hunter1 = new Hunter("12345678901", "Jessie Hunter", "jessiehunter@example.com", "passwordhunter", null, null, "Desenvolvedor experiente", "https://example.com/profile/jessie.jpg", null, null, null, null);
-        hunter2 = new Hunter("12345678902", "Alex Hunter", "alexhunter@example.com", "passwordhunter2", null, null, "Caçador de soluções", "https://example.com/profile/alex.jpg", null, null, null, null);
+        BasicHunterBuilder hunterBuilder = new BasicHunterBuilder();
+        HunterDirector hunterDirector = new HunterDirector(hunterBuilder);
+        this.hunter1 = hunterDirector.getSpecificHunter("Jessie");
+
+        this.hunter2 = hunterDirector.getSpecificHunter("Alex");
+
+        //hunter1 = new Hunter("12345678901", "Jessie Hunter", "jessiehunter@example.com", "passwordhunter", null, null, "Desenvolvedor experiente", "https://example.com/profile/jessie.jpg", null, null, null, null);
+        //hunter2 = new Hunter("12345678902", "Alex Hunter", "alexhunter@example.com", "passwordhunter2", null, null, "Caçador de soluções", "https://example.com/profile/alex.jpg", null, null, null, null);
         this.hunters.add(hunter1);
         this.hunters.add(hunter2);
+
 
         TaskRepositoryImpl taskRepository = new TaskRepositoryImpl();
         this.taskService = new TaskService(taskRepository, poRepository, notificationService);
@@ -94,14 +103,16 @@ public class AvaliarStepDefinitions {
     @Then("os hunters avaliam o PO e os outros hunters")
     public void hunterAvalia() {
 
-        int ratingForHunter1 = 4;
-        int ratingForHunter2 = 4;
+        int rating1 = 4;
+        int rating2 = 5;
         int ratingForPO = 5;
 
-        hunterService.rateHunter(hunter1, hunter2, ratingForHunter2);
+        hunterService.rateHunter(hunter1, hunter2, rating1);
+        hunterService.rateHunter(hunter1, hunter2, rating2);
         hunterService.ratePO(po, ratingForPO);
 
-        hunterService.rateHunter(hunter2, hunter1, ratingForHunter1);
+        hunterService.rateHunter(hunter2, hunter1, rating1);
+        hunterService.rateHunter(hunter2, hunter1, rating2);
         hunterService.ratePO(po, ratingForPO);
 
         assertEquals(4.5, hunter2.getRating());

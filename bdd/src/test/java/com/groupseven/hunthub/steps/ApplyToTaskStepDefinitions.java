@@ -52,11 +52,10 @@ public class ApplyToTaskStepDefinitions {
         isHunterNotified = false;
         exception = null;
 
+
         BasicHunterBuilder hunterBuilder = new BasicHunterBuilder();
         HunterDirector hunterDirector = new HunterDirector(hunterBuilder);
-        hunterDirector.constructHunter();
-        hunter = hunterDirector.getHunter();
-        hunter.setRating(0.0);
+        this.hunter = hunterDirector.getSpecificHunter("John");
 
 
         BasicPoBuilder poBuilder = new BasicPoBuilder();
