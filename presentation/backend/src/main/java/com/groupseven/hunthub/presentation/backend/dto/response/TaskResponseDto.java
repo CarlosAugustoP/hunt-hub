@@ -2,6 +2,7 @@ package com.groupseven.hunthub.presentation.backend.dto.response;
 
 import com.groupseven.hunthub.domain.models.Tags;
 import com.groupseven.hunthub.domain.models.Task;
+import com.groupseven.hunthub.domain.models.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,8 +18,9 @@ public class TaskResponseDto {
         private int numberOfHuntersRequired;
         private double ratingRequired;
         private UUID id;
+        private TaskStatus taskStatus;
 
-        public TaskResponseDto(String description, String title, Date deadline, int numberOfMeetings, int reward, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, UUID id) {
+        public TaskResponseDto(String description, String title, Date deadline, int numberOfMeetings, int reward, int numberOfHuntersRequired, double ratingRequired, List<Tags> tags, UUID id, TaskStatus taskStatus) {
             this.description = description;
             this.title = title;
             this.deadline = deadline;
@@ -28,6 +30,7 @@ public class TaskResponseDto {
             this.ratingRequired = ratingRequired;
             this.tags = tags;
             this.id = id;
+            this.taskStatus = taskStatus;
         }
 
         public TaskResponseDto() {
@@ -126,6 +129,14 @@ public class TaskResponseDto {
             this.tags = tags;
         }
 
+        public void setTaskStatus(TaskStatus taskStatus) {
+            this.taskStatus = taskStatus;
+        }
+
+        public TaskStatus getTaskStatus() {
+            return taskStatus;
+        }
+
         public TaskResponseDto convertToDTO(Task task) {
             TaskResponseDto dto = new TaskResponseDto();
             dto.setDescription(task.getDescription());
@@ -137,6 +148,7 @@ public class TaskResponseDto {
             dto.setRatingRequired(task.getRatingRequired());
             dto.setTags(task.getTags());
             dto.setId(task.getId().getId());
+            dto.setTaskStatus(task.getTaskStatus());
             return dto;
         }
 

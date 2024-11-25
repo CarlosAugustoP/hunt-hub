@@ -195,4 +195,12 @@ public class Task {
     public void setPO(PO po) {
         this.po = po;
     }
+
+    public TaskStatus getTaskStatus() {
+        return status;
+    }
+
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.status = taskStatus;
+    }
 }
