@@ -1,3 +1,6 @@
+Esse é o backend. para front, vá para https://github.com/pedroandriottii/hunt-hub-front
+This is the backend. for the front ent, visit https://github.com/pedroandriottii/hunt-hub-front
+
 # Hunt-hub 🇧🇷
 Repositório destinado ao projeto Hunt-hub, da disciplina de Requisitos, projeto de software e validação, do 5° período no CESAR School.
 
