@@ -11,10 +11,6 @@ baseado em níveis (“levels”) e troféus (“achievements”), que recompens
 Para uma descrição mais aprofundada, acesse nossa
 <a href="https://docs.google.com/document/d/1wTOTiOhm-b9dQ1bshlAFMc6ix6zCXaaZUpEvAewrogo/edit?usp=sharing" target="_blank">Descrição de Domínio</a>
 
-## Requisitos
-Para o desenvolvimento do projeto, usamos arquitetura limpa, modularização em maven e testes em Cucumber, como cobrava o requisito. Seguem links úteis para a compreensão de nosso projeto:
-- Protótipo em figma:
-
 ## Padrões de Projeto utilizados
 No desenvolvimento do nosso projeto, utilizamos os seguintes padrões de projetos:
 - <strong>Observer:</strong> O Observer é usado no gerenciamento de notificações entre usuários (POs e Hunters). Ele promove o desacoplamento entre os serviços que geram eventos e os usuários que precisam ser notificados, permitindo uma comunicação eficiente e flexível. Isso facilita a manutenção e a expansão do sistema, permitindo adicionar novos tipos de notificações sem alterar o código existente. O uso do Builder pode ser encontrado nas pastas hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/builder e hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/director
@@ -134,9 +130,6 @@ Repository intended for the Hunt-hub project, part of the Requirements, Software
 Hunt Hub is a platform designed to connect hunters with POs looking for professionals to carry out projects. The PO posts a task, makes a preliminary payment, which includes a fee charged by the platform based on the task's value. Additionally, the PO provides a detailed description of the service, including tags that indicate the type of professional needed (such as back-end developer, database administrator, data scientist, among others), the desired number of meetings with the hunter, payment details, and the expected delivery deadline. The system also includes a qualification mechanism for both hunters and POs, based on levels and achievements, rewarding professionals as they complete new tasks.  
 For a more in-depth description, please visit our  
 <a href="https://docs.google.com/document/d/1wTOTiOhm-b9dQ1bshlAFMc6ix6zCXaaZUpEvAewrogo/edit?usp=sharing" target="_blank">document.</a>
-
-## Requirements
-For the development of the project, we used clean architecture, modularization in Maven, and testing with Cucumber.
 
 ## Design Patterns Used
 In the development of our project, we utilized the following design patterns:
