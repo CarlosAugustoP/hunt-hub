@@ -1,7 +1,7 @@
 Esse é o backend. para front, vá para https://github.com/pedroandriottii/hunt-hub-front
 This is the backend. for the front ent, visit https://github.com/pedroandriottii/hunt-hub-front
 
-Obs: O módulo "application" possui o nome application por conter a classe springbootapplication e as classes relativas à condiguração da aplicação. Não possui referência ao módulo de aplicação. 
+Obs: O módulo "application" possui o nome application por conter a classe springbootapplication e as classes relativas à configuração da aplicação. Não possui referência à camada de aplicação no DDD. 
 
 # Hunt-hub 🇧🇷
 Repositório destinado ao projeto Hunt-hub, da disciplina de Requisitos, projeto de software e validação, do 5° período no CESAR School.
