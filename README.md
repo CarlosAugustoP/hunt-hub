@@ -11,9 +11,10 @@ baseado em níveis (“levels”) e troféus (“achievements”), que recompens
 Para uma descrição mais aprofundada, acesse nossa
 <a href="https://docs.google.com/document/d/1wTOTiOhm-b9dQ1bshlAFMc6ix6zCXaaZUpEvAewrogo/edit?usp=sharing" target="_blank">Descrição de Domínio</a>
 
-## Requisitos
-Para o desenvolvimento do projeto, usamos arquitetura limpa, modularização em maven e testes em Cucumber, como cobrava o requisito. Seguem links úteis para a compreensão de nosso projeto:
-- Protótipo em figma: 
+## Padrões de Projeto utilizados
+No desenvolvimento do nosso projeto, utilizamos os seguintes padrões de projetos:
+- <strong>Observer:</strong> O Observer é usado no gerenciamento de notificações entre usuários (POs e Hunters). Ele promove o desacoplamento entre os serviços que geram eventos e os usuários que precisam ser notificados, permitindo uma comunicação eficiente e flexível. Isso facilita a manutenção e a expansão do sistema, permitindo adicionar novos tipos de notificações sem alterar o código existente. O uso do Builder pode ser encontrado nas pastas hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/builder e hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/director
+- <strong>Builder:</strong> O Builder é usado para criar objetos complexos, como Hunter, PO e Task, de maneira organizada e flexível. Ele permite construir objetos passo a passo, garantindo consistência e melhorando a legibilidade do código. Esse padrão facilita a criação de instâncias completas, mesmo para objetos com muitos atributos ou configurações opcionais. O uso do observer pode ser encontrado no arquivo NotificationService, localizado na pasta hunt-hub/domain/src/main/java/com/groupseven/hunthub/domain/services
 
 ## Links do projeto
 <a href="https://www.figma.com/design/DPN9DklMVoONeVdGGPau6c/Prot%C3%B3tipo-de-Baixa-HuntHub?node-id=0-1&t=yah2qWUIoqgVMocu-1" target="_blank">Protótipo</a><br>
@@ -130,8 +131,10 @@ Hunt Hub is a platform designed to connect hunters with POs looking for professi
 For a more in-depth description, please visit our  
 <a href="https://docs.google.com/document/d/1wTOTiOhm-b9dQ1bshlAFMc6ix6zCXaaZUpEvAewrogo/edit?usp=sharing" target="_blank">document.</a>
 
-## Requirements
-For the development of the project, we used clean architecture, modularization in Maven, and testing with Cucumber.
+## Design Patterns Used
+In the development of our project, we utilized the following design patterns:
+- <strong>Observer:</strong> The Observer pattern is used for managing notifications between users (POs and Hunters). It promotes decoupling between the services that generate events and the users who need to be notified, enabling efficient and flexible communication. This simplifies system maintenance and expansion, allowing new types of notifications to be added without altering the existing code. The usage of the Observer pattern can be found in the NotificationService file, located in the hunt-hub/domain/src/main/java/com/groupseven/hunthub/domain/services folder.
+- <strong>Builder:</strong> The Builder pattern is used to create complex objects, such as Hunter, PO, and Task, in an organized and flexible manner. It allows building objects step by step, ensuring consistency and improving code readability. This pattern facilitates the creation of complete instances, even for objects with many attributes or optional configurations. The usage of the Builder pattern can be found in the folders hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/builder and hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/director.
 
 ## Project links
 <a href="https://www.figma.com/design/DPN9DklMVoONeVdGGPau6c/Prot%C3%B3tipo-de-Baixa-HuntHub?node-id=0-1&t=yah2qWUIoqgVMocu-1" target="_blank">Prototype</a><br>
