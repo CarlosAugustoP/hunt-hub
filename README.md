@@ -38,6 +38,8 @@ No desenvolvimento do nosso projeto, utilizamos os seguintes padrões de projeto
       docker compose up
   </dt>
 
+  Obs: Certifique-se que não haja conflito de volumes ou contêineres. O nosso banco PostgreSQL roda na porta 5432.
+
   <tr>- Dentro de outro terminal do Backend, rode:
   <dt>
 
@@ -59,6 +61,11 @@ No desenvolvimento do nosso projeto, utilizamos os seguintes padrões de projeto
       npm install
       npm run build
       npm run start
+  </dt>
+  <tr>- Caso haja algum problema inesperado. use o comando seguinte:
+  <dt>
+
+    npm run dev 
   </dt>
   
 </table>
