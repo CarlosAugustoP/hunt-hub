@@ -16,6 +16,53 @@ No desenvolvimento do nosso projeto, utilizamos os seguintes padrões de projeto
 - <strong>Observer:</strong> O Observer é usado no gerenciamento de notificações entre usuários (POs e Hunters). Ele promove o desacoplamento entre os serviços que geram eventos e os usuários que precisam ser notificados, permitindo uma comunicação eficiente e flexível. Isso facilita a manutenção e a expansão do sistema, permitindo adicionar novos tipos de notificações sem alterar o código existente. O uso do Builder pode ser encontrado nas pastas hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/builder e hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/director
 - <strong>Builder:</strong> O Builder é usado para criar objetos complexos, como Hunter, PO e Task, de maneira organizada e flexível. Ele permite construir objetos passo a passo, garantindo consistência e melhorando a legibilidade do código. Esse padrão facilita a criação de instâncias completas, mesmo para objetos com muitos atributos ou configurações opcionais. O uso do observer pode ser encontrado no arquivo NotificationService, localizado na pasta hunt-hub/domain/src/main/java/com/groupseven/hunthub/domain/services
 
+## Como Rodar:
+
+<table>
+  <tr>- Clone o repositório do Backend em uma pasta:
+  <dt>
+
+      git clone https://github.com/CarlosAugustoP/hunt-hub.git
+  </dt>
+  
+  <tr>- Clone o repositório do Frontend em uma pasta:
+  <dt>
+
+      git clone https://github.com/pedroandriottii/hunt-hub-front.git
+  </dt>
+
+  <tr>- Dentro de um terminal do Backend, rode:
+  <dt>
+
+      cd ./hunt-hub
+      docker compose up
+  </dt>
+
+  <tr>- Dentro de outro terminal do Backend, rode:
+  <dt>
+
+      cd ./hunt-hub
+      mvn clean install
+  </dt>
+
+  <tr>- Dentro de outro terminal do Backend, rode:
+  <dt>
+
+      cd ./hunt-hub/application
+      mvn spring-boot:run
+  </dt>
+
+  <tr>- Dentro de um terminal do Frontend, rode:
+  <dt>
+
+      cd ./hunt-hub-front
+      npm install
+      npm run build
+      npm run start
+  </dt>
+  
+</table>
+
 ## Links do projeto
 <a href="https://www.figma.com/design/DPN9DklMVoONeVdGGPau6c/Prot%C3%B3tipo-de-Baixa-HuntHub?node-id=0-1&t=yah2qWUIoqgVMocu-1" target="_blank">Protótipo</a><br>
 <a href="https://drive.google.com/file/d/1TEKOA83vKyH-D6SFzGGHJvHdO2vmIzfg/view?usp=sharing" target="_blank">Mapa de histórias</a><br>
@@ -135,6 +182,53 @@ For a more in-depth description, please visit our
 In the development of our project, we utilized the following design patterns:
 - <strong>Observer:</strong> The Observer pattern is used for managing notifications between users (POs and Hunters). It promotes decoupling between the services that generate events and the users who need to be notified, enabling efficient and flexible communication. This simplifies system maintenance and expansion, allowing new types of notifications to be added without altering the existing code. The usage of the Observer pattern can be found in the NotificationService file, located in the hunt-hub/domain/src/main/java/com/groupseven/hunthub/domain/services folder.
 - <strong>Builder:</strong> The Builder pattern is used to create complex objects, such as Hunter, PO, and Task, in an organized and flexible manner. It allows building objects step by step, ensuring consistency and improving code readability. This pattern facilitates the creation of complete instances, even for objects with many attributes or optional configurations. The usage of the Builder pattern can be found in the folders hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/builder and hunt-hub/bdd/src/test/java/com/groupseven/hunthub/steps/director.
+
+## How to Run:
+
+<table>
+  <tr>- Clone the Backend repository into a folder:
+  <dt>
+
+      git clone https://github.com/CarlosAugustoP/hunt-hub.git
+  </dt>
+  
+  <tr>- Clone the Frontend repository into a folder:
+  <dt>
+
+      git clone https://github.com/pedroandriottii/hunt-hub-front.git
+  </dt>
+
+  <tr>- In a terminal for the Backend, run:
+  <dt>
+
+      cd ./hunt-hub
+      docker compose up
+  </dt>
+
+  <tr>- In another terminal for the Backend, run:
+  <dt>
+
+      cd ./hunt-hub
+      mvn clean install
+  </dt>
+
+  <tr>- In another terminal for the Backend, run:
+  <dt>
+
+      cd ./hunt-hub/application
+      mvn spring-boot:run
+  </dt>
+
+  <tr>- In a terminal for the Frontend, run:
+  <dt>
+
+      cd ./hunt-hub-front
+      npm install
+      npm run build
+      npm run start
+  </dt>
+  
+</table>
 
 ## Project links
 <a href="https://www.figma.com/design/DPN9DklMVoONeVdGGPau6c/Prot%C3%B3tipo-de-Baixa-HuntHub?node-id=0-1&t=yah2qWUIoqgVMocu-1" target="_blank">Prototype</a><br>
