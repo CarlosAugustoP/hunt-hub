@@ -10,7 +10,7 @@ public class AuthenticationDTO {
     private String email;
 
     @NotBlank(message = "senha nao pode ser vazia")
-    @Size(min = 4, max = 20)
+    @Size(min = 8, max = 20)
     private String password;
 
 

@@ -55,7 +55,9 @@ public class ApplyToTaskStepDefinitions {
 
         BasicHunterBuilder hunterBuilder = new BasicHunterBuilder();
         HunterDirector hunterDirector = new HunterDirector(hunterBuilder);
-        this.hunter = hunterDirector.getSpecificHunter("John");
+        hunterDirector.constructHunter();
+        hunter = hunterDirector.getHunter();
+        hunter.setRating(0.0);
 
 
         BasicPoBuilder poBuilder = new BasicPoBuilder();

@@ -5,17 +5,17 @@ import com.groupseven.hunthub.steps.interfaces.HunterBuilder;
 
 import java.util.UUID;
 
-public class BasicHunterBuilder implements HunterBuilder {
+public class AlternativeHunterBuilder implements HunterBuilder {
     private final Hunter hunter;
 
-    public BasicHunterBuilder() {
+    public AlternativeHunterBuilder() {
         this.hunter = new Hunter();
     }
     public void buildName() {
-        this.hunter.setName("John Doe");
+        this.hunter.setName("Jessie Hunter");
     }
     public void buildEmail() {
-        this.hunter.setEmail("johndoe@example.com");
+        this.hunter.setEmail("jessiehunter@example.com");
     }
     public void buildPassword() {
         this.hunter.setPassword("hunter123");

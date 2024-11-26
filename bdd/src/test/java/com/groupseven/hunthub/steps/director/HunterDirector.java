@@ -1,26 +1,35 @@
 package com.groupseven.hunthub.steps.director;
 
 import com.groupseven.hunthub.domain.models.Hunter;
-import com.groupseven.hunthub.steps.builder.BasicHunterBuilder;
-
-import java.util.Map;
+import com.groupseven.hunthub.steps.interfaces.HunterBuilder;
 
 public class HunterDirector {
 
-    private final BasicHunterBuilder hunterBuilder;
+    private final HunterBuilder hunterBuilder;
 
-    public HunterDirector(BasicHunterBuilder hunterBuilder) {
+    public HunterDirector(HunterBuilder hunterBuilder) {
         this.hunterBuilder = hunterBuilder;
     }
 
-
-
-    public Hunter getSpecificHunter(String name) {
-        return hunterBuilder.getSpecificHunter(name);
+    public void constructHunter() {
+        hunterBuilder.buildName();
+        hunterBuilder.buildEmail();
+        hunterBuilder.buildPassword();
+        hunterBuilder.buildProfilePicture();
+        hunterBuilder.buildCpf();
+        hunterBuilder.buildTasks();
+        hunterBuilder.buildTotalRating();
+        hunterBuilder.buildRatingCount();
+        hunterBuilder.buildBio();
+        hunterBuilder.buildLevels();
+        hunterBuilder.buildHunterId();
+        hunterBuilder.buildCertifications();
+        hunterBuilder.buildLinks();
+        hunterBuilder.buildAchievements();
+        hunterBuilder.buildProjects();
     }
 
-
-    public Map<String, Hunter> getAllHunters() {
-        return hunterBuilder.getAllPredefinedHunters();
+    public Hunter getHunter() {
+        return this.hunterBuilder.getHunter();
     }
 }

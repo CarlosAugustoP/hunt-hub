@@ -26,6 +26,7 @@ import com.groupseven.hunthub.persistence.memoria.repository.NotificationReposit
 import com.groupseven.hunthub.persistence.memoria.repository.PoRepositoryImpl;
 import com.groupseven.hunthub.persistence.memoria.repository.TaskRepositoryImpl;
 
+import com.groupseven.hunthub.steps.builder.AlternativeHunterBuilder;
 import com.groupseven.hunthub.steps.builder.BasicHunterBuilder;
 import com.groupseven.hunthub.steps.builder.BasicPoBuilder;
 import com.groupseven.hunthub.steps.builder.BasicTaskBuilder;
@@ -61,6 +62,8 @@ public class AvaliarStepDefinitions {
         poDirector.constructPO();
         this.po = poBuilder.getPo();
 
+        System.out.println("PO: " + po.getId().getId());
+
         BasicTaskBuilder taskBuilder = new BasicTaskBuilder();
         TaskDirector taskDirector = new TaskDirector(taskBuilder);
         taskDirector.constructTask();
@@ -68,14 +71,18 @@ public class AvaliarStepDefinitions {
 
         task.setPO(po);
 
+
         BasicHunterBuilder hunterBuilder = new BasicHunterBuilder();
         HunterDirector hunterDirector = new HunterDirector(hunterBuilder);
-        this.hunter1 = hunterDirector.getSpecificHunter("Jessie");
+        hunterDirector.constructHunter();
+        hunter1 = hunterDirector.getHunter();
 
-        this.hunter2 = hunterDirector.getSpecificHunter("Alex");
+        AlternativeHunterBuilder alternativeHunterBuilder = new AlternativeHunterBuilder();
+        HunterDirector alternativeHunterDirector = new HunterDirector(alternativeHunterBuilder);
+        alternativeHunterDirector.constructHunter();
+        hunter2 = alternativeHunterDirector.getHunter();
 
-        //hunter1 = new Hunter("12345678901", "Jessie Hunter", "jessiehunter@example.com", "passwordhunter", null, null, "Desenvolvedor experiente", "https://example.com/profile/jessie.jpg", null, null, null, null);
-        //hunter2 = new Hunter("12345678902", "Alex Hunter", "alexhunter@example.com", "passwordhunter2", null, null, "Caçador de soluções", "https://example.com/profile/alex.jpg", null, null, null, null);
+
         this.hunters.add(hunter1);
         this.hunters.add(hunter2);
 
@@ -93,9 +100,11 @@ public class AvaliarStepDefinitions {
     public void notifyPOandHunters() {
 
         var response = notificationService.NotifyPO(this.task.getPo(), this.task.getTitle(), "Task finalizada");
+        System.out.println("Response: " + response);
         assertTrue(response);
         for (Hunter hunter : hunters) {
             var responseHunter = notificationService.NotifyHunter(hunter, this.task.getTitle(), "Task finalizada");
+            System.out.println("Response Hunter: " + responseHunter);
             assertTrue(responseHunter);
         }
     }
